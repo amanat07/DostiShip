@@ -41,13 +41,14 @@ const HeroSection = () => {
       <div className="relative z-10 text-center space-y-8 px-6 max-w-4xl mx-auto">
         <div className="space-y-4 animate-fade-in-up">
           <h1 className="text-6xl md:text-7xl font-bold text-foreground">
-            Welcome to{" "}
+            Join{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Dostiship
+              Dostiशिप
             </span>
+            {" "}Today!
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Your university's friendship hub. Connect, discover, and build lasting friendships with fellow students.
+            Connect with like-minded people, share your experiences, and grow together in a supportive community.
           </p>
         </div>
 
@@ -63,15 +64,15 @@ const HeroSection = () => {
         <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-            <span>500+ Active Students</span>
+            <span>500+ Active Members</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-            <span>50+ Campus Events</span>
+            <span>Safe Community</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-primary-glow rounded-full animate-pulse"></div>
-            <span>University Verified</span>
+            <span>Meaningful Connections</span>
           </div>
         </div>
       </div>

@@ -1,16 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Calendar, MessageCircle, Shield, Sparkles } from "lucide-react";
+import { Users, Calendar, MessageCircle, Sparkles } from "lucide-react";
 
 const features = [
   {
     icon: Users,
     title: "Find Your Tribe",
-    description: "Connect with students who share your interests, hobbies, and academic goals. Build meaningful friendships that last beyond university."
-  },
-  {
-    icon: MapPin,
-    title: "Campus Events",
-    description: "Discover and join events happening around campus. From study groups to social gatherings, never miss out on the fun."
+    description: "Connect with people who share your interests, hobbies, and goals. Build meaningful friendships that last."
   },
   {
     icon: Calendar,
@@ -23,14 +18,9 @@ const features = [
     description: "Chat securely with built-in safety features. Report concerns and maintain a positive, respectful community environment."
   },
   {
-    icon: Shield,
-    title: "University Verified",
-    description: "Only verified students from your university can join. We ensure a safe, authentic community of real students."
-  },
-  {
     icon: Sparkles,
     title: "Smart Matching",
-    description: "Our algorithm suggests friends based on shared classes, interests, and campus involvement. Quality connections, not just quantity."
+    description: "Our algorithm suggests friends based on shared interests and compatibility. Quality connections, not just quantity."
   }
 ];
 
@@ -51,7 +41,7 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <Card 
               key={feature.title} 
