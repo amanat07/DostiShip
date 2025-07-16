@@ -5,7 +5,7 @@ import heroImage from "@/assets/hero-friendship.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero pt-20">
       {/* Background Image Overlay */}
       <div 
         className="absolute inset-0 opacity-20 bg-cover bg-center bg-no-repeat"
