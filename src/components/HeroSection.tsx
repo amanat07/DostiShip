@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Heart, Users, MapPin, Calendar } from "lucide-react";
 import heroImage from "@/assets/hero-friendship.jpg";
 
 const HeroSection = () => {
@@ -8,34 +6,10 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero pt-20">
       {/* Background Image Overlay */}
       <div 
-        className="absolute inset-0 opacity-20 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 opacity-10 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroImage})` }}
       />
       
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-20 animate-bounce-gentle">
-        <Card className="p-4 shadow-card bg-card/80 backdrop-blur-sm">
-          <Heart className="w-8 h-8 text-accent" />
-        </Card>
-      </div>
-      
-      <div className="absolute top-32 right-32 animate-bounce-gentle" style={{ animationDelay: '1s' }}>
-        <Card className="p-4 shadow-card bg-card/80 backdrop-blur-sm">
-          <Users className="w-8 h-8 text-primary" />
-        </Card>
-      </div>
-      
-      <div className="absolute bottom-32 left-32 animate-bounce-gentle" style={{ animationDelay: '2s' }}>
-        <Card className="p-4 shadow-card bg-card/80 backdrop-blur-sm">
-          <MapPin className="w-8 h-8 text-accent" />
-        </Card>
-      </div>
-      
-      <div className="absolute bottom-20 right-20 animate-bounce-gentle" style={{ animationDelay: '0.5s' }}>
-        <Card className="p-4 shadow-card bg-card/80 backdrop-blur-sm">
-          <Calendar className="w-8 h-8 text-primary" />
-        </Card>
-      </div>
 
       {/* Main Content */}
       <div className="relative z-10 text-center space-y-8 px-6 max-w-4xl mx-auto">
