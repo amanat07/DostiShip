@@ -15,7 +15,12 @@ const AboutSection = () => {
             We believe that friendship is the foundation of happiness and success. Whether you're looking for a study partner, a mentor, or just someone to share your thoughts with, we make it easy to meet people who truly understand you. Our platform is designed to foster meaningful connections in a safe, inclusive environment.
           </p>
           <div className="pt-4">
-            <Button variant="accent" size="lg" className="text-lg px-8 py-6 h-auto">
+            <Button 
+              variant="accent" 
+              size="lg" 
+              className="text-lg px-8 py-6 h-auto"
+              onClick={() => window.location.href = '/about'}
+            >
               Learn More
             </Button>
           </div>
