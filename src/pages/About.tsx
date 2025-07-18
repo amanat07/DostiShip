@@ -95,6 +95,72 @@ const About = () => {
         </div>
       </section>
 
+      {/* Team Section */}
+      <section className="py-16 px-6 bg-muted/20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-foreground mb-12">Meet Our Team</h2>
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <Card className="p-8 text-center hover:shadow-glow transition-all duration-300">
+              <div className="w-24 h-24 bg-gradient-primary rounded-full mx-auto mb-6 flex items-center justify-content">
+                <span className="text-2xl font-bold text-white mx-auto">AT</span>
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Atharav Tarika</h3>
+              <p className="text-lg text-primary font-semibold mb-4">CEO & Founder</p>
+              <p className="text-muted-foreground">
+                Passionate about connecting people and building meaningful relationships in the digital age.
+              </p>
+            </Card>
+
+            <Card className="p-8 text-center hover:shadow-glow transition-all duration-300">
+              <div className="w-24 h-24 bg-gradient-secondary rounded-full mx-auto mb-6 flex items-center justify-content">
+                <span className="text-2xl font-bold text-accent-foreground mx-auto">SK</span>
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Sakshi Kumar</h3>
+              <p className="text-lg text-accent font-semibold mb-4">Co-Founder & CTO</p>
+              <p className="text-muted-foreground">
+                Technology enthusiast focused on creating safe and innovative platforms for friendship.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-foreground mb-12">Get In Touch</h2>
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MessageCircle className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Email</h3>
+              <p className="text-muted-foreground">atharavtarika@dostiship.com</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Call</h3>
+              <p className="text-muted-foreground">+91 9466903617</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Heart className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Follow Us</h3>
+              <div className="flex justify-center space-x-4 mt-2">
+                <span className="text-muted-foreground">Instagram</span>
+                <span className="text-muted-foreground">Facebook</span>
+                <span className="text-muted-foreground">Twitter</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 px-6 bg-gradient-secondary">
         <div className="max-w-4xl mx-auto text-center">

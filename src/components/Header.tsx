@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -18,9 +19,9 @@ const Header = () => {
             <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
               Features
             </a>
-            <a href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
               About
-            </a>
+            </Link>
             <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
               Contact
             </a>
@@ -28,12 +29,16 @@ const Header = () => {
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="hidden sm:flex">
-              Login
-            </Button>
-            <Button variant="hero" size="sm">
-              Sign Up
-            </Button>
+            <Link to="/login">
+              <Button variant="ghost" className="hidden sm:flex">
+                Login
+              </Button>
+            </Link>
+            <Link to="/register">
+              <Button variant="hero" size="sm">
+                Sign Up
+              </Button>
+            </Link>
             
             {/* Mobile Menu Button */}
             <Button variant="ghost" size="sm" className="md:hidden">
