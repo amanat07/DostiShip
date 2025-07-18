@@ -4,11 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -25,6 +26,8 @@ const Login = () => {
     e.preventDefault();
     // TODO: Implement login logic with Supabase
     console.log("Login attempt:", formData);
+    // For now, redirect to feed after login
+    navigate("/feed");
   };
 
   const handleSocialLogin = (provider: string) => {

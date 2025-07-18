@@ -4,12 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -18,8 +20,14 @@ const Register = () => {
     phone: "",
     password: "",
     collegeName: "",
-    collegeId: ""
+    collegeId: "",
+    interests: [] as string[]
   });
+
+  const interestOptions = [
+    "drawing", "music", "choreography", "photography", 
+    "theater", "gaming", "movies", "reading", "cooking"
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,10 +43,21 @@ const Register = () => {
     });
   };
 
+  const handleInterestChange = (interest: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      interests: checked 
+        ? [...prev.interests, interest]
+        : prev.interests.filter(i => i !== interest)
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement registration logic with Supabase
     console.log("Registration attempt:", formData);
+    // For now, redirect to feed after registration
+    navigate("/feed");
   };
 
   const handleSocialLogin = (provider: string) => {
@@ -165,6 +184,30 @@ const Register = () => {
                   required
                   className="mt-1"
                 />
+              </div>
+
+              <div>
+                <Label>Interests * (Select at least 3)</Label>
+                <div className="grid grid-cols-2 gap-3 mt-2">
+                  {interestOptions.map((interest) => (
+                    <div key={interest} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={interest}
+                        checked={formData.interests.includes(interest)}
+                        onCheckedChange={(checked) => handleInterestChange(interest, checked as boolean)}
+                      />
+                      <Label 
+                        htmlFor={interest} 
+                        className="text-sm font-normal capitalize cursor-pointer"
+                      >
+                        {interest}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Selected: {formData.interests.length}/9
+                </p>
               </div>
 
               <Button type="submit" className="w-full" size="lg">
