@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { ArrowRight, Users, Heart } from "lucide-react";
 
 const CTASection = () => {
@@ -40,22 +41,24 @@ const CTASection = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-scale-in" style={{ animationDelay: '0.3s' }}>
-              <Button variant="hero" size="lg" className="text-lg px-8 py-6 h-auto group">
-                Create Account
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+              <Button asChild variant="hero" size="lg" className="text-lg px-8 py-6 h-auto group">
+                <Link to="/register">
+                  Create Account
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6 h-auto hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                Sign In
+              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 h-auto hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                <Link to="/login">Sign In</Link>
               </Button>
             </div>
 
             <div className="pt-8 border-t border-border/50 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
               <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <span className="text-primary hover:text-primary-glow cursor-pointer transition-colors duration-300 font-medium">
+                <Link to="/login" className="text-primary hover:text-primary-glow cursor-pointer transition-colors duration-300 font-medium">
                   Sign in here
-                </span>
+                </Link>
               </p>
             </div>
           </div>

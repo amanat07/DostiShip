@@ -16,9 +16,9 @@ const Header = () => {
 
           {/* Navigation - Hidden on mobile */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/features" className="text-muted-foreground hover:text-primary transition-colors">
               Features
-            </a>
+            </Link>
             <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
               About
             </Link>
@@ -36,7 +36,7 @@ const Header = () => {
             </Link>
             <Link to="/register">
               <Button variant="hero" size="sm">
-                Sign Up
+                Start Your Journey
               </Button>
             </Link>
             
