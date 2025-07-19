@@ -10,6 +10,9 @@ import LearnMore from "./pages/LearnMore";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
+import Inbox from "./pages/Inbox";
+import Map from "./pages/Map";
+import Hangout from "./pages/Hangout";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
@@ -31,9 +34,9 @@ const App = () => (
           <Route path="/feed" element={<Feed />} />
           <Route path="/contact" element={<Contact />} />
           {/* TODO: Add routes for sidebar navigation */}
-          <Route path="/inbox" element={<Feed />} />
-          <Route path="/hangout" element={<Feed />} />
-          <Route path="/map" element={<Feed />} />
+          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/hangout" element={<Hangout />} />
+          <Route path="/map" element={<Map />} />
           <Route path="/notifications" element={<Feed />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
