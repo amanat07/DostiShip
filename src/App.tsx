@@ -10,6 +10,7 @@ import LearnMore from "./pages/LearnMore";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Feed from "./pages/Feed";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/contact" element={<Contact />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Feed />} />
           <Route path="/hangout" element={<Feed />} />

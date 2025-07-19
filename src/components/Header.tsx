@@ -22,9 +22,9 @@ const Header = () => {
             <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
               About
             </Link>
-            <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           {/* Auth Buttons */}
