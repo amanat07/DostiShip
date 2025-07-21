@@ -15,6 +15,7 @@ import Map from "./pages/Map";
 import Hangout from "./pages/Hangout";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,7 @@ const App = () => (
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />
           <Route path="/map" element={<Map />} />
-          <Route path="/notifications" element={<Feed />} />
+          <Route path="/notifications" element={<Notifications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

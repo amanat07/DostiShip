@@ -1,4 +1,5 @@
 import Sidebar from "@/components/Sidebar";
+import JournalSection from "@/components/JournalSection";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -42,6 +43,9 @@ const Feed = () => {
       
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto p-6">
+          {/* Journal Section */}
+          <JournalSection />
+
           {/* Create Post Card */}
           <Card className="p-6 mb-6">
             <div className="flex items-center space-x-4">

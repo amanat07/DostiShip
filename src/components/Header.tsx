@@ -36,7 +36,7 @@ const Header = () => {
             </Link>
             <Link to="/register">
               <Button variant="hero" size="sm">
-                Start Your Journey
+                Register
               </Button>
             </Link>
             
