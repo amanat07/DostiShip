@@ -3,7 +3,15 @@ import JournalSection from "@/components/JournalSection";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Share, MoreHorizontal, Plus } from "lucide-react";
+import { Heart, MessageCircle, Share, MoreHorizontal, Plus, User, Settings, LogOut } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Feed = () => {
   // Mock data for posts
@@ -42,6 +50,47 @@ const Feed = () => {
       <Sidebar />
       
       <main className="flex-1 overflow-y-auto">
+        {/* Feed Header */}
+        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border p-4">
+          <div className="max-w-2xl mx-auto flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Feed</h1>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/placeholder.svg" alt="Profile" />
+                    <AvatarFallback>YU</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">Your Name</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      your.email@example.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+
         <div className="max-w-2xl mx-auto p-6">
           {/* Journal Section */}
           <JournalSection />

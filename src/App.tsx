@@ -16,6 +16,11 @@ import Hangout from "./pages/Hangout";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Notifications from "./pages/Notifications";
+import HelpCenter from "./pages/HelpCenter";
+import FAQ from "./pages/FAQ";
+import Feedback from "./pages/Feedback";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +39,11 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/help-center" element={<HelpCenter />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />

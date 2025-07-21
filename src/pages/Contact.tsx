@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, Phone, Instagram, Facebook, Twitter, MapPin } from "lucide-react";
+import Header from "@/components/Header";
 
 const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -14,13 +15,15 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-primary text-primary-foreground py-16">
+      <Header />
+      
+      {/* Hero Section */}
+      <section className="bg-gradient-primary text-white py-24 pt-32">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
           <p className="text-xl opacity-90">Get in touch with the Dostiशिप team</p>
         </div>
-      </header>
+      </section>
 
       {/* Contact Information */}
       <section className="py-16 px-6">
@@ -62,7 +65,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Location</h3>
-                    <p className="text-muted-foreground">India</p>
+                    <p className="text-muted-foreground">Chitkara University, Rajpura, Punjab, India</p>
                   </div>
                 </div>
               </div>

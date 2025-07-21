@@ -113,12 +113,12 @@ const About = () => {
 
             <Card className="p-8 text-center hover:shadow-glow transition-all duration-300">
               <div className="w-24 h-24 bg-gradient-secondary rounded-full mx-auto mb-6 flex items-center justify-content">
-                <span className="text-2xl font-bold text-accent-foreground mx-auto">SK</span>
+                <span className="text-2xl font-bold text-accent-foreground mx-auto">AK</span>
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">Sakshi Kumar</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Amanatpreet Kaur</h3>
               <p className="text-lg text-accent font-semibold mb-4">Co-Founder & CTO</p>
               <p className="text-muted-foreground">
-                Technology enthusiast focused on creating safe and innovative platforms for friendship.
+                Guides DostiShip's tech development, ensuring smooth performance. An introvert who found making friends tough in college, she aims to simplify socializing for students.
               </p>
             </Card>
           </div>

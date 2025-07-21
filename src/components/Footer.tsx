@@ -33,10 +33,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground">Support</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Contact Us</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">FAQ</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Feedback</a></li>
+              <li><a href="/help-center" className="hover:text-primary transition-colors">Help Center</a></li>
+              <li><a href="/contact" className="hover:text-primary transition-colors">Contact Us</a></li>
+              <li><a href="/faq" className="hover:text-primary transition-colors">FAQ</a></li>
+              <li><a href="/feedback" className="hover:text-primary transition-colors">Feedback</a></li>
             </ul>
           </div>
 
@@ -44,8 +44,8 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground">Legal</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
+              <li><a href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Guidelines</a></li>
             </ul>
