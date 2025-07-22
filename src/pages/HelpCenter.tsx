@@ -78,9 +78,12 @@ const HelpCenter = () => {
                   <ul className="space-y-2">
                     {category.articles.map((article, articleIndex) => (
                       <li key={articleIndex}>
-                        <a href="#" className="text-primary hover:underline text-sm">
+                        <button 
+                          onClick={() => window.open(`/help/${article.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}`, '_blank')}
+                          className="text-primary hover:underline text-sm text-left"
+                        >
                           {article}
-                        </a>
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -99,8 +102,8 @@ const HelpCenter = () => {
             Can't find what you're looking for? Our support team is here to help you.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button size="lg">Contact Support</Button>
-            <Button variant="outline" size="lg">Live Chat</Button>
+            <Button size="lg" onClick={() => window.open('/contact', '_blank')}>Contact Support</Button>
+            <Button variant="outline" size="lg" onClick={() => alert('Live chat feature coming soon!')}>Live Chat</Button>
           </div>
         </div>
       </section>

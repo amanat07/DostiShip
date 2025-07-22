@@ -26,6 +26,8 @@ import Safety from "./pages/Safety";
 import Community from "./pages/Community";
 import CookiePolicy from "./pages/CookiePolicy";
 import Guidelines from "./pages/Guidelines";
+import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,8 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/guidelines" element={<Guidelines />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/profile" element={<Profile />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />
