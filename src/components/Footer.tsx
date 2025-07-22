@@ -22,10 +22,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground">Platform</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-primary transition-colors">How It Works</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Safety</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Community</a></li>
+              <li><a href="/how-it-works" className="hover:text-primary transition-colors">How It Works</a></li>
+              <li><a href="/features" className="hover:text-primary transition-colors">Features</a></li>
+              <li><a href="/safety" className="hover:text-primary transition-colors">Safety</a></li>
+              <li><a href="/community" className="hover:text-primary transition-colors">Community</a></li>
             </ul>
           </div>
 
@@ -46,8 +46,8 @@ const Footer = () => {
             <ul className="space-y-2 text-muted-foreground">
               <li><a href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</a></li>
               <li><a href="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Guidelines</a></li>
+              <li><a href="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</a></li>
+              <li><a href="/guidelines" className="hover:text-primary transition-colors">Guidelines</a></li>
             </ul>
           </div>
         </div>

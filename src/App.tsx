@@ -21,6 +21,11 @@ import FAQ from "./pages/FAQ";
 import Feedback from "./pages/Feedback";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import HowItWorks from "./pages/HowItWorks";
+import Safety from "./pages/Safety";
+import Community from "./pages/Community";
+import CookiePolicy from "./pages/CookiePolicy";
+import Guidelines from "./pages/Guidelines";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +49,11 @@ const App = () => (
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/safety" element={<Safety />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/guidelines" element={<Guidelines />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />

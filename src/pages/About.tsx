@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Users, MessageCircle, Shield, GraduationCap, Heart, Target } from "lucide-react";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -170,8 +171,8 @@ const About = () => {
             Be a part of our growing community and start building friendships that truly matter. 
             Because every great friendship begins with a simple "hello"!
           </p>
-          <Button variant="hero" size="lg" className="text-lg px-8 py-6 h-auto">
-            Start Your Journey
+          <Button asChild variant="hero" size="lg" className="text-lg px-8 py-6 h-auto">
+            <Link to="/register">Start Your Journey</Link>
           </Button>
         </div>
       </section>

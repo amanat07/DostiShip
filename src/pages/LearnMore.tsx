@@ -79,6 +79,9 @@ const LearnMore = () => {
                 <Button asChild variant="outline" size="lg">
                   <Link to="/features">Explore Features</Link>
                 </Button>
+                <Button asChild variant="secondary" size="lg">
+                  <Link to="/community">Join Our Community</Link>
+                </Button>
               </div>
             </Card>
           </div>
