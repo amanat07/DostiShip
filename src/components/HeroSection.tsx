@@ -17,7 +17,7 @@ const HeroSection = () => {
         <div className="space-y-4 animate-fade-in-up">
           <h1 className="text-6xl md:text-7xl font-bold text-foreground">
             Join{" "}
-            <span className="bg-gradient-primary bg-clip-text text-transparent font-extrabold animate-bounce-gentle">
+            <span className="text-black font-extrabold animate-bounce-gentle">
               Dostiशिप
             </span>
             {" "}Today!
