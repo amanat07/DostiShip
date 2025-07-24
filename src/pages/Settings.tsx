@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, Shield, User, Moon, Sun, Smartphone, Globe, Heart, MessageCircle, Eye, Lock } from "lucide-react";
+import { Bell, Shield, User, Moon, Sun, Smartphone, Globe, Heart, MessageCircle, Eye, Lock, Users } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Settings = () => {
   const { theme, setTheme } = useTheme();
@@ -28,7 +29,8 @@ const Settings = () => {
       title: "Account",
       icon: User,
       settings: [
-        { label: "Edit Profile", description: "Update your personal information", action: "edit" },
+        { label: "Edit Username", description: "Change your display name", action: "edit" },
+        { label: "Personal Information", description: "Update your personal details", action: "edit" },
         { label: "Change Password", description: "Update your account password", action: "password" },
         { label: "Email Preferences", description: "Manage email notifications", action: "email" },
       ]
@@ -38,9 +40,20 @@ const Settings = () => {
       icon: Shield,
       settings: [
         { label: "Profile Visibility", description: "Control who can see your profile", action: "toggle", enabled: true },
+        { label: "Hide Posts", description: "Hide your posts from certain users", action: "toggle", enabled: false },
         { label: "Two-Factor Authentication", description: "Add extra security to your account", action: "toggle", enabled: false },
+        { label: "Block Users", description: "Manage your blocked users list", action: "edit" },
         { label: "Data Download", description: "Download a copy of your information", action: "download" },
-        { label: "Account Deletion", description: "Permanently delete your account", action: "delete" },
+      ]
+    },
+    {
+      title: "Friends & Posts",
+      icon: Users,
+      settings: [
+        { label: "Friends Management", description: "Manage your friends list", action: "edit" },
+        { label: "Post Management", description: "Manage your posts and content", action: "edit" },
+        { label: "Friend Requests", description: "Control who can send you friend requests", action: "toggle", enabled: true },
+        { label: "Post Visibility", description: "Control who can see your posts", action: "edit" },
       ]
     },
     {
@@ -96,7 +109,9 @@ const Settings = () => {
                   <p className="text-muted-foreground">john.doe@example.com</p>
                   <p className="text-sm text-muted-foreground">Member since January 2024</p>
                 </div>
-                <Button variant="outline">View Profile</Button>
+                <Button variant="outline" asChild>
+                  <Link to="/profile">View Profile</Link>
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -169,7 +184,17 @@ const Settings = () => {
               <CardTitle className="text-destructive">Danger Zone</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+                <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">Password Reset</div>
+                    <div className="text-sm text-muted-foreground">Reset your password via email</div>
+                  </div>
+                  <Button variant="outline">
+                    Reset Password
+                  </Button>
+                </div>
+                <Separator />
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">Deactivate Account</div>
@@ -182,7 +207,7 @@ const Settings = () => {
                 <Separator />
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">Delete Account</div>
+                    <div className="font-medium">Account Deletion</div>
                     <div className="text-sm text-muted-foreground">Permanently delete your account and all data</div>
                   </div>
                   <Button variant="destructive">

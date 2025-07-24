@@ -28,6 +28,14 @@ import CookiePolicy from "./pages/CookiePolicy";
 import Guidelines from "./pages/Guidelines";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
+import CreatingYourProfile from "./pages/help/CreatingYourProfile";
+import FindingFriends from "./pages/help/FindingFriends";
+import SafetyTips from "./pages/help/SafetyTips";
+import CommunityGuidelines from "./pages/help/CommunityGuidelines";
+import SendingMessages from "./pages/help/SendingMessages";
+import VoiceVideoCalls from "./pages/help/VoiceVideoCalls";
+import AccountDeletion from "./pages/help/AccountDeletion";
+import PasswordReset from "./pages/help/PasswordReset";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +66,14 @@ const App = () => (
           <Route path="/guidelines" element={<Guidelines />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/help/creating-your-profile" element={<CreatingYourProfile />} />
+          <Route path="/help/finding-friends" element={<FindingFriends />} />
+          <Route path="/help/safety-tips" element={<SafetyTips />} />
+          <Route path="/help/community-guidelines" element={<CommunityGuidelines />} />
+          <Route path="/help/sending-messages" element={<SendingMessages />} />
+          <Route path="/help/voice-and-video-calls" element={<VoiceVideoCalls />} />
+          <Route path="/help/account-deletion" element={<AccountDeletion />} />
+          <Route path="/help/password-reset" element={<PasswordReset />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />
