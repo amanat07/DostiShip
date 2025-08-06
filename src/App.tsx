@@ -42,6 +42,12 @@ import CreatingHangoutRooms from "./pages/help/CreatingHangoutRooms";
 import JoiningEvents from "./pages/help/JoiningEvents";
 import StudyGroups from "./pages/help/StudyGroups";
 import VirtualActivities from "./pages/help/VirtualActivities";
+import PrivacySettings from "./pages/help/PrivacySettings";
+import BlockingUsers from "./pages/help/BlockingUsers";
+import ReportingIssues from "./pages/help/ReportingIssues";
+import AccountSecurity from "./pages/help/AccountSecurity";
+import ProfileSettings from "./pages/help/ProfileSettings";
+import NotificationPreferences from "./pages/help/NotificationPreferences";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +92,12 @@ const App = () => (
           <Route path="/help/joining-events" element={<JoiningEvents />} />
           <Route path="/help/study-groups" element={<StudyGroups />} />
           <Route path="/help/virtual-activities" element={<VirtualActivities />} />
+          <Route path="/help/privacy-settings" element={<PrivacySettings />} />
+          <Route path="/help/blocking-users" element={<BlockingUsers />} />
+          <Route path="/help/reporting-issues" element={<ReportingIssues />} />
+          <Route path="/help/account-security" element={<AccountSecurity />} />
+          <Route path="/help/profile-settings" element={<ProfileSettings />} />
+          <Route path="/help/notification-preferences" element={<NotificationPreferences />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />
