@@ -8,8 +8,11 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Star, MessageSquare, Lightbulb, Bug } from "lucide-react";
+import { useState } from "react";
 
 const Feedback = () => {
+  const [selectedFeedbackType, setSelectedFeedbackType] = useState("general");
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Feedback submitted");
@@ -42,7 +45,13 @@ const Feedback = () => {
             <div className="space-y-4">
               <h2 className="text-2xl font-bold mb-6">How can we help?</h2>
               {feedbackTypes.map((type) => (
-                <Card key={type.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                <Card 
+                  key={type.id} 
+                  className={`hover:shadow-md transition-shadow cursor-pointer ${
+                    selectedFeedbackType === type.id ? 'ring-2 ring-primary' : ''
+                  }`}
+                  onClick={() => setSelectedFeedbackType(type.id)}
+                >
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -63,54 +72,145 @@ const Feedback = () => {
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Feedback Type */}
-                    <div>
-                      <Label className="text-base font-medium">What type of feedback is this?</Label>
-                      <RadioGroup defaultValue="general" className="mt-3">
-                        {feedbackTypes.map((type) => (
-                          <div key={type.id} className="flex items-center space-x-2">
-                            <RadioGroupItem value={type.id} id={type.id} />
-                            <Label htmlFor={type.id}>{type.label}</Label>
+                    {/* Dynamic Form Content Based on Selection */}
+                    {selectedFeedbackType === "feature" && (
+                      <>
+                        <div>
+                          <Label htmlFor="feature-title">Feature Title</Label>
+                          <Input 
+                            id="feature-title" 
+                            placeholder="What feature would you like to see?"
+                            className="mt-2"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="feature-description">Feature Description</Label>
+                          <Textarea 
+                            id="feature-description"
+                            placeholder="Describe how this feature would work and why it would be useful..."
+                            className="mt-2 min-h-[150px]"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="use-case">Use Case</Label>
+                          <Textarea 
+                            id="use-case"
+                            placeholder="When and how would you use this feature?"
+                            className="mt-2"
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {selectedFeedbackType === "bug" && (
+                      <>
+                        <div>
+                          <Label htmlFor="bug-title">Bug Title</Label>
+                          <Input 
+                            id="bug-title" 
+                            placeholder="Brief description of the bug"
+                            className="mt-2"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="steps-to-reproduce">Steps to Reproduce</Label>
+                          <Textarea 
+                            id="steps-to-reproduce"
+                            placeholder="1. First step&#10;2. Second step&#10;3. Third step..."
+                            className="mt-2 min-h-[120px]"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="expected-behavior">Expected Behavior</Label>
+                          <Textarea 
+                            id="expected-behavior"
+                            placeholder="What should have happened?"
+                            className="mt-2"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="actual-behavior">Actual Behavior</Label>
+                          <Textarea 
+                            id="actual-behavior"
+                            placeholder="What actually happened?"
+                            className="mt-2"
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {selectedFeedbackType === "review" && (
+                      <>
+                        <div>
+                          <Label className="text-base font-medium">Overall Rating</Label>
+                          <div className="flex gap-1 mt-3">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                type="button"
+                                className="w-8 h-8 text-yellow-400 hover:text-yellow-500 transition-colors"
+                              >
+                                <Star className="w-full h-full fill-current" />
+                              </button>
+                            ))}
                           </div>
-                        ))}
-                      </RadioGroup>
-                    </div>
+                        </div>
+                        <div>
+                          <Label htmlFor="review-title">Review Title</Label>
+                          <Input 
+                            id="review-title" 
+                            placeholder="Sum up your experience"
+                            className="mt-2"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="review-details">Detailed Review</Label>
+                          <Textarea 
+                            id="review-details"
+                            placeholder="Share your detailed experience with Dostiशिप..."
+                            className="mt-2 min-h-[150px]"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="recommendation">Would you recommend us?</Label>
+                          <RadioGroup className="mt-3">
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="yes" id="recommend-yes" />
+                              <Label htmlFor="recommend-yes">Yes, definitely</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="maybe" id="recommend-maybe" />
+                              <Label htmlFor="recommend-maybe">Maybe</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="no" id="recommend-no" />
+                              <Label htmlFor="recommend-no">No</Label>
+                            </div>
+                          </RadioGroup>
+                        </div>
+                      </>
+                    )}
 
-                    {/* Rating */}
-                    <div>
-                      <Label className="text-base font-medium">How would you rate your experience?</Label>
-                      <div className="flex gap-1 mt-3">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <button
-                            key={star}
-                            type="button"
-                            className="w-8 h-8 text-yellow-400 hover:text-yellow-500 transition-colors"
-                          >
-                            <Star className="w-full h-full fill-current" />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Subject */}
-                    <div>
-                      <Label htmlFor="subject">Subject</Label>
-                      <Input 
-                        id="subject" 
-                        placeholder="Brief description of your feedback"
-                        className="mt-2"
-                      />
-                    </div>
-
-                    {/* Detailed Feedback */}
-                    <div>
-                      <Label htmlFor="feedback">Your Feedback</Label>
-                      <Textarea 
-                        id="feedback"
-                        placeholder="Tell us more about your experience, suggestions, or issues..."
-                        className="mt-2 min-h-[150px]"
-                      />
-                    </div>
+                    {selectedFeedbackType === "general" && (
+                      <>
+                        <div>
+                          <Label htmlFor="subject">Subject</Label>
+                          <Input 
+                            id="subject" 
+                            placeholder="Brief description of your feedback"
+                            className="mt-2"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="feedback">Your Feedback</Label>
+                          <Textarea 
+                            id="feedback"
+                            placeholder="Tell us more about your experience, suggestions, or issues..."
+                            className="mt-2 min-h-[150px]"
+                          />
+                        </div>
+                      </>
+                    )}
 
                     {/* Contact Information */}
                     <div className="grid md:grid-cols-2 gap-4">

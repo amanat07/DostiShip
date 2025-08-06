@@ -9,9 +9,9 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <Link to="/feed" className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent hover:opacity-80 transition-opacity">
               Dostiशिप
-            </span>
+            </Link>
           </div>
 
           {/* Navigation - Hidden on mobile */}

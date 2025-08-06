@@ -104,7 +104,7 @@ const SafetyTips = () => {
                   <ul className="list-disc list-inside space-y-1 ml-4">
                     <li>Contact local emergency services immediately</li>
                     <li>Report serious threats to platform administrators</li>
-                    <li>Reach out to campus security if you're a student</li>
+                    <li>Contact Atharav Tarika: 9466903617 or atharavtarika@dostiship.com</li>
                     <li>Contact trusted friends or family members</li>
                   </ul>
                 </div>

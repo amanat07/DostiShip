@@ -36,6 +36,12 @@ import SendingMessages from "./pages/help/SendingMessages";
 import VoiceVideoCalls from "./pages/help/VoiceVideoCalls";
 import AccountDeletion from "./pages/help/AccountDeletion";
 import PasswordReset from "./pages/help/PasswordReset";
+import FileSharing from "./pages/help/FileSharing";
+import GroupConversations from "./pages/help/GroupConversations";
+import CreatingHangoutRooms from "./pages/help/CreatingHangoutRooms";
+import JoiningEvents from "./pages/help/JoiningEvents";
+import StudyGroups from "./pages/help/StudyGroups";
+import VirtualActivities from "./pages/help/VirtualActivities";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +80,12 @@ const App = () => (
           <Route path="/help/voice-and-video-calls" element={<VoiceVideoCalls />} />
           <Route path="/help/account-deletion" element={<AccountDeletion />} />
           <Route path="/help/password-reset" element={<PasswordReset />} />
+          <Route path="/help/file-sharing" element={<FileSharing />} />
+          <Route path="/help/group-conversations" element={<GroupConversations />} />
+          <Route path="/help/creating-hangout-rooms" element={<CreatingHangoutRooms />} />
+          <Route path="/help/joining-events" element={<JoiningEvents />} />
+          <Route path="/help/study-groups" element={<StudyGroups />} />
+          <Route path="/help/virtual-activities" element={<VirtualActivities />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />
