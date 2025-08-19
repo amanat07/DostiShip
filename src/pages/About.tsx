@@ -15,7 +15,7 @@ const About = () => {
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
             About{" "}
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-accent to-primary-glow bg-clip-text text-transparent font-bold">
               Dostiशिप
             </span>
           </h1>
