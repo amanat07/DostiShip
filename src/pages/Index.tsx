@@ -5,21 +5,21 @@ import AboutSection from "@/components/AboutSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import abstractBg from "@/assets/abstract-bg.jpg";
+import subtleBg from "@/assets/subtle-abstract-bg.jpg";
 
 const Index = () => {
   return (
     <div 
       className="min-h-screen bg-gradient-background relative"
       style={{
-        backgroundImage: `url(${abstractBg})`,
+        backgroundImage: `url(${subtleBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed'
       }}
     >
-      <div className="absolute inset-0 bg-gradient-background-subtle pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-background-overlay pointer-events-none opacity-70" />
       <div className="relative z-10">
         <Header />
         <HeroSection />
