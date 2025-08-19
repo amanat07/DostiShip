@@ -17,30 +17,30 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 270 15% 9%;
 
-    --primary: 218 79% 66%;
+    --primary: 188 49% 69%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 218 85% 75%;
+    --primary-glow: 188 67% 82%;
 
-    --secondary: 218 20% 94%;
-    --secondary-foreground: 218 15% 9%;
+    --secondary: 162 89% 89%;
+    --secondary-foreground: 188 35% 25%;
 
-    --muted: 218 20% 96%;
-    --muted-foreground: 218 8% 45%;
+    --muted: 162 40% 95%;
+    --muted-foreground: 188 20% 45%;
 
-    --accent: 218 100% 85%;
-    --accent-foreground: 218 15% 9%;
+    --accent: 141 67% 82%;
+    --accent-foreground: 141 35% 25%;
 
-    /* Cornflower blue themed gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(218 79% 66%), hsl(218 85% 75%));
-    --gradient-secondary: linear-gradient(135deg, hsl(218 85% 75%), hsl(218 100% 85%));
-    --gradient-hero: linear-gradient(135deg, hsl(218 79% 66%) 0%, hsl(218 85% 75%) 50%, hsl(218 100% 85%) 100%);
-    --gradient-background: linear-gradient(135deg, hsl(218 100% 92%), hsl(218 100% 96%));
-    --gradient-background-overlay: linear-gradient(135deg, hsl(218 100% 97% / 0.8), hsl(218 100% 98% / 0.9));
+    /* Charming seaside themed gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(188 49% 69%), hsl(188 67% 82%));
+    --gradient-secondary: linear-gradient(135deg, hsl(188 67% 82%), hsl(162 89% 89%));
+    --gradient-hero: linear-gradient(135deg, hsl(188 49% 69%) 0%, hsl(188 67% 82%) 50%, hsl(141 67% 82%) 100%);
+    --gradient-background: linear-gradient(135deg, hsl(162 89% 94%), hsl(162 89% 97%));
+    --gradient-background-overlay: linear-gradient(135deg, hsl(162 89% 96% / 0.8), hsl(162 89% 98% / 0.9));
     
-    /* Interactive shadows with cornflower blue */
-    --shadow-primary: 0 10px 30px -10px hsl(218 79% 66% / 0.3);
-    --shadow-glow: 0 0 40px hsl(218 85% 75% / 0.4);
-    --shadow-card: 0 4px 20px -2px hsl(218 15% 9% / 0.1);
+    /* Interactive shadows with seaside colors */
+    --shadow-primary: 0 10px 30px -10px hsl(188 49% 69% / 0.3);
+    --shadow-glow: 0 0 40px hsl(188 67% 82% / 0.4);
+    --shadow-card: 0 4px 20px -2px hsl(188 35% 25% / 0.1);
 
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
