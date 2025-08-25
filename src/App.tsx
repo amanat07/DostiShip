@@ -48,6 +48,9 @@ import ReportingIssues from "./pages/help/ReportingIssues";
 import AccountSecurity from "./pages/help/AccountSecurity";
 import ProfileSettings from "./pages/help/ProfileSettings";
 import NotificationPreferences from "./pages/help/NotificationPreferences";
+import FriendFinder from "./pages/FriendFinder";
+import FriendSuggestions from "./pages/FriendSuggestions";
+import FriendProfile from "./pages/FriendProfile";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +101,9 @@ const App = () => (
           <Route path="/help/account-security" element={<AccountSecurity />} />
           <Route path="/help/profile-settings" element={<ProfileSettings />} />
           <Route path="/help/notification-preferences" element={<NotificationPreferences />} />
+          <Route path="/friend-finder" element={<FriendFinder />} />
+          <Route path="/friend-suggestions" element={<FriendSuggestions />} />
+          <Route path="/profile/:id" element={<FriendProfile />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />
