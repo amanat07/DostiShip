@@ -5,6 +5,7 @@ import AboutSection from "@/components/AboutSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import FriendFinderSection from "@/components/FriendFinderSection";
 import subtleBg from "@/assets/subtle-abstract-bg.jpg";
 
 const Index = () => {
@@ -24,6 +25,7 @@ const Index = () => {
         <Header />
         <HeroSection />
         <FeaturesSection />
+        <FriendFinderSection />
         <AboutSection />
         <TestimonialsSection />
         <CTASection />

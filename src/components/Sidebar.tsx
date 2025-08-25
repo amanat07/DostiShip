@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, MessageSquare, Video, MapPin, Bell, Menu, X } from "lucide-react";
+import { Home, MessageSquare, Video, MapPin, Bell, Users, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +10,7 @@ const Sidebar = () => {
 
   const navigation = [
     { name: "Home", href: "/feed", icon: Home },
+    { name: "Friend Finder", href: "/friend-finder", icon: Users },
     { name: "Inbox", href: "/inbox", icon: MessageSquare },
     { name: "Virtual Hangout", href: "/hangout", icon: Video },
     { name: "Friends Map", href: "/map", icon: MapPin },

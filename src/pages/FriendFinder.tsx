@@ -79,17 +79,28 @@ const FriendFinder = () => {
                     </div>
                   </div>
                   
-                  <Link to="/friend-suggestions">
-                    <Button 
-                      variant="hero" 
-                      size="lg" 
-                      className="text-lg px-8 py-6 shadow-glow hover:shadow-primary animate-fade-in delay-500"
-                    >
-                      <Users className="w-5 h-5 mr-2" />
-                      Find Friends
-                      <Sparkles className="w-5 h-5 ml-2" />
-                    </Button>
-                  </Link>
+                  <div className="flex gap-4">
+                    <Link to="/friend-suggestions">
+                      <Button 
+                        variant="hero" 
+                        size="lg" 
+                        className="text-lg px-8 py-6 shadow-glow hover:shadow-primary animate-fade-in delay-500"
+                      >
+                        <Users className="w-5 h-5 mr-2" />
+                        Find Friends
+                        <Sparkles className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link to="/feed">
+                      <Button 
+                        variant="outline" 
+                        size="lg" 
+                        className="text-lg px-8 py-6 animate-fade-in delay-600"
+                      >
+                        Done
+                      </Button>
+                    </Link>
+                  </div>
                 </Card>
                 
                 <div className="text-center text-muted-foreground animate-fade-in delay-700">
