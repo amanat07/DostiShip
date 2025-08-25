@@ -6,21 +6,21 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import FriendFinderSection from "@/components/FriendFinderSection";
-import subtleBg from "@/assets/subtle-abstract-bg.jpg";
+import cyberpunkBg from "@/assets/cyberpunk-bg.jpg";
 
 const Index = () => {
   return (
     <div 
       className="min-h-screen bg-gradient-background relative"
       style={{
-        backgroundImage: `url(${subtleBg})`,
+        backgroundImage: `url(${cyberpunkBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed'
       }}
     >
-      <div className="absolute inset-0 bg-gradient-background-overlay pointer-events-none opacity-70" />
+      <div className="absolute inset-0 bg-gradient-background-overlay pointer-events-none opacity-80" />
       <div className="relative z-10">
         <Header />
         <HeroSection />
