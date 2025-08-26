@@ -51,6 +51,8 @@ import NotificationPreferences from "./pages/help/NotificationPreferences";
 import FriendFinder from "./pages/FriendFinder";
 import FriendSuggestions from "./pages/FriendSuggestions";
 import FriendProfile from "./pages/FriendProfile";
+import Journal from "./pages/Journal";
+import Gallery from "./pages/Gallery";
 
 const queryClient = new QueryClient();
 
@@ -104,6 +106,8 @@ const App = () => (
           <Route path="/friend-finder" element={<FriendFinder />} />
           <Route path="/friend-suggestions" element={<FriendSuggestions />} />
           <Route path="/profile/:id" element={<FriendProfile />} />
+          <Route path="/journal" element={<Journal />} />
+          <Route path="/gallery" element={<Gallery />} />
           {/* TODO: Add routes for sidebar navigation */}
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/hangout" element={<Hangout />} />

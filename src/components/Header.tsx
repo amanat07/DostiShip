@@ -40,14 +40,9 @@ const Header = () => {
                 Login
               </Button>
             </Link>
-            <Link to="/wishlist" className="hidden sm:flex">
+            <Link to="/profile" className="hidden sm:flex">
               <Button variant="ghost" className="font-medium">
-                Wishlist(0)
-              </Button>
-            </Link>
-            <Link to="/cart" className="hidden sm:flex">
-              <Button variant="ghost" className="font-medium">
-                Cart(0)
+                Profile
               </Button>
             </Link>
             
