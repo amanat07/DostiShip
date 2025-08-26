@@ -8,39 +8,39 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 270 20% 98%;
-    --foreground: 270 15% 9%;
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 270 15% 9%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 270 15% 9%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 188 49% 69%;
+    --primary: 0 85% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 188 67% 82%;
+    --primary-glow: 0 70% 45%;
 
-    --secondary: 162 89% 89%;
-    --secondary-foreground: 188 35% 25%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 85%;
 
-    --muted: 162 40% 95%;
-    --muted-foreground: 188 20% 45%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 141 67% 82%;
-    --accent-foreground: 141 35% 25%;
+    --accent: 0 60% 40%;
+    --accent-foreground: 0 0% 95%;
 
-    /* Charming seaside themed gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(188 49% 69%), hsl(188 67% 82%));
-    --gradient-secondary: linear-gradient(135deg, hsl(188 67% 82%), hsl(162 89% 89%));
-    --gradient-hero: linear-gradient(135deg, hsl(188 49% 69%) 0%, hsl(188 67% 82%) 50%, hsl(141 67% 82%) 100%);
-    --gradient-background: linear-gradient(135deg, hsl(162 89% 94%), hsl(162 89% 97%));
-    --gradient-background-overlay: linear-gradient(135deg, hsl(162 89% 96% / 0.8), hsl(162 89% 98% / 0.9));
+    /* Luxury red-and-black themed gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(0 85% 55%), hsl(0 70% 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 20%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 20% 12%) 50%, hsl(0 40% 15%) 100%);
+    --gradient-background: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 12%));
+    --gradient-background-overlay: linear-gradient(135deg, hsl(0 0% 8% / 0.9), hsl(0 0% 12% / 0.8));
     
-    /* Interactive shadows with seaside colors */
-    --shadow-primary: 0 10px 30px -10px hsl(188 49% 69% / 0.3);
-    --shadow-glow: 0 0 40px hsl(188 67% 82% / 0.4);
-    --shadow-card: 0 4px 20px -2px hsl(188 35% 25% / 0.1);
+    /* Luxury shadows with red accents */
+    --shadow-primary: 0 10px 30px -10px hsl(0 85% 55% / 0.4);
+    --shadow-glow: 0 0 40px hsl(0 70% 45% / 0.3);
+    --shadow-card: 0 8px 25px -5px hsl(0 0% 0% / 0.3);
 
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -49,9 +49,9 @@ All colors MUST be HSL.
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 25%;
+    --input: 0 0% 15%;
+    --ring: 0 85% 55%;
 
     --radius: 0.5rem;
 

@@ -16,27 +16,38 @@ const Header = () => {
 
           {/* Navigation - Hidden on mobile */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/features" className="text-muted-foreground hover:text-primary transition-colors">
-              Features
+            <Link to="/" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+              Home
             </Link>
-            <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors font-medium">
               About
             </Link>
-            <Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">
-              Contact
+            <Link to="/gallery" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+              Gallery
+            </Link>
+            <Link to="/journal" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+              Journal
+            </Link>
+            <Link to="/friend-finder" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+              Friends
             </Link>
           </nav>
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-4">
             <Link to="/login">
-              <Button variant="ghost" className="hidden sm:flex">
+              <Button variant="ghost" className="hidden sm:flex font-medium">
                 Login
               </Button>
             </Link>
-            <Link to="/register">
-              <Button variant="hero" size="sm">
-                Register
+            <Link to="/wishlist" className="hidden sm:flex">
+              <Button variant="ghost" className="font-medium">
+                Wishlist(0)
+              </Button>
+            </Link>
+            <Link to="/cart" className="hidden sm:flex">
+              <Button variant="ghost" className="font-medium">
+                Cart(0)
               </Button>
             </Link>
             

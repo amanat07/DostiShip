@@ -6,14 +6,14 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import FriendFinderSection from "@/components/FriendFinderSection";
-import subtleBg from "@/assets/subtle-abstract-bg.jpg";
+import luxuryBg from "@/assets/luxury-bg.jpg";
 
 const Index = () => {
   return (
     <div 
       className="min-h-screen bg-gradient-background relative"
       style={{
-        backgroundImage: `url(${subtleBg})`,
+        backgroundImage: `url(${luxuryBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
