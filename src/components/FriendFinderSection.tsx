@@ -15,13 +15,10 @@ const FriendFinderSection = () => {
             <Sparkles className="w-6 h-6 text-primary animate-bounce" />
           </div>
           
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-primary/20 blur-3xl rounded-full transform scale-150"></div>
-            <h2 className="relative text-4xl md:text-5xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent drop-shadow-2xl">
-              <span className="inline-block animate-pulse">Find Your Perfect Study Buddy </span>
-              <span className="block bg-primary/10 px-4 py-2 rounded-lg backdrop-blur-sm border border-primary/30 shadow-glow mt-2">Study Buddy</span>
-            </h2>
-          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="text-foreground">Find Your Perfect </span>
+            <span className="text-red-600">Study Buddy</span>
+          </h2>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Connect with like-minded students who share your interests and passions. 
