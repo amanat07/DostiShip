@@ -58,7 +58,7 @@ const Footer = () => {
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                <span>500+ Members</span>
+                <span>Launching Soon</span>
               </div>
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4" />

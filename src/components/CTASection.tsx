@@ -35,8 +35,8 @@ const CTASection = () => {
               </h2>
               
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Join thousands of students who have already found their perfect study buddy, 
-                adventure partner, or lifelong friend through Dostiship.
+                Be among the first to experience our revolutionary platform and find your perfect study buddy, 
+                adventure partner, or lifelong friend through Dostiशिप.
               </p>
             </div>
 

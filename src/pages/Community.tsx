@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 
 const Community = () => {
   const communityStats = [
-    { number: "500+", label: "Active Members" },
-    { number: "50+", label: "Study Groups" },
-    { number: "100+", label: "Events Monthly" },
-    { number: "1000+", label: "Friendships Made" }
+    { number: "Soon", label: "Launch Date" },
+    { number: "New", label: "Platform" },
+    { number: "Safe", label: "Environment" },
+    { number: "Free", label: "To Join" }
   ];
 
   const communityGroups = [
@@ -18,25 +18,25 @@ const Community = () => {
       icon: BookOpen,
       title: "Study Buddies",
       description: "Find study partners for your courses and exam preparation",
-      members: "150+ members"
+      members: "Coming Soon"
     },
     {
       icon: Music,
       title: "Music Lovers",
       description: "Share your favorite music and discover new artists together",
-      members: "80+ members"
+      members: "Coming Soon"
     },
     {
       icon: Gamepad2,
       title: "Gaming Squad",
       description: "Connect with fellow gamers for multiplayer sessions and tournaments",
-      members: "120+ members"
+      members: "Coming Soon"
     },
     {
       icon: Coffee,
       title: "Coffee Chats",
       description: "Casual conversations over coffee with like-minded students",
-      members: "90+ members"
+      members: "Coming Soon"
     }
   ];
 
@@ -164,7 +164,7 @@ const Community = () => {
               Ready to Make New Friends?
             </h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Join thousands of students who have found their community and built meaningful friendships.
+              Join our revolutionary platform designed to help students build meaningful friendships.
             </p>
             <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
               <Link to="/register">Get Started Today</Link>

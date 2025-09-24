@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Quote, Star } from "lucide-react";
+import { Quote, Star, Heart } from "lucide-react";
 
 const testimonials = [
   {
@@ -31,66 +31,46 @@ const TestimonialsSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center space-y-4 mb-16 animate-fade-in-up">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-            What Our{" "}
+            Join Our Growing{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               Community
             </span>
-            {" "}Says
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real stories from real people who found their tribe through Dostiशिप
+            Be part of something amazing from the beginning
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <Card 
-              key={testimonial.name}
-              className="group hover:shadow-card transition-all duration-300 hover:scale-105 animate-scale-in bg-card/80 backdrop-blur-sm border-border/50"
-              style={{ animationDelay: `${index * 0.2}s` }}
-            >
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
-                </div>
-                
-                <div className="relative">
-                  <Quote className="w-8 h-8 text-primary/20 absolute -top-2 -left-2" />
-                  <p className="text-muted-foreground leading-relaxed pl-6">
-                    {testimonial.content}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3 pt-4 border-t border-border/50">
-                  <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-semibold">
-                    {testimonial.avatar}
+        <div className="text-center">
+          <div className="bg-gradient-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl p-12 max-w-2xl mx-auto">
+            <div className="space-y-6">
+              <div className="w-20 h-20 bg-gradient-primary rounded-full mx-auto flex items-center justify-center shadow-glow">
+                <Heart className="w-10 h-10 text-primary-foreground" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-foreground">Ready to Launch!</h3>
+              
+              <p className="text-muted-foreground text-lg">
+                Dostiशिप is launching soon and we're excited to help you build meaningful friendships. 
+                Be among the first to experience our innovative platform designed specifically for students.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-primary rounded-full"></div>
+                    <span>Launching Soon</span>
                   </div>
-                  <div>
-                    <p className="font-semibold text-foreground">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-accent rounded-full"></div>
+                    <span>Student-Focused</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-primary-glow rounded-full"></div>
+                    <span>Safe & Secure</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="mt-16 text-center">
-          <div className="flex flex-wrap justify-center items-center gap-8 text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-primary rounded-full"></div>
-              <span>1000+ Happy Members</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-accent rounded-full"></div>
-              <span>4.9/5 Average Rating</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-primary-glow rounded-full"></div>
-              <span>95% Success Rate</span>
+              </div>
             </div>
           </div>
         </div>

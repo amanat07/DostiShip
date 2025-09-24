@@ -85,7 +85,7 @@ const FriendFinderSection = () => {
                       <span className="text-xs text-primary-foreground font-bold">+50</span>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">2,847+ students already connected</p>
+                  <p className="text-sm text-muted-foreground">Be among the first to join</p>
                 </div>
 
                 <div className="space-y-2">

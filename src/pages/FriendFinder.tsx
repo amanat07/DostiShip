@@ -104,14 +104,14 @@ const FriendFinder = () => {
                 </Card>
                 
                 <div className="text-center text-muted-foreground animate-fade-in delay-700">
-                  <p className="text-sm">Join thousands of students making meaningful connections</p>
+                  <p className="text-sm">Be among the first to experience our platform</p>
                   <div className="flex items-center justify-center gap-2 mt-2">
                     <div className="flex -space-x-2">
                       <div className="w-8 h-8 bg-gradient-primary rounded-full border-2 border-background"></div>
                       <div className="w-8 h-8 bg-gradient-secondary rounded-full border-2 border-background"></div>
                       <div className="w-8 h-8 bg-accent rounded-full border-2 border-background"></div>
                     </div>
-                    <span className="text-xs">2,847+ active members</span>
+                    <span className="text-xs">Launching Soon</span>
                   </div>
                 </div>
               </div>
