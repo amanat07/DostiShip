@@ -1,0 +1,502 @@
+:root {
+  --primary-color: #4a3aff;
+  --secondary-color: #6c63ff;
+  --accent-color: #ff6b6b;
+  --dark-color: #26233d;
+  --light-color: #f8f9fa;
+  --text-color: #333;
+  --text-light: #777;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --sidebar-width: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--light-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* AVATAR */
+.h-avatar {
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.h-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+.h-avatar span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* NOTIFICATION */
+.h-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  z-index: 3000;
+  font-size: 13px;
+  font-family: "Poppins", sans-serif;
+}
+
+.h-notification.error   { background: var(--accent-color); }
+.h-notification.success { background: #4caf50; }
+
+/* HEADER */
+.h-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: white;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 65px;
+}
+
+.h-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.h-logo span { color: var(--accent-color); }
+
+.h-hamburger {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--dark-color);
+  background: none;
+  border: none;
+}
+
+/* SEARCH */
+.h-search {
+  flex: 1;
+  max-width: 320px;
+  margin: 0 30px;
+  position: relative;
+}
+
+.h-search i {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+.h-search input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border: 1.5px solid #eee;
+  border-radius: 50px;
+  font-size: 13px;
+  outline: none;
+  background: var(--light-color);
+  transition: var(--transition);
+  font-family: "Poppins", sans-serif;
+}
+
+.h-search input:focus {
+  border-color: var(--primary-color);
+  background: white;
+}
+
+/* HEADER ICONS */
+.h-header-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.h-profile-dropdown { position: relative; }
+
+.h-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.h-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  width: 180px;
+  overflow: hidden;
+  z-index: 100;
+  animation: fadeInUp 0.2s ease;
+}
+
+.h-dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  color: var(--dark-color);
+  text-decoration: none;
+  font-size: 13px;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.h-dropdown-menu a:hover {
+  background: var(--light-color);
+  color: var(--primary-color);
+  padding-left: 20px;
+}
+
+/* LAYOUT */
+.h-main-content {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 65px;
+  overflow-x: hidden;
+}
+
+/* SIDEBAR */
+.h-sidebar {
+  width: var(--sidebar-width);
+  background: white;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 25px 15px;
+  position: fixed;
+  top: 65px;
+  left: 0;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 900;
+}
+
+.h-sidebar.active { transform: translateX(0) !important; }
+
+.h-sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 12px;
+  background: linear-gradient(135deg, rgba(74,58,255,0.08), rgba(255,107,107,0.05));
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.h-sidebar-user-info { flex: 1; overflow: hidden; }
+
+.h-sidebar-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-sidebar-user-email {
+  font-size: 11px;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-sidebar-section { margin-bottom: 25px; }
+
+.h-sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+.h-sidebar-menu {
+  list-style: none;
+  margin: 0; padding: 0;
+}
+
+.h-sidebar-menu li { margin-bottom: 3px; }
+
+.h-sidebar-menu a {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--transition);
+  gap: 10px;
+}
+
+.h-sidebar-menu a:hover {
+  background: rgba(74, 58, 255, 0.08);
+  color: var(--primary-color);
+}
+
+.h-sidebar-menu a.active {
+  background: rgba(74, 58, 255, 0.12);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.h-sidebar-menu a i {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* CONTENT AREA */
+.h-content-area {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 28px;
+  background: var(--light-color);
+  min-height: calc(100vh - 65px);
+}
+
+.h-content-header { margin-bottom: 24px; }
+
+.h-content-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 4px;
+}
+
+.h-content-header p {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* CREATE ROOM */
+.h-create-room {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 15px rgba(74, 58, 255, 0.06);
+  border: 1px solid rgba(74, 58, 255, 0.05);
+}
+
+.h-create-room h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 16px;
+}
+
+.h-create-room form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.h-create-room input {
+  border: 1.5px solid #eee;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  outline: none;
+  transition: var(--transition);
+  background: var(--light-color);
+}
+
+.h-create-room input:focus {
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(74, 58, 255, 0.06);
+}
+
+.h-create-room button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 9px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  align-self: flex-end;
+  box-shadow: 0 4px 12px rgba(74, 58, 255, 0.25);
+  font-family: "Poppins", sans-serif;
+}
+
+.h-create-room button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(74, 58, 255, 0.35);
+}
+
+/* ROOMS GRID */
+.h-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* ROOM CARD */
+.h-room-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(74, 58, 255, 0.05);
+  border: 1px solid rgba(74, 58, 255, 0.04);
+  transition: var(--transition);
+  animation: fadeInUp 0.4s ease;
+}
+
+.h-room-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(74, 58, 255, 0.12);
+}
+
+.h-room-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.h-room-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--light-color);
+  flex-shrink: 0;
+}
+
+.h-room-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.h-room-description {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.h-room-actions { display: flex; justify-content: flex-end; }
+
+.h-join-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 4px 10px rgba(74, 58, 255, 0.2);
+}
+
+.h-join-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(74, 58, 255, 0.3);
+}
+
+/* FOOTER */
+.h-footer {
+  background: linear-gradient(135deg, #fff 0%, rgba(211, 251, 255, 0.9) 100%);
+  padding: 30px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-radius: 15px;
+  margin-top: 30px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+}
+
+.h-footer-item { text-align: center; min-width: 160px; }
+
+.h-footer-item p:first-child {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--dark-color);
+  font-size: 13px;
+}
+
+.h-footer-item p:last-child {
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+.h-social-icons a {
+  color: var(--primary-color);
+  margin: 0 6px;
+  font-size: 16px;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.h-social-icons a:hover { color: var(--accent-color); }
+
+/* ANIMATION */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .h-rooms-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .h-hamburger { display: block; }
+  .h-sidebar { transform: translateX(-100%); }
+  .h-content-area { margin-left: 0; padding: 18px; }
+  .h-search { display: none; }
+}

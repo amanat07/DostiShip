@@ -1,0 +1,812 @@
+/* ───────────────── CSS VARIABLES ───────────────── */
+
+:root {
+  --primary-color: #4a3aff;
+  --secondary-color: #6c63ff;
+  --accent-color: #ff6b6b;
+  --dark-color: #26233d;
+  --light-color: #f8f9fa;
+  --text-color: #333;
+  --text-light: #777;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ───────────────── ANIMATIONS ───────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromBottom {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ───────────────── FULL BLEED HELPER ───────────────── */
+/* Applied to every section so they all escape any parent constraint */
+
+.mainSection,
+.services,
+.aboutSection,
+.eventsSection,
+.reviewsSection,
+.footer {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  box-sizing: border-box;
+}
+
+/* ───────────────── HEADER ───────────────── */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.logo span {
+  color: var(--accent-color);
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: var(--dark-color);
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+  padding: 5px 0;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.navLinks a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: var(--transition);
+}
+
+.navLinks a:hover {
+  color: var(--primary-color);
+}
+
+.navLinks a:hover::after {
+  width: 100%;
+}
+
+/* ───────────────── HERO SECTION ───────────────── */
+
+.mainSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  min-height: 100vh;
+  padding: 120px 20px 40px;
+  overflow: hidden;
+  color: white;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.7);
+}
+
+.mainContent {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.mainSection h1 {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: slideInFromTop 1s ease-in-out;
+}
+
+.mainSection p {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+  color: white;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  animation: slideInFromBottom 1s ease-in-out;
+}
+
+/* ───────────────── BUTTON ───────────────── */
+
+.btn {
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(74, 58, 255, 0.3);
+}
+
+.btn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(74, 58, 255, 0.4);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* ───────────────── SECTION TITLES ───────────────── */
+
+.sectionTitle {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--dark-color);
+  position: relative;
+  display: inline-block;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 4px;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+.sectionSubtitle {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+/* ───────────────── REVEAL ANIMATIONS ───────────────── */
+
+.services,
+.aboutSection,
+.eventsSection,
+.reviewsSection {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ───────────────── SERVICES ───────────────── */
+
+.services {
+  text-align: center;
+  padding: 100px 50px;
+  background: var(--light-color);
+}
+
+.serviceContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.service {
+  width: 280px;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.service::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.service:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.service img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+
+.service:hover img {
+  transform: scale(1.1);
+}
+
+.service h3 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: var(--dark-color);
+}
+
+.service p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+/* ───────────────── ABOUT SECTION ───────────────── */
+
+.aboutSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 50px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+}
+
+.aboutContainer {
+  background: white;
+  max-width: 800px;
+  width: 100%;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.aboutContainer h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--dark-color);
+}
+
+.aboutContainer p {
+  color: var(--text-light);
+  margin-bottom: 30px;
+  font-size: 1.05rem;
+}
+
+/* ───────────────── EVENTS ───────────────── */
+
+.eventsSection {
+  text-align: center;
+  padding: 100px 50px;
+  background: white;
+}
+
+.eventsFilter {
+  margin-bottom: 30px;
+}
+
+.filterBtn {
+  background: var(--light-color);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 10px;
+  transition: var(--transition);
+}
+
+.filterBtn.active,
+.filterBtn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.eventsContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.eventCard {
+  background: white;
+  max-width: 320px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  text-align: left;
+}
+
+.eventCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.eventImage {
+  height: 200px;
+  overflow: hidden;
+}
+
+.eventImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.eventCard:hover .eventImage img {
+  transform: scale(1.05);
+}
+
+.eventContent {
+  padding: 25px;
+}
+
+.eventContent h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: var(--dark-color);
+}
+
+.eventContent p {
+  color: var(--text-light);
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.eventContent a {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.eventContent a:hover {
+  background: var(--secondary-color);
+  transform: translateY(-3px);
+}
+
+/* ───────────────── REVIEWS ───────────────── */
+
+.reviewsSection {
+  text-align: center;
+  padding: 100px 50px;
+  background: var(--light-color);
+}
+
+.reviewsContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  position: relative;
+}
+
+.reviewCard {
+  background: white;
+  max-width: 280px;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  display: none;
+}
+
+.activeCard {
+  display: block;
+}
+
+.reviewCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.reviewCard p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.reviewCard h3 {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: var(--dark-color);
+}
+
+.carouselControls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.carouselBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carouselBtn:hover {
+  background: var(--secondary-color);
+}
+
+/* ───────────────── FOOTER ───────────────── */
+
+.footer {
+  background: var(--dark-color);
+  color: white;
+  padding: 60px 0 30px;
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footerColumn {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footerLogo {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.footerLogo span {
+  color: var(--accent-color);
+}
+
+.footerColumn h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footerColumn h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--primary-color);
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLinks li {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footerLinks a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: var(--transition);
+  display: inline-block;
+}
+
+.footerLinks a:hover {
+  color: white;
+  transform: translateX(5px);
+}
+
+.footerContact p {
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.footerContact i {
+  color: var(--primary-color);
+  margin-top: 3px;
+}
+
+.footerSocial {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.footerSocial a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: var(--transition);
+  text-decoration: none;
+  position: relative;
+}
+
+.footerSocial a:hover {
+  background: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+.footerBottom {
+  text-align: center;
+  padding-top: 30px;
+  margin-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* ───────────────── SOCIAL ICONS ───────────────── */
+
+.socialIcons {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 100;
+}
+
+.socialIcons a {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.socialIcons a:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.socialIcons img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  display: block;
+}
+
+.socialIcons a span {
+  display: none;
+}
+
+/* ───────────────── MODAL ───────────────── */
+
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.modalContent h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: var(--dark-color);
+}
+
+.modalContent p {
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+/* ───────────────── NOTIFICATION ───────────────── */
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--primary-color);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+  font-size: 0.9rem;
+}
+
+/* ───────────────── RESPONSIVE ───────────────── */
+
+@media (max-width: 992px) {
+  .header {
+    padding: 15px 30px;
+  }
+
+  .mainSection h1 {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px 20px;
+  }
+
+  .navLinks {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .mainSection h1 {
+    font-size: 2.2rem;
+  }
+
+  .mainSection p {
+    font-size: 1rem;
+  }
+
+  .serviceContainer,
+  .eventsContainer,
+  .reviewsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .service,
+  .eventCard,
+  .reviewCard {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .socialIcons {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    transform: none;
+    margin-top: 30px;
+  }
+
+  .footerContainer {
+    flex-direction: column;
+    padding: 0 30px;
+  }
+.footerSocial a i {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.footerSocial a span {
+  display: none;
+}
+  .services,
+  .aboutSection,
+  .eventsSection,
+  .reviewsSection {
+    padding: 60px 20px;
+  }
+}

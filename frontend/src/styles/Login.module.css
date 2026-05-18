@@ -1,0 +1,334 @@
+:root {
+  --primary-color: #4a3aff;
+  --secondary-color: #6c63ff;
+  --accent-color: #ff6b6b;
+  --dark-color: #26233d;
+  --light-color: #f8f9fa;
+  --text-color: #333;
+  --text-light: #777;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ✅ FIX: Body-level background applied globally since module CSS can't target body.
+   Add this class to your top-level wrapper in index.jsx / App.jsx if needed,
+   OR add the body style to your global index.css instead:
+   body { background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+*/
+
+/* ✅ FIX: Renamed from .back-button to .login-back-button to match JSX usage */
+.login-back-button {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  background: var(--dark-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  z-index: 10;
+}
+
+.login-back-button:hover {
+  background: var(--primary-color);
+  transform: translateX(-5px);
+}
+
+/* MAIN CONTAINER */
+.login-container {
+  display: flex;
+  background: white;
+  width: 900px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* FORM SECTION */
+.login-form-section {
+  width: 50%;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form-section h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dark-color);
+  position: relative;
+}
+
+.login-form-section h2::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 4px;
+  bottom: -10px;
+  left: 0;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+/* FORM GROUP */
+.login-form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.login-form-group input {
+  width: 100%;
+  padding: 12px 45px 12px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  font-size: 14px;
+  transition: var(--transition);
+  font-family: "Poppins", sans-serif;
+}
+
+.login-form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 58, 255, 0.1);
+}
+
+/* PASSWORD TOGGLE ICON */
+.toggle-password {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: 15px;
+  transition: var(--transition);
+  z-index: 2;
+}
+
+.toggle-password:hover {
+  color: var(--primary-color);
+}
+
+/* LOGIN BUTTON */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer; /* ✅ FIX: was missing */
+  margin-top: 10px;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(74, 58, 255, 0.3);
+  font-family: "Poppins", sans-serif;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: var(--secondary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(74, 58, 255, 0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* IMAGE SECTION */
+.login-image-section {
+  width: 50%;
+  position: relative;
+  min-height: 400px;
+}
+
+.login-image-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(74, 58, 255, 0.8),
+    rgba(108, 99, 255, 0.8)
+  );
+  mix-blend-mode: multiply;
+}
+
+/* LOGIN OPTIONS */
+.login-options {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* DIVIDER */
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.login-divider::before {
+  margin-right: 15px;
+}
+
+.login-divider::after {
+  margin-left: 15px;
+}
+
+/* ✅ FIX: .login-social-login was used in JSX but completely missing from CSS */
+.login-social-login {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+/* SOCIAL BUTTONS */
+.login-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  cursor: pointer; /* ✅ FIX: was missing */
+  transition: var(--transition);
+}
+
+.login-social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-social-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* ✅ FIX: Renamed from .forgot-password to .login-forgot-password to match JSX usage */
+.login-forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.login-forgot-password a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.login-forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ FIX: Renamed from .register-link to .login-register-link to match JSX usage */
+.login-register-link {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.login-register-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.login-register-link a:hover {
+  text-decoration: underline;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .login-form-section,
+  .login-image-section {
+    width: 100%;
+  }
+
+  .login-image-section {
+    height: 200px;
+    order: -1;
+  }
+
+  .login-form-section {
+    padding: 30px;
+  }
+
+  .login-back-button {
+    top: 15px;
+    left: 15px;
+  }
+}
+/* ADD THIS — full page centering wrapper */
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* FIX THIS — remove fixed width, let it be responsive */
+.login-container {
+  display: flex;
+  background: white;
+  width: 100%;
+  max-width: 900px;       /* changed from width: 900px */
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeIn 1s ease-in-out forwards;
+}

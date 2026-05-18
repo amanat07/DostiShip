@@ -1,0 +1,614 @@
+/* ─── Variables ──────────────────────────────────────────────────────────── */
+:root {
+  --primary-color: #4a3aff;
+  --secondary-color: #6c63ff;
+  --accent-color: #ff6b6b;
+  --dark-color: #26233d;
+  --light-color: #f8f9fa;
+  --text-color: #333;
+  --text-light: #777;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --journal-bg: #fffdf7;
+  --journal-line: #e8e0d0;
+  --sidebar-width: 260px;
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Page ───────────────────────────────────────────────────────────────── */
+.page {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: white;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 65px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.logo span { color: var(--accent-color); }
+
+.hamburger {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--dark-color);
+  background: none;
+  border: none;
+}
+
+.headerIcons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Profile dropdown */
+.profileDropdown { position: relative; }
+
+.profileBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--dark-color);
+}
+
+.profileAvatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: white;
+  overflow: hidden;
+}
+
+.dropdownMenu {
+  position: absolute;
+  right: 0; top: 50px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  width: 180px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: var(--transition);
+  z-index: 100;
+}
+
+.dropdownActive .dropdownMenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownMenu a {
+  display: block;
+  padding: 11px 18px;
+  color: var(--dark-color);
+  text-decoration: none;
+  font-size: 14px;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dropdownMenu a:hover {
+  background: var(--light-color);
+  color: var(--primary-color);
+  padding-left: 23px;
+}
+
+.dropdownMenu a i { margin-right: 8px; width: 16px; }
+
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+.mainContent {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 65px;
+}
+
+/* ─── Sidebar ────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-width);
+  background: white;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 25px 15px;
+  position: fixed;
+  top: 65px; left: 0;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 900;
+}
+
+.sidebarActive { transform: translateX(0) !important; }
+
+.sidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 12px;
+  background: linear-gradient(135deg, rgba(74,58,255,0.08), rgba(255,107,107,0.05));
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.sidebarAvatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: white;
+  flex-shrink: 0; overflow: hidden;
+}
+
+.sidebarUserInfo { flex: 1; overflow: hidden; }
+.sidebarUserName {
+  font-size: 13px; font-weight: 600; color: var(--dark-color);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebarUserEmail {
+  font-size: 11px; color: var(--text-light);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.sidebarSection { margin-bottom: 25px; }
+
+.sidebarTitle {
+  font-size: 11px; font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 1px;
+  padding: 0 10px; margin-bottom: 10px;
+}
+
+.sidebarMenu { list-style: none; padding: 0; margin: 0; }
+.sidebarMenu li { margin-bottom: 3px; }
+.sidebarMenu a {
+  display: flex; align-items: center;
+  padding: 10px 12px; border-radius: 10px;
+  color: var(--text-color); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  transition: var(--transition); gap: 10px;
+}
+.sidebarMenu a:hover {
+  background: rgba(74, 58, 255, 0.08);
+  color: var(--primary-color);
+}
+.sidebarMenu a i { font-size: 16px; width: 20px; text-align: center; }
+
+.activeLink {
+  background: rgba(74, 58, 255, 0.12) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600 !important;
+}
+
+/* ─── Content Area ───────────────────────────────────────────────────────── */
+.contentArea {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 30px;
+  background: var(--light-color);
+  min-height: calc(100vh - 65px);
+}
+
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+.journalHero {
+  background: linear-gradient(135deg, var(--dark-color) 0%, #3a2fa0 100%);
+  border-radius: 20px;
+  padding: 35px 45px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInDown 0.6s ease;
+}
+
+.journalHero::before {
+  content: '✍️';
+  position: absolute;
+  right: 40px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 90px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.journalHero h1 {
+  font-family: 'Lora', serif;
+  font-size: 1.9rem;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.journalHero p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  max-width: 380px;
+}
+
+.heroStats { display: flex; gap: 20px; flex-shrink: 0; }
+
+.statBox {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 14px 22px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.statNum {
+  font-size: 1.8rem; font-weight: 700;
+  color: white; display: block; line-height: 1;
+}
+
+.statLabel {
+  font-size: 11px; color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ─── Journal Grid ───────────────────────────────────────────────────────── */
+.journalGrid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 25px;
+  align-items: start;
+}
+
+/* ─── Write Card ─────────────────────────────────────────────────────────── */
+.writeCard {
+  background: var(--journal-bg);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(74, 58, 255, 0.07);
+  border: 1px solid var(--journal-line);
+  margin-bottom: 22px;
+  animation: fadeInUp 0.5s ease;
+  position: relative;
+}
+
+.writeCard::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+  border-radius: 4px 0 0 4px;
+}
+
+.writeCard h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  color: var(--dark-color);
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.writeCard h3 i { color: var(--primary-color); font-size: 15px; }
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.formGroup { display: flex; flex-direction: column; gap: 5px; }
+
+.formGroup label {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 10px 13px;
+  border: 1.5px solid var(--journal-line);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  background: white;
+  color: var(--text-color);
+  transition: var(--transition);
+  outline: none;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 58, 255, 0.08);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 125px;
+  font-family: 'Lora', serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ─── Mood Selector ──────────────────────────────────────────────────────── */
+.moodSelector { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.moodOption {
+  padding: 6px 14px;
+  border-radius: 50px;
+  border: 1.5px solid var(--journal-line);
+  background: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 4px;
+}
+
+.moodOption:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.moodSelected {
+  background: var(--primary-color) !important;
+  color: white !important;
+  border-color: var(--primary-color) !important;
+}
+
+/* ─── Submit Button ──────────────────────────────────────────────────────── */
+.submitBtn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 18px;
+  letter-spacing: 0.5px;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74, 58, 255, 0.3);
+}
+
+/* ─── Entries Section ────────────────────────────────────────────────────── */
+.entriesSection h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.1rem;
+  color: var(--dark-color);
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.entriesSection h3 i { color: var(--primary-color); }
+
+/* Entry card base */
+.entryCard {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid var(--primary-color);
+  transition: var(--transition);
+  animation: fadeInUp 0.4s ease;
+}
+
+.entryCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(74, 58, 255, 0.1);
+}
+
+/* Mood border variants — using underscores since CSS Modules disallows hyphens in class names */
+.mood_happy   { border-left-color: #4CAF50; }
+.mood_sad     { border-left-color: #2196F3; }
+.mood_anxious { border-left-color: #FF9800; }
+.mood_proud   { border-left-color: #9C27B0; }
+.mood_neutral { border-left-color: var(--text-light); }
+
+.entryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.entryTitle {
+  font-family: 'Lora', serif;
+  font-size: 1rem; font-weight: 600;
+  color: var(--dark-color);
+}
+
+/* Mood badge */
+.entryMood {
+  font-size: 11px; padding: 3px 10px;
+  border-radius: 50px; font-weight: 600;
+  text-transform: capitalize;
+}
+
+.moodBadge_happy   { background: #E8F5E9; color: #2E7D32; }
+.moodBadge_sad     { background: #E3F2FD; color: #1565C0; }
+.moodBadge_anxious { background: #FFF3E0; color: #E65100; }
+.moodBadge_proud   { background: #F3E5F5; color: #6A1B9A; }
+.moodBadge_neutral { background: #F5F5F5; color: #616161; }
+
+.entryPreview {
+  font-size: 13px; color: var(--text-light);
+  line-height: 1.6; margin-bottom: 10px;
+}
+
+.entryFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entryTime {
+  font-size: 11px; color: var(--text-light);
+  display: flex; align-items: center; gap: 5px;
+}
+
+.deleteBtn {
+  background: none; border: none; color: var(--text-light);
+  cursor: pointer; font-size: 12px; padding: 4px 8px;
+  border-radius: 6px; transition: var(--transition);
+}
+
+.deleteBtn:hover {
+  color: var(--accent-color);
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.emptyEntries {
+  text-align: center;
+  padding: 45px 20px;
+  color: var(--text-light);
+}
+
+.emptyEntries i {
+  font-size: 40px; margin-bottom: 12px;
+  display: block; color: var(--journal-line);
+}
+
+.emptyEntries p { font-size: 13px; }
+
+/* ─── Right Sidebar Cards ────────────────────────────────────────────────── */
+.sidebarCard {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-bottom: 18px;
+  animation: fadeInUp 0.5s ease;
+}
+
+.sidebarCard h4 {
+  font-size: 13px; font-weight: 600;
+  color: var(--dark-color); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.sidebarCard h4 i { color: var(--primary-color); }
+
+/* Mood chart */
+.moodChartEmpty { font-size: 12px; color: var(--text-light); }
+
+.moodChart { display: flex; flex-direction: column; gap: 10px; }
+
+.moodBarRow { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+
+.moodBarLabel {
+  width: 65px; font-size: 11px;
+  color: var(--text-light); text-transform: capitalize;
+}
+
+.moodBarTrack {
+  flex: 1; height: 7px;
+  background: var(--light-color);
+  border-radius: 50px; overflow: hidden;
+}
+
+.moodBarFill { height: 100%; border-radius: 50px; transition: width 0.8s ease; }
+
+.moodBarCount {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-color); width: 18px; text-align: right;
+}
+
+/* Journal prompts */
+.tipItem {
+  display: flex; gap: 10px; padding: 9px 0;
+  border-bottom: 1px solid var(--light-color);
+  font-size: 12px; color: var(--text-color); line-height: 1.5;
+}
+
+.tipItem:last-child { border-bottom: none; }
+
+.tipIcon { font-size: 16px; flex-shrink: 0; }
+
+/* Privacy card */
+.privacyCard {
+  background: linear-gradient(135deg, #f0eeff, #fff0f0) !important;
+}
+
+.privacyText {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+/* ─── Notification ───────────────────────────────────────────────────────── */
+.notificationPopup {
+  position: fixed; top: 20px; right: 20px;
+  background: var(--primary-color); color: white;
+  padding: 13px 18px; border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  z-index: 3000; font-size: 14px;
+  animation: slideInRight 0.3s ease;
+}
+
+.notificationPopup.error   { background: var(--accent-color); }
+.notificationPopup.success { background: #4CAF50; }
+
+/* These match the notification.type string values from useState */
+.error   { background: var(--accent-color) !important; }
+.success { background: #4CAF50 !important; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .journalGrid { grid-template-columns: 1fr; }
+  .journalHero { flex-direction: column; gap: 20px; }
+  .heroStats { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  .sidebar { transform: translateX(-100%); }
+  .contentArea { margin-left: 0; padding: 20px; }
+  .formRow { grid-template-columns: 1fr; }
+  .journalHero { padding: 22px; }
+  .journalHero h1 { font-size: 1.5rem; }
+}

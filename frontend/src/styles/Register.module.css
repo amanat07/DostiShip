@@ -1,0 +1,236 @@
+:root {
+  --primary-color: #4a3aff;
+  --secondary-color: #6c63ff;
+  --accent-color: #ff6b6b;
+  --dark-color: #26233d;
+  --light-color: #f8f9fa;
+  --text-color: #333;
+  --text-light: #777;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* MAIN CONTAINER */
+.container {
+  display: flex;
+  background: white;
+  width: 850px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  margin: 120px auto 60px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* IMAGE SECTION */
+.imageSection {
+  width: 45%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.imageSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(74, 58, 255, 0.4),
+    rgba(74, 58, 255, 0.1)
+  );
+}
+
+.imageCaption {
+  position: relative;
+  bottom: 30px;
+  left: 30px;
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+  z-index: 2;
+  animation: slideInFromBottom 1s ease-in-out;
+}
+
+/* FORM SECTION */
+.formSection {
+  width: 55%;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.formSection h2 {
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  position: relative;
+  animation: slideInFromTop 1s ease-in-out;
+}
+
+.formSection h2::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 4px;
+  bottom: -8px;
+  left: 0;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+/* FORM */
+.formGroup {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--text-light);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: var(--transition);
+  background-color: #fff;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 58, 255, 0.1);
+}
+
+.formGroup i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* BUTTON */
+.registerBtn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(74, 58, 255, 0.3);
+}
+
+.registerBtn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(74, 58, 255, 0.4);
+}
+
+.registerBtn:active {
+  transform: translateY(1px);
+}
+
+/* CHECKBOX */
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  margin: 15px 0;
+  color: var(--text-light);
+}
+
+.checkbox input {
+  margin-right: 10px;
+  accent-color: var(--primary-color);
+}
+
+.checkbox a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.checkbox a:hover {
+  text-decoration: underline;
+}
+
+/* LOGIN LINK */
+.loginLink {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.loginLink a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loginLink a:hover {
+  text-decoration: underline;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+    margin-top: 100px;
+  }
+
+  .imageSection,
+  .formSection {
+    width: 100%;
+  }
+
+  .imageSection {
+    height: 200px;
+    order: -1;
+  }
+
+  .formSection {
+    padding: 30px;
+  }
+}

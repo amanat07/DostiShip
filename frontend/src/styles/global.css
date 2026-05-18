@@ -1,0 +1,52 @@
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+/* In index.css or App.css */
+#root {
+  width: 100%;
+  max-width: 100%;    /* override any default */
+  margin: 0;
+  padding: 0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+/* BASE BODY */
+body {
+  margin: 0;
+  background-color: #000;  /* change from #f5f7fa to #000 */
+  color: #333;
+  font-family: "Poppins", sans-serif;
+}
+/* LINKS */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* BUTTONS */
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* OPTIONAL: smooth fonts */
+html {
+  scroll-behavior: smooth;
+}
