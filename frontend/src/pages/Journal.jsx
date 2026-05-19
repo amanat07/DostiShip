@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Journal.module.css";
+const API = "http://localhost:5000";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -135,18 +136,18 @@ export default function Journal() {
 
   // ── API ──
   async function loadEntries() {
-    const res  = await fetch("/api/journal/" + user.id);
+    const res  = await fetch(`${API}/api/journal/${user._id}`);
     const data = await res.json();
-    setEntries(data.entries || []);
+    setEntries(data.journals || []);
   }
 
   async function saveEntry() {
     if (!content.trim()) { showNotif("Please write something first!", "error"); return; }
-    const res = await fetch("/api/journal", {
+    const res = await fetch(`${API}/api/journal`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId:   user.id,
+        userId:   user._id,
         username: user.username || user.name,
         title:    title || "Untitled Entry",
         content,
@@ -165,7 +166,7 @@ export default function Journal() {
 
   async function deleteEntry(id) {
     if (!window.confirm("Delete this entry?")) return;
-    const res = await fetch("/api/journal/" + id, { method: "DELETE" });
+    const res = await fetch(`${API}/api/journal/${id}`, { method: "DELETE" });
     if (res.ok) { showNotif("Entry deleted.", "success"); loadEntries(); }
   }
 
@@ -202,7 +203,7 @@ export default function Journal() {
           <i className="fas fa-bars" />
         </button>
 
-        <a href="/page" className={styles.logo}>Dosti<span>शिप</span></a>
+        <Link to="/dashboard" className={styles.logo}>Dosti<span>शिप</span></Link>
 
         <div className={styles.headerIcons}>
           <div
@@ -215,9 +216,9 @@ export default function Journal() {
               <i className="fas fa-chevron-down" style={{ fontSize: 11, color: "var(--text-light)" }} />
             </button>
             <div className={styles.dropdownMenu}>
-              <a href="/profile"><i className="fas fa-user" /> My Profile</a>
-              <a href="/interest"><i className="fas fa-heart" /> My Interests</a>
-              <a href="/" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</a>
+              <Link to="/profile"><i className="fas fa-user" /> My Profile</Link>
+              <Link to="/discover-interests"><i className="fas fa-heart" /> My Interests</Link>
+              <Link to="/" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</Link>
             </div>
           </div>
         </div>
@@ -242,21 +243,21 @@ export default function Journal() {
           <div className={styles.sidebarSection}>
             <p className={styles.sidebarTitle}>Menu</p>
             <ul className={styles.sidebarMenu}>
-              <li><a href="/page"><i className="fas fa-home" /> Home</a></li>
-              <li><a href="/notification"><i className="fas fa-bell" /> Notifications</a></li>
-              <li><a href="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</a></li>
-              <li><a href="/inbox"><i className="fas fa-envelope" /> Inbox</a></li>
-              <li><a href="/journal" className={styles.activeLink}><i className="fas fa-book-open" /> Journal</a></li>
-              <li><a href="/hangout"><i className="fas fa-users" /> Hangout Rooms</a></li>
+              <li><Link to="/dashboard"><i className="fas fa-home" /> Home</Link></li>
+              <li><Link to="/notifications"><i className="fas fa-bell" /> Notifications</Link></li>
+              <li><Link to="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</Link></li>
+              <li><Link to="/inbox"><i className="fas fa-envelope" /> Inbox</Link></li>
+              <li><Link to="/journal" className={styles.activeLink}><i className="fas fa-book-open" /> Journal</Link></li>
+              <li><Link to="/hangout"><i className="fas fa-users" /> Hangout Rooms</Link></li>
             </ul>
           </div>
 
           <div className={styles.sidebarSection}>
             <p className={styles.sidebarTitle}>Account</p>
             <ul className={styles.sidebarMenu}>
-              <li><a href="/profile"><i className="fas fa-user-circle" /> Profile</a></li>
-              <li><a href="/interest"><i className="fas fa-heart" /> Interests</a></li>
-              <li><a href="#" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</a></li>
+              <li><Link to="/profile"><i className="fas fa-user-circle" /> Profile</Link></li>
+              <li><Link to="/discover-interests"><i className="fas fa-heart" /> Interests</Link></li>
+              <li><Link to="/" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</Link></li>
             </ul>
           </div>
         </aside>
@@ -353,7 +354,7 @@ export default function Journal() {
                 ) : (
                   entries.map((e) => (
                     <div
-                      key={e.id}
+                      key={e._id}
                       className={`${styles.entryCard} ${styles["mood_" + e.mood]}`}
                     >
                       <div className={styles.entryHeader}>
@@ -367,7 +368,7 @@ export default function Journal() {
                         <span className={styles.entryTime}>
                           <i className="fas fa-clock" /> {formatTime(e.createdAt)}
                         </span>
-                        <button className={styles.deleteBtn} onClick={() => deleteEntry(e.id)}>
+                        <button className={styles.deleteBtn} onClick={() => deleteEntry(e._id)}>
                           <i className="fas fa-trash" /> Delete
                         </button>
                       </div>

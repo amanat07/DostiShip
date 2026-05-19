@@ -8,6 +8,7 @@ const fs = require("fs");
 const session = require("express-session");
 const passport = require("./middleware/passport");
 const jwt = require("jsonwebtoken");
+const journalRoutes = require("./routes/journal");
 
 const app = express();
 
@@ -105,6 +106,7 @@ app.get(
 // ─────────────────────────────────────────────
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/posts", require("./routes/post"));
+app.use("/api/journal", journalRoutes);
 
 // ─────────────────────────────────────────────
 // REACT BUILD (PRODUCTION)

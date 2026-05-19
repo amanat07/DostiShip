@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Notification.module.css";
 
 const INITIAL_ITEMS = [
@@ -124,26 +125,20 @@ export default function Notifications() {
   const [pendingDecline, setPendingDecline] = useState(null);
 
   // ── AUTH + FETCH USER ──
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) { window.location.href = "./login.html"; return; }
+ useEffect(() => {
+  const token = localStorage.getItem("token");
 
-    (async () => {
-      try {
-        const res  = await fetch("/api/auth/profile", {
-          headers: { Authorization: "Bearer " + token },
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
-      } catch {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        window.location.href = "./login.html";
-      }
-    })();
-  }, []);
+  if (!token) {
+    window.location.href = "http://localhost:3000/login";
+    return;
+  }
+
+  const savedUser = localStorage.getItem("user");
+
+  if (savedUser) {
+    setUser(JSON.parse(savedUser));
+  }
+}, []);
 
   // ── CLICK OUTSIDE ──
   useEffect(() => {
@@ -181,7 +176,7 @@ export default function Notifications() {
     e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "./login.html";
+    window.location.href = "http://localhost:3000/login";
   }, []);
 
   const getInitial = (name) => (name ? name.charAt(0).toUpperCase() : "?");

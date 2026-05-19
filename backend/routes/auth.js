@@ -191,5 +191,37 @@ router.get("/interests", authMiddleware, async (req, res) => {
     });
   }
 });
+router.put("/update-profile", authMiddleware, async (req, res) => {
+  try {
+    const { username, password, interests } = req.body;
+
+    const updateData = {};
+
+    if (username) updateData.username = username;
+
+    if (interests) updateData.interests = interests;
+
+    if (password && password.trim() !== "") {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateData.password = hashedPassword;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.userId,
+      updateData,
+      { new: true }
+    ).select("-password");
+
+    res.json({
+      message: "Profile updated",
+      user: updatedUser,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
 
 module.exports = router;

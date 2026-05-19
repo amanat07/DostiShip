@@ -63,38 +63,20 @@ export default function Dashboard() {
   }, []);
 
   // ── AUTH — single useEffect, no duplicate ──
-  useEffect(() => {
-    if (!token) {
-      navigate("/login", { replace: true });
-      return;
-    }
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
-    fetch(`${API}/api/auth/profile`, {
-      headers: { Authorization: "Bearer " + token },
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.user) {
-          setUser(data.user);
-          // Keep localStorage in sync with latest user data from DB
-          localStorage.setItem("user", JSON.stringify(data.user));
-        } else {
-          // Token rejected by server
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          navigate("/login", { replace: true });
-        }
-      })
-      .catch(() => {
-        // Network error — don't log out, just show stale data from localStorage
-        const cached = localStorage.getItem("user");
-        if (cached) {
-          setUser(JSON.parse(cached));
-        } else {
-          navigate("/login", { replace: true });
-        }
-      });
-  }, [token, navigate]);
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  const savedUser = localStorage.getItem("user");
+
+  if (savedUser) {
+    setUser(JSON.parse(savedUser));
+  }
+}, [navigate]);
 
   // ── LOAD POSTS ──
   const loadPosts = useCallback(async () => {
@@ -376,8 +358,8 @@ export default function Dashboard() {
                 <p className={styles.emptyFeed}>No posts yet. Be the first to post!</p>
               ) : (
                 posts.map((post) => {
-                  const isLiked      = post.likes.includes(user._id);
-                  const isOwner      = post.user?._id === user._id;
+                  const isLiked      = post.likes.includes(user.id);
+                  const isOwner      = post.user?._id === user.id;
                   const commentsOpen = activeComments[post._id];
 
                   return (

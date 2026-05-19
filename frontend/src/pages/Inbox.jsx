@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Inbox.module.css";
 
 // ─── Static Data (mirrors HTML exactly) ──────────────────────────────────────
@@ -215,7 +215,7 @@ function InboxHeader({ me, onLogout, onHamburger }) {
         <i className="fa-solid fa-bars" />
       </button>
 
-      <a href="/page" className={styles.logo}>Dosti<span>शिप</span></a>
+      <Link to="/dashboard" className={styles.logo}>Dosti<span>शिप</span></Link>
 
       <div className={styles.headerSearch}>
         <i className="fa-solid fa-magnifying-glass" />
@@ -232,11 +232,11 @@ function InboxHeader({ me, onLogout, onHamburger }) {
             <i className="fa-solid fa-chevron-down" style={{ fontSize: "10px", color: "#bbb" }} />
           </button>
           <div className={styles.dropdownMenu}>
-            <a href="/profile"><i className="fa-solid fa-user" /> My Profile</a>
-            <a href="/interest"><i className="fa-solid fa-heart" /> My Interests</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); onLogout(); }}>
+            <Link to="/profile"><i className="fa-solid fa-user" /> My Profile</Link>
+            <Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link>
+            <Link to="/" onClick={(e) => { e.preventDefault(); onLogout(); }}>
               <i className="fa-solid fa-right-from-bracket" /> Logout
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -276,7 +276,7 @@ function InboxSidebar({ me, open, onClose, onLogout }) {
         <p className={styles.navLabel}>Menu</p>
         <ul className={styles.navMenu}>
           <li><a href="/page"><i className="fa-solid fa-house" /> Home</a></li>
-          <li><a href="/notification"><i className="fa-solid fa-bell" /> Notifications</a></li>
+          <li><a href="/notifications"><i className="fa-solid fa-bell" /> Notifications</a></li>
           <li><a href="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</a></li>
           <li><a href="/inbox" className={styles.active}><i className="fa-solid fa-envelope" /> Inbox</a></li>
           <li><a href="/journal"><i className="fa-solid fa-book-open" /> Journal</a></li>
@@ -288,7 +288,7 @@ function InboxSidebar({ me, open, onClose, onLogout }) {
         <p className={styles.navLabel}>Account</p>
         <ul className={styles.navMenu}>
           <li><a href="/profile"><i className="fa-solid fa-user-circle" /> Profile</a></li>
-          <li><a href="/interest"><i className="fa-solid fa-heart" /> Interests</a></li>
+          <li><a href="/discover-interests"><i className="fa-solid fa-heart" /> Interests</a></li>
           <li>
             <a href="/" onClick={(e) => { e.preventDefault(); onLogout(); }}>
               <i className="fa-solid fa-right-from-bracket" /> Logout

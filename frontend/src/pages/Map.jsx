@@ -17,30 +17,19 @@ export default function Map() {
 
   // ── AUTH CHECK ──
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    // ✅ FIX: Use navigate() instead of window.location.href for React Router
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+  const token = localStorage.getItem("token");
 
-    const getUser = async () => {
-      try {
-        const res = await fetch("/api/auth/profile", {
-          headers: { Authorization: "Bearer " + token },
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        setUser(data.user);
-      } catch (err) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user"); // ✅ FIX: Also clear "user" like HTML does
-        navigate("/login");
-      }
-    };
+  if (!token) {
+    navigate("/login");
+    return;
+  }
 
-    getUser();
-  }, []);
+  const savedUser = localStorage.getItem("user");
+
+  if (savedUser) {
+    setUser(JSON.parse(savedUser));
+  }
+}, [navigate]);
 
   // ✅ FIX: Close dropdown on outside click (was missing — HTML had this)
   useEffect(() => {
@@ -203,7 +192,7 @@ export default function Map() {
         </button>
 
         {/* ✅ FIX: Use React Router Link instead of <a href> */}
-        <Link to="/page" className={styles.logo}>
+        <Link to="/dashboard" className={styles.logo}>
           Dosti<span>शिप</span>
         </Link>
 
@@ -231,12 +220,12 @@ export default function Map() {
                 <Link to="/profile">
                   <i className="fa-solid fa-user"></i> My Profile
                 </Link>
-                <Link to="/interest">
+                <Link to="/discover-interests">
                   <i className="fa-solid fa-heart"></i> My Interests
                 </Link>
-                <a href="/" onClick={logout}>
+                <button onClick={logout}>
                   <i className="fa-solid fa-right-from-bracket"></i> Logout
-                </a>
+                </button>
               </div>
             )}
           </div>
@@ -264,7 +253,7 @@ export default function Map() {
           <Link to="/page">
             <i className="fa-solid fa-house"></i> Home
           </Link>
-          <Link to="/notification">
+          <Link to="/notifications">
             <i className="fa-solid fa-bell"></i> Notifications
           </Link>
           <Link to="/map" className={styles.active}>
@@ -287,7 +276,7 @@ export default function Map() {
           <Link to="/profile">
             <i className="fa-solid fa-user-circle"></i> Profile
           </Link>
-          <Link to="/interest">
+          <Link to="/discover-interests">
             <i className="fa-solid fa-heart"></i> Interests
           </Link>
           <a href="/" onClick={logout}>

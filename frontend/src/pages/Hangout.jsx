@@ -101,7 +101,7 @@ function Hangout() {
           <i className="fa-solid fa-bars" />
         </button>
 
-        <Link to="/page" className="h-logo">Dosti<span>शिप</span></Link>
+        <Link to="/dashboard" className="h-logo">Dosti<span>शिप</span></Link>
 
         <div className="h-search">
           <i className="fa-solid fa-magnifying-glass" />
@@ -117,7 +117,7 @@ function Hangout() {
             {dropdownOpen && (
               <div className="h-dropdown-menu">
                 <Link to="/profile"><i className="fa-solid fa-user" /> My Profile</Link>
-                <Link to="/interest"><i className="fa-solid fa-heart" /> My Interests</Link>
+                <Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link>
                 <a href="/login" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket" /> Logout
                 </a>
@@ -141,8 +141,8 @@ function Hangout() {
           <div className="h-sidebar-section">
             <p className="h-sidebar-title">Menu</p>
             <ul className="h-sidebar-menu">
-              <li><Link to="/page"><i className="fa-solid fa-house" /> Home</Link></li>
-              <li><Link to="/notification"><i className="fa-solid fa-bell" /> Notifications</Link></li>
+              <li><Link to="/dashboard"><i className="fa-solid fa-house" /> Home</Link></li>
+              <li><Link to="/notifications"><i className="fa-solid fa-bell" /> Notifications</Link></li>
               <li><Link to="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</Link></li>
               <li><Link to="/inbox"><i className="fa-solid fa-envelope" /> Inbox</Link></li>
               <li><Link to="/journal"><i className="fa-solid fa-book-open" /> Journal</Link></li>
@@ -154,7 +154,7 @@ function Hangout() {
             <p className="h-sidebar-title">Account</p>
             <ul className="h-sidebar-menu">
               <li><Link to="/profile"><i className="fa-solid fa-user-circle" /> Profile</Link></li>
-              <li><Link to="/interest"><i className="fa-solid fa-heart" /> Interests</Link></li>
+              <li><Link to="/discover-interests"><i className="fa-solid fa-heart" /> Interests</Link></li>
               <li><a href="/login" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
             </ul>
           </div>

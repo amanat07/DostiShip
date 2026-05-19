@@ -34,7 +34,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!user) return;
     loadInterests();
-    loadFriends();
+    setFriends([]);;
     loadJournal();
   }, [user]);
 
@@ -114,16 +114,59 @@ export default function ProfilePage() {
   };
 
   // ── EDIT FORM SUBMIT ──
-  const handleEditSubmit = (e) => {
-    e.preventDefault();
-    if (editPassword && editPassword !== editConfirmPassword) {
-      showNotification("Passwords do not match", "error");
+const handleEditSubmit = async (e) => {
+  e.preventDefault();
+
+  if (editPassword && editPassword !== editConfirmPassword) {
+    showNotification("Passwords do not match", "error");
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      "http://localhost:5000/api/auth/update-profile",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          username: editUsername,
+          password: editPassword,
+          interests,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showNotification(data.error || "Update failed", "error");
       return;
     }
-    // TODO: call API to save changes
-    showNotification("Profile updated successfully", "success");
+
+    setUser(data.user);
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(data.user)
+    );
+
+    showNotification(
+      "Profile updated successfully",
+      "success"
+    );
+
     setShowEditForm(false);
-  };
+
+  } catch (err) {
+    showNotification(
+      "Server error",
+      "error"
+    );
+  }
+};
 
   // ── LOGOUT ──
   const handleLogout = () => {
@@ -159,20 +202,20 @@ export default function ProfilePage() {
           <i className="fas fa-bars"></i>
         </button>
 
-        <div className={styles.logo} onClick={() => navigate("/page")}>
+        <div className={styles.logo} onClick={() => navigate("/dashboard")}>
           Dosti<span>शिप</span>
         </div>
 
-        <nav
+        {/* <nav
           className={`${styles.navContainer} ${menuOpen ? styles.active : ""}`}
           ref={navRef}
         >
           <ul className={styles.navLinks}>
             <li>
               <a
-                onClick={() => { setMenuOpen(false); navigate("/page"); }}
+                onClick={() => { setMenuOpen(false); navigate("/dashboard"); }}
                 tabIndex={0}
-                onKeyPress={(e) => { if (e.key === "Enter") navigate("/page"); }}
+                onKeyPress={(e) => { if (e.key === "Enter") navigate("/dashboard"); }}
               >
                 Home
               </a>
@@ -195,10 +238,116 @@ export default function ProfilePage() {
                 Profile
               </a>
             </li>
-          </ul>
-        </nav>
+          </ul> */}
+        {/* </nav> */}
       </header>
+<div className={styles.mainLayout}>
+  {/* SIDEBAR */}
+<aside
+  className={`${styles.sidebar} ${
+    menuOpen ? styles.sidebarActive : ""
+  }`}
+  ref={navRef}
+>
+  {/* USER */}
+  <div className={styles.sidebarUser}>
+    <img
+      src={getProfileImage()}
+      alt="Profile"
+      className={styles.sidebarAvatar}
+    />
 
+    <div className={styles.sidebarUserInfo}>
+      <div className={styles.sidebarUserName}>
+        {user.name || "User"}
+      </div>
+
+      <div className={styles.sidebarUserEmail}>
+        {user.email || "—"}
+      </div>
+    </div>
+  </div>
+
+  {/* MENU */}
+  <div className={styles.sidebarSection}>
+    <p className={styles.sidebarTitle}>Menu</p>
+
+    <ul className={styles.sidebarMenu}>
+      <li>
+        <a onClick={() => navigate("/dashboard")}>
+          <i className="fa-solid fa-house"></i>
+          Home
+        </a>
+      </li>
+
+      <li>
+        <a onClick={() => navigate("/notifications")}>
+          <i className="fa-solid fa-bell"></i>
+          Notifications
+        </a>
+      </li>
+
+      <li>
+        <a onClick={() => navigate("/map")}>
+          <i className="fa-solid fa-map-location-dot"></i>
+          Friends Map
+        </a>
+      </li>
+
+      <li>
+        <a onClick={() => navigate("/inbox")}>
+          <i className="fa-solid fa-envelope"></i>
+          Inbox
+        </a>
+      </li>
+
+      <li>
+        <a onClick={() => navigate("/journal")}>
+          <i className="fa-solid fa-book-open"></i>
+          Journal
+        </a>
+      </li>
+
+      <li>
+        <a onClick={() => navigate("/hangout")}>
+          <i className="fa-solid fa-users"></i>
+          Hangout Rooms
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  {/* ACCOUNT */}
+  <div className={styles.sidebarSection}>
+    <p className={styles.sidebarTitle}>Account</p>
+
+    <ul className={styles.sidebarMenu}>
+      <li>
+        <a
+          className={styles.activeLink}
+          onClick={() => navigate("/profile")}
+        >
+          <i className="fa-solid fa-user"></i>
+          Profile
+        </a>
+      </li>
+
+      <li>
+        <a onClick={() => navigate("/discover-interests")}>
+          <i className="fa-solid fa-heart"></i>
+          Interests
+        </a>
+      </li>
+
+      <li>
+        <a onClick={handleLogout}>
+          <i className="fa-solid fa-right-from-bracket"></i>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
       <div className={styles.pageWrapper}>
 
         {/* PROFILE HERO */}
@@ -357,7 +506,7 @@ export default function ProfilePage() {
             </div>
             <button
               className={styles.editInterestsBtn}
-              onClick={() => navigate("/interest")}
+              onClick={() => navigate("/discover-interests")}
             >
               <i className="fas fa-plus"></i> Edit Interests
             </button>
@@ -416,5 +565,6 @@ export default function ProfilePage() {
       {/* NOTIFICATION */}
       <div id="notificationPopup" className={styles.notificationPopup}></div>
     </div>
+</div>
   );
 }
