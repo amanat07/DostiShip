@@ -9,7 +9,7 @@ const fs = require("fs");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
 const { Server } = require("socket.io");
-
+const friendRoutes = require("./routes/friends");
 const passport = require("./middleware/passport");
 const journalRoutes = require("./routes/journal");
 
@@ -173,6 +173,10 @@ app.use(
   require("./routes/message")
 );
 app.use("/api/journal", journalRoutes);
+app.use(
+  "/api/friends",
+  friendRoutes
+);
 
 // ─────────────────────────────────────────────
 // REACT BUILD

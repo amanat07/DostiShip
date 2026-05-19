@@ -21,7 +21,6 @@ const authMiddleware = (req, res, next) => {
 
     req.userId = decoded.userId;
 
-    // ADDED THIS
     req.user = {
       userId: decoded.userId,
     };
@@ -49,8 +48,11 @@ router.post(
       const { caption } = req.body;
 
       const newPost = new Post({
+        username: req.body.username,
+
         user: req.userId,
         caption,
+
         image: req.file
           ? req.file.path
           : "",
@@ -152,9 +154,9 @@ router.delete(
 
       // ONLY OWNER CAN DELETE
       if (
-  String(post.user) !==
-  String(req.user.userId)
-) {
+        String(post.user) !==
+        String(req.user.userId)
+      ) {
         return res.status(403).json({
           error: "Unauthorized",
         });
@@ -197,15 +199,19 @@ router.put(
       }
 
       const alreadyLiked =
-        post.likes.includes(req.userId);
+        post.likes.some(
+          (id) =>
+            String(id) ===
+            String(req.userId)
+        );
 
       if (alreadyLiked) {
 
         post.likes =
           post.likes.filter(
             (id) =>
-              id.toString() !==
-              req.userId
+              String(id) !==
+              String(req.userId)
           );
 
       } else {
@@ -324,9 +330,9 @@ router.delete(
 
       // ONLY COMMENT OWNER
       if (
-  String(comment.user) !==
-  String(req.user.userId)
-) {
+        String(comment.user) !==
+        String(req.user.userId)
+      ) {
         return res.status(403).json({
           error: "Unauthorized",
         });

@@ -260,9 +260,11 @@
 }
 .contentTitle { font-size: 22px; font-weight: 700; color: #26233d; }
 
-.notifActions { display: flex; gap: 10px; flex-wrap: wrap; }
-
+/* ── BACK BUTTON ── */
 .notifBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 7px 14px;
   background: white;
   border: 1.5px solid #e8e8e8;
@@ -280,7 +282,7 @@
   border-color: #4a3aff;
 }
 
-/* ── NOTIFICATIONS BOX ── */
+/* ── NOTIFICATIONS WRAPPER ── */
 .notificationsContainer {
   background: white;
   border-radius: 16px;
@@ -295,210 +297,164 @@
   justify-content: space-between;
   align-items: center;
 }
-.notificationsTitle { font-weight: 600; color: #26233d; font-size: 15px; margin: 0; }
-
-/* TABS */
-.notificationsTabs {
-  display: flex;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-.tabBtn {
-  flex: 1;
-  padding: 13px;
-  background: none;
-  border: none;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  position: relative;
-  color: #777;
-  font-family: "Poppins", sans-serif;
-  text-transform: capitalize;
-}
-.tabBtn:hover {
-  background: rgba(74, 58, 255, 0.05);
-  color: #4a3aff;
-}
-.tabActive {
-  color: #4a3aff;
-  background: rgba(74, 58, 255, 0.06);
+.notificationsTitle {
   font-weight: 600;
-}
-.tabActive::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #4a3aff;
+  color: #26233d;
+  font-size: 15px;
+  margin: 0;
 }
 
-.badge {
-  margin-left: 5px;
-  background: #ff6b6b;
-  color: white;
-  padding: 1px 6px;
-  border-radius: 10px;
-  font-size: 10px;
-}
-
-/* SECTION LABEL */
-.sectionLabel {
-  padding: 9px 20px;
-  background: #f8f9fa;
-  font-size: 11px;
-  font-weight: 700;
-  color: #777;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* NOTIFICATION ITEM */
 .notificationsList { padding: 0; }
 
-.notifItem {
-  display: flex;
-  padding: 15px 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  align-items: flex-start;
-  gap: 12px;
-}
-.notifItem:hover { background: rgba(74, 58, 255, 0.03); }
+/* ─────────────────────────────
+   REQUESTS & SUGGESTIONS SECTION
+───────────────────────────── */
 
-.unread {
-  background: rgba(74, 58, 255, 0.06);
-  border-left: 3px solid #4a3aff;
+.requestsSection {
+  padding: 24px;
 }
 
-/* ICONS */
-.notifIcon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  flex-shrink: 0;
-  margin-top: 3px;
-}
-.iconFollow   { background: rgba(74, 58, 255, 0.1);  color: #4a3aff;  }
-.iconMention  { background: rgba(74, 58, 255, 0.1);  color: #4a3aff;  }
-.iconComment  { background: rgba(255, 107, 107, 0.1); color: #ff6b6b; }
-.iconGroup    { background: rgba(76, 175, 80, 0.1);   color: #4CAF50; }
-.iconLike     { background: rgba(255, 107, 107, 0.1); color: #ff6b6b; }
-.iconEvent    { background: rgba(33, 150, 243, 0.1);  color: #2196F3; }
-
-.notifAvatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 2px solid #f8f9fa;
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #26233d;
+  margin: 0 0 16px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(74, 58, 255, 0.08);
+  letter-spacing: 0.2px;
 }
 
-.notifContent { flex: 1; }
-.notifUser    { font-weight: 600; color: #26233d; font-size: 14px; }
-.notifText    { color: #333; font-size: 13px; }
-.notifTime    { font-size: 11px; color: #777; margin-top: 3px; }
-
-.notifActions { display: flex; gap: 8px; margin-top: 10px; }
-
-.actionBtn {
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border: none;
-  font-family: "Poppins", sans-serif;
-}
-.acceptBtn { background: #4a3aff; color: white; }
-.acceptBtn:hover { background: #6c63ff; transform: translateY(-1px); }
-.declineBtn { background: #f8f9fa; color: #333; border: 1px solid #e0e0e0; }
-.declineBtn:hover { background: #ffe0e0; color: #ff6b6b; border-color: #ff6b6b; }
-
-.acceptedText { color: #4a3aff; font-size: 12px; font-weight: 600; }
-.declinedText { color: #777; font-size: 12px; }
-
-.markRead {
-  color: #4a3aff;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 11px;
-  margin-left: auto;
-  flex-shrink: 0;
-  align-self: flex-start;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  white-space: nowrap;
-  font-family: "Poppins", sans-serif;
-}
-.markRead:hover { text-decoration: underline; }
-
-/* EMPTY STATE */
-.emptyState {
-  padding: 50px 20px;
-  text-align: center;
-  color: #777;
-}
-.emptyState i {
-  font-size: 40px;
-  margin-bottom: 12px;
-  display: block;
-  color: #ddd;
-}
-.emptyState a { color: #4a3aff; }
-
-/* LOAD MORE */
-.loadMore {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 25px;
-  background: #4a3aff;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  font-family: "Poppins", sans-serif;
-}
-.loadMore:hover { background: #6c63ff; transform: translateY(-2px); }
-
-/* ── MODAL ── */
-.modalOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
+/* ── REQUEST CARD ── */
+.requestCard {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-.modalContent {
+  gap: 16px;
   background: white;
-  padding: 28px;
-  border-radius: 14px;
-  max-width: 380px;
-  width: 90%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  overflow: hidden;   /* prevents any child from blowing out the card */
+}
+
+.requestCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(74, 58, 255, 0.12);
+}
+
+/* ── AVATAR (div-based, shows initial or image) ── */
+.notifAvatar {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;   /* prevents flex from squishing it */
+  min-height: 52px;
+  border-radius: 50%;
+  border: 3px solid #f3f0ff;
+  background: linear-gradient(135deg, #4a3aff, #ff6b6b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  overflow: hidden;     /* clips both the image AND the letter */
+  line-height: 1;       /* stops letter from pushing height */
+}
+
+.notifAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;     /* border-radius already on parent; don't double-apply */
+}
+
+/* ── USER INFO ── */
+.notifUser {
+  font-size: 15px;
+  font-weight: 700;
+  color: #26233d;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 340px;
+}
+
+.notifText {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.5;
+}
+
+/* ── ACTION BUTTONS (inside cards) ── */
+.notifActions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.acceptBtn {
+  border: none;
+  background: linear-gradient(135deg, #4a3aff, #6c63ff);
+  color: white;
+  padding: 9px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+}
+
+.acceptBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74, 58, 255, 0.3);
+}
+
+.declineBtn {
+  border: none;
+  background: #f3f4f6;
+  color: #555;
+  padding: 9px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+}
+
+.declineBtn:hover {
+  background: #ffe5e5;
+  color: #ff4d4f;
+}
+
+.emptyText {
+  color: #aaa;
+  font-size: 13px;
+  margin-bottom: 28px;
+  padding: 12px 0;
   text-align: center;
 }
-.modalContent h3 { margin-bottom: 12px; color: #26233d; font-size: 16px; }
-.modalContent p  { margin-bottom: 20px; color: #777; font-size: 13px; }
-.modalActions { display: flex; gap: 10px; justify-content: center; }
+
+/* ── SUGGESTIONS DIVIDER ── */
+.sectionDivider {
+  margin: 10px 0 20px 0;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
 
 /* ── POPUP ── */
 .notifPopup {
   position: fixed;
-  top: 20px; right: 20px;
+  top: 20px;
+  right: 20px;
   padding: 12px 18px;
   border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
@@ -513,13 +469,32 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .hamburger { display: block; }
+
   .sidebar {
     transform: translateX(-100%);
   }
   .sidebarActive {
     transform: translateX(0);
   }
-  .contentArea { margin-left: 0; padding: 20px; }
+
+  .contentArea {
+    margin-left: 0;
+    padding: 20px;
+  }
+
   .headerSearch { display: none; }
-  .notifItem { flex-wrap: wrap; }
+
+  .requestCard {
+    flex-wrap: wrap;
+  }
+
+  .notifActions {
+    width: 100%;
+  }
+
+  .acceptBtn,
+  .declineBtn {
+    flex: 1;
+    text-align: center;
+  }
 }

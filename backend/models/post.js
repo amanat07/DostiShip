@@ -6,6 +6,9 @@ const postSchema = new mongoose.Schema({
     ref: "User"
   },
   caption: String,
+username: String,
+
+
   image: String,
   likes: [
     {
