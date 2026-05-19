@@ -9,19 +9,22 @@ const API = "http://localhost:5000";
 // ─────────────────────────────────────────────
 function Avatar({ name, pic, size = 40, fontSize = 15 }) {
   const initial = name ? name.charAt(0).toUpperCase() : "?";
+  const [imgFailed, setImgFailed] = useState(false);
+
   return (
-    <div className={styles.avatar} style={{ width: size, height: size, fontSize }}>
-      {pic ? (
+    <div
+      className={styles.avatar}
+      style={{ width: size, height: size, fontSize }}
+    >
+      {pic && !imgFailed ? (
         <img
           src={pic}
           alt={name}
-          onError={(e) => {
-            e.target.style.display = "none";
-            e.target.nextSibling.style.display = "flex";
-          }}
+          onError={() => setImgFailed(true)}
         />
-      ) : null}
-      <span style={{ display: pic ? "none" : "flex" }}>{initial}</span>
+      ) : (
+        <span>{initial}</span>
+      )}
     </div>
   );
 }
@@ -39,20 +42,25 @@ function formatTime(dateStr) {
 // ─────────────────────────────────────────────
 export default function Dashboard() {
   const navigate = useNavigate();
-
-  // ── token read once at top level — used everywhere below ──
   const token = localStorage.getItem("token");
 
-  const [user, setUser]                 = useState(null);
-  const [posts, setPosts]               = useState([]);
-  const [caption, setCaption]           = useState("");
-  const [image, setImage]               = useState(null);
-  const [preview, setPreview]           = useState(null);
-  const [sidebarOpen, setSidebarOpen]   = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notification, setNotification] = useState({ msg: "", type: "" });
+  const [user, setUser]                   = useState(null);
+  const [posts, setPosts]                 = useState([]);
+  const [caption, setCaption]             = useState("");
+  const [image, setImage]                 = useState(null);
+  const [preview, setPreview]             = useState(null);
+  const [sidebarOpen, setSidebarOpen]     = useState(false);
+  const [dropdownOpen, setDropdownOpen]   = useState(false);
+  const [notification, setNotification]   = useState({ msg: "", type: "" });
   const [activeComments, setActiveComments] = useState({});
   const [commentInputs, setCommentInputs]   = useState({});
+
+  // ── SEARCH STATE ──
+  const [headerQuery, setHeaderQuery]     = useState("");   // top search bar
+  const [sidebarQuery, setSidebarQuery]   = useState("");   // right-column search
+  const [allUsers, setAllUsers]           = useState([]);   // all registered users
+  const [headerResults, setHeaderResults] = useState(null); // null = not searching
+  const [sendingTo, setSendingTo]         = useState({});   // track "Add Friend" per user
 
   const sidebarRef  = useRef(null);
   const dropdownRef = useRef(null);
@@ -62,21 +70,13 @@ export default function Dashboard() {
     setTimeout(() => setNotification({ msg: "", type: "" }), 3000);
   }, []);
 
-  // ── AUTH — single useEffect, no duplicate ──
-useEffect(() => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    navigate("/login");
-    return;
-  }
-
-  const savedUser = localStorage.getItem("user");
-
-  if (savedUser) {
-    setUser(JSON.parse(savedUser));
-  }
-}, [navigate]);
+  // ── AUTH ──
+  useEffect(() => {
+    const tok = localStorage.getItem("token");
+    if (!tok) { navigate("/login"); return; }
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) setUser(JSON.parse(savedUser));
+  }, [navigate]);
 
   // ── LOAD POSTS ──
   const loadPosts = useCallback(async () => {
@@ -91,6 +91,21 @@ useEffect(() => {
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
 
+  // ── LOAD ALL USERS (for search + suggestions) ──
+  const loadUsers = useCallback(async () => {
+    try {
+      const res  = await fetch(`${API}/api/friends/suggestions`, {
+        headers: { Authorization: "Bearer " + token },
+      });
+      const data = await res.json();
+      setAllUsers(Array.isArray(data) ? data : []);
+    } catch {
+      // silently ignore — suggestions not critical
+    }
+  }, [token]);
+
+  useEffect(() => { if (token) loadUsers(); }, [loadUsers, token]);
+
   // ── CLOSE SIDEBAR / DROPDOWN ON OUTSIDE CLICK ──
   useEffect(() => {
     function handleClick(e) {
@@ -102,6 +117,60 @@ useEffect(() => {
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
+
+  // ── REAL-TIME HEADER SEARCH ──
+  // Searches both posts (by caption/username) and users (by username/name)
+  useEffect(() => {
+    const q = headerQuery.trim().toLowerCase();
+    if (!q) { setHeaderResults(null); return; }
+
+    const matchedPosts = posts.filter((p) => {
+      const name = (
+        p.user?.name ||
+        p.user?.username ||
+        p.user?.email?.split("@")[0] ||
+        ""
+      ).toLowerCase();
+      const cap = (p.caption || "").toLowerCase();
+      return cap.includes(q) || name.includes(q);
+    });
+
+    const matchedUsers = allUsers.filter((u) => {
+      const uname = (u.username || "").toLowerCase();
+      const uname2 = (u.name || "").toLowerCase();
+      return uname.includes(q) || uname2.includes(q);
+    });
+
+    setHeaderResults({ posts: matchedPosts, users: matchedUsers });
+  }, [headerQuery, posts, allUsers]);
+
+  // ── REAL-TIME SIDEBAR PEOPLE SEARCH ──
+  const filteredSidebarUsers = sidebarQuery.trim()
+    ? allUsers.filter((u) => {
+        const q = sidebarQuery.trim().toLowerCase();
+        return (
+          (u.username || "").toLowerCase().includes(q) ||
+          (u.name || "").toLowerCase().includes(q)
+        );
+      })
+    : allUsers;
+
+  // ── SEND FRIEND REQUEST ──
+  const sendRequest = async (id) => {
+    setSendingTo((prev) => ({ ...prev, [id]: true }));
+    try {
+      await fetch(`${API}/api/friends/send/${id}`, {
+        method: "POST",
+        headers: { Authorization: "Bearer " + token },
+      });
+      showNotification("Friend request sent!");
+      setAllUsers((prev) => prev.filter((u) => u._id !== id));
+    } catch {
+      showNotification("Could not send request", "error");
+    } finally {
+      setSendingTo((prev) => ({ ...prev, [id]: false }));
+    }
+  };
 
   // ── CREATE POST ──
   const handlePost = async () => {
@@ -180,62 +249,32 @@ useEffect(() => {
       showNotification("Could not add comment", "error");
     }
   };
-// ── DELETE COMMENT ──
-const deleteComment = async (
-  postId,
-  commentId
-) => {
 
-  try {
-
-    await fetch(
-      `http://localhost:5000/api/posts/comment/${postId}/${commentId}`,
-      {
+  // ── DELETE COMMENT ──
+  const deleteComment = async (postId, commentId) => {
+    try {
+      await fetch(`${API}/api/posts/comment/${postId}/${commentId}`, {
         method: "DELETE",
-        headers: {
-          Authorization:
-            `Bearer ${token}`,
-        },
-      }
-    );
+        headers: { Authorization: "Bearer " + token },
+      });
+      loadPosts();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    loadPosts();
-
-  } catch (err) {
-
-    console.error(err);
-
-  }
-};
   // ── DELETE POST ──
-  // ── DELETE POST ──
-const deletePost = async (id) => {
-
-  try {
-
-    await fetch(
-      `http://localhost:5000/api/posts/${id}`,
-      {
+  const deletePost = async (id) => {
+    try {
+      await fetch(`${API}/api/posts/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization:
-            `Bearer ${token}`,
-        },
-      }
-    );
-
-    setPosts((prev) =>
-      prev.filter(
-        (p) => p._id !== id
-      )
-    );
-
-  } catch (err) {
-
-    console.error(err);
-
-  }
-};
+        headers: { Authorization: "Bearer " + token },
+      });
+      setPosts((prev) => prev.filter((p) => p._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -244,21 +283,39 @@ const deletePost = async (id) => {
     navigate("/login", { replace: true });
   };
 
-  // Show loading spinner while profile is being fetched
+  // ── DISPLAY POSTS: either search results or full feed ──
+  const displayedPosts = headerResults ? headerResults.posts : posts;
+
+  const getPostUsername = (post) =>
+    post.user?.name ||
+    post.user?.username ||
+    post.user?.email?.split("@")[0] ||
+    user?.name ||
+    "User";
+
   if (!user) return <div className={styles.loading}>Loading...</div>;
 
   return (
     <div>
-      {/* NOTIFICATION */}
+      {/* FONT AWESOME */}
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      />
+
+      {/* NOTIFICATION POPUP */}
       {notification.msg && (
         <div className={`${styles.notificationPopup} ${styles[notification.type]}`}>
           {notification.msg}
         </div>
       )}
 
-      {/* HEADER */}
+      {/* ── HEADER ── */}
       <header className={styles.header}>
-        <button className={styles.hamburger} onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <button
+          className={styles.hamburger}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
           <i className="fa-solid fa-bars" />
         </button>
 
@@ -266,9 +323,83 @@ const deletePost = async (id) => {
           Dosti<span>शिप</span>
         </Link>
 
-        <div className={styles.headerSearch}>
+        {/* HEADER SEARCH — real-time */}
+        <div className={styles.headerSearch} style={{ position: "relative" }}>
           <i className="fa-solid fa-magnifying-glass" />
-          <input type="text" placeholder="Search people, posts..." />
+          <input
+            type="text"
+            placeholder="Search people, posts..."
+            value={headerQuery}
+            onChange={(e) => setHeaderQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Escape" && setHeaderQuery("")}
+            autoComplete="off"
+          />
+
+          {/* SEARCH DROPDOWN */}
+          {headerResults && (
+            <div className={styles.searchDropdown}>
+              {/* PEOPLE */}
+              {headerResults.users.length > 0 && (
+                <div className={styles.searchGroup}>
+                  <div className={styles.searchGroupLabel}>People</div>
+                  {headerResults.users.slice(0, 5).map((u) => (
+                    <div key={u._id} className={styles.searchResultItem}>
+                      <Avatar name={u.username || u.name} pic={u.profilePic} size={34} fontSize={13} />
+                      <div className={styles.searchResultInfo}>
+                        <div className={styles.searchResultName}>
+                          {u.username || u.name}
+                        </div>
+                        {u.interests?.length > 0 && (
+                          <div className={styles.searchResultSub}>
+                            {u.interests.slice(0, 2).join(", ")}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        className={styles.addFriendSmall}
+                        onClick={() => sendRequest(u._id)}
+                        disabled={sendingTo[u._id]}
+                      >
+                        {sendingTo[u._id] ? "..." : "Add"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* POSTS */}
+              {headerResults.posts.length > 0 && (
+                <div className={styles.searchGroup}>
+                  <div className={styles.searchGroupLabel}>Posts</div>
+                  {headerResults.posts.slice(0, 4).map((p) => (
+                    <div key={p._id} className={styles.searchResultItem}>
+                      <Avatar name={getPostUsername(p)} pic={p.user?.profilePic} size={34} fontSize={13} />
+                      <div className={styles.searchResultInfo}>
+                        <div className={styles.searchResultName}>
+                          {getPostUsername(p)}
+                        </div>
+                        <div className={styles.searchResultSub}>
+                          {(p.caption || "").slice(0, 60)}{p.caption?.length > 60 ? "…" : ""}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* EMPTY */}
+              {headerResults.users.length === 0 && headerResults.posts.length === 0 && (
+                <div className={styles.searchEmpty}>No results for "{headerQuery}"</div>
+              )}
+
+              <button
+                className={styles.searchClear}
+                onClick={() => setHeaderQuery("")}
+              >
+                Clear search
+              </button>
+            </div>
+          )}
         </div>
 
         <div className={styles.headerIcons}>
@@ -283,8 +414,9 @@ const deletePost = async (id) => {
 
             {dropdownOpen && (
               <div className={styles.dropdownMenu}>
-                <Link to="/profile"><i className="fa-solid fa-user" /> My Profile</Link>
-                
+                <Link to="/profile">
+                  <i className="fa-solid fa-user" /> My Profile
+                </Link>
                 <a href="/" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket" /> Logout
                 </a>
@@ -295,7 +427,7 @@ const deletePost = async (id) => {
       </header>
 
       <div className={styles.mainContent}>
-        {/* LEFT SIDEBAR */}
+        {/* ── LEFT SIDEBAR ── */}
         <aside
           ref={sidebarRef}
           className={`${styles.sidebar} ${sidebarOpen ? styles.active : ""}`}
@@ -329,7 +461,7 @@ const deletePost = async (id) => {
           </div>
         </aside>
 
-        {/* MAIN CONTENT */}
+        {/* ── MAIN CONTENT ── */}
         <main className={styles.contentArea}>
           {/* WELCOME BANNER */}
           <div className={styles.welcomeBanner}>
@@ -380,73 +512,59 @@ const deletePost = async (id) => {
             </div>
           </div>
 
-          {/* FEED */}
+          {/* ── FEED ── */}
           <div className={styles.feedGrid}>
             <div className={styles.activityFeed}>
               <div className={styles.feedHeader}>
-                <span className={styles.feedTitle}>Recent Activity</span>
-                <div className={styles.feedTabs}>
-                  <button className={`${styles.feedTab} ${styles.active}`}>All</button>
-                  <button className={styles.feedTab}>Friends</button>
-                  <button className={styles.feedTab}>Groups</button>
-                </div>
+                <span className={styles.feedTitle}>
+                  {headerResults
+                    ? `Results for "${headerQuery}" (${displayedPosts.length})`
+                    : "Recent Activity"}
+                </span>
+                {!headerResults && (
+                  <div className={styles.feedTabs}>
+                    <button className={`${styles.feedTab} ${styles.active}`}>All</button>
+                    <button className={styles.feedTab}>Friends</button>
+                    <button className={styles.feedTab}>Groups</button>
+                  </div>
+                )}
+                {headerResults && (
+                  <button
+                    className={styles.feedTab}
+                    onClick={() => setHeaderQuery("")}
+                    style={{ color: "#4a3aff" }}
+                  >
+                    ✕ Clear
+                  </button>
+                )}
               </div>
 
-              {posts.length === 0 ? (
-                <p className={styles.emptyFeed}>No posts yet. Be the first to post!</p>
+              {displayedPosts.length === 0 ? (
+                <p className={styles.emptyFeed}>
+                  {headerResults ? "No posts match your search." : "No posts yet. Be the first to post!"}
+                </p>
               ) : (
-                
-posts.map((post) => {
-  const isLiked =
-    post.likes.includes(
-      user._id || user.id
-    );
+                displayedPosts.map((post) => {
+                  const isLiked   = post.likes.includes(user._id || user.id);
+                  const isOwner   = String(post.user?._id || post.user) === String(user._id || user.id);
+                  const commentsOpen = activeComments[post._id];
+                  const postName  = getPostUsername(post);
 
- const isOwner =
-  String(post.user?._id || post.user) ===
-String(user._id || user.id);
-
-  const commentsOpen =
-    activeComments[post._id];
-
-  return (
-    <div
-      key={post._id}
-      className={styles.activityItem}
-    >
-      <div className={styles.activityHeader}>
-        <Avatar
-          name={
-            post.user?.name ||
-post.user?.username ||
-post.user?.email?.split("@")[0] ||
-user.name ||
-"User"
-          }
-          pic={post.user?.profilePic}
-          size={44}
-          fontSize={16}
-        />
-
-        <div style={{ flex: 1 }}>
-          <div className={styles.activityUser}>
-            {
-              post.user?.name ||
-post.user?.username ||
-post.user?.email?.split("@")[0] ||
-user.name ||
-"User"
-            }
-          </div>
-
-          <div className={styles.activityTime}>
-            <i className="fa-solid fa-clock" />
-            {" "}
-            {formatTime(post.createdAt)}
-          </div>
-        </div>
-
-
+                  return (
+                    <div key={post._id} className={styles.activityItem}>
+                      <div className={styles.activityHeader}>
+                        <Avatar
+                          name={postName}
+                          pic={post.user?.profilePic}
+                          size={44}
+                          fontSize={16}
+                        />
+                        <div style={{ flex: 1 }}>
+                          <div className={styles.activityUser}>{postName}</div>
+                          <div className={styles.activityTime}>
+                            <i className="fa-solid fa-clock" /> {formatTime(post.createdAt)}
+                          </div>
+                        </div>
                         {isOwner && (
                           <button
                             className={styles.deleteBtn}
@@ -515,39 +633,30 @@ user.name ||
                           </div>
 
                           {post.comments.map((comment, i) => (
-  <div key={i} className={styles.comment}>
-    <Avatar
-      name={comment.user?.name}
-      size={30}
-      fontSize={11}
-    />
-
-    <div style={{ flex: 1 }}>
-      <div className={styles.commentUser}>
-        {comment.user?.name || "User"}
-      </div>
-
-      <div className={styles.commentText}>
-        {comment.text}
-      </div>
-    </div>
-
-    {String(comment.user?._id || comment.user) ===
-String(user._id || user.id) && (
-      <button
-        className={styles.commentDeleteBtn}
-        onClick={() =>
-          deleteComment(
-            post._id,
-            comment._id
-          )
-        }
-      >
-        <i className="fa-solid fa-trash" />
-      </button>
-    )}
-  </div>
-))}
+                            <div key={comment._id || i} className={styles.comment}>
+                              <Avatar
+                                name={comment.user?.name}
+                                pic={comment.user?.profilePic}
+                                size={30}
+                                fontSize={11}
+                              />
+                              <div style={{ flex: 1 }}>
+                                <div className={styles.commentUser}>
+                                  {comment.user?.name || "User"}
+                                </div>
+                                <div className={styles.commentText}>{comment.text}</div>
+                              </div>
+                              {String(comment.user?._id || comment.user) ===
+                                String(user._id || user.id) && (
+                                <button
+                                  className={styles.commentDeleteBtn}
+                                  onClick={() => deleteComment(post._id, comment._id)}
+                                >
+                                  <i className="fa-solid fa-trash" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -556,15 +665,63 @@ String(user._id || user.id) && (
               )}
             </div>
 
-            {/* RIGHT SIDEBAR */}
+            {/* ── RIGHT SIDEBAR ── */}
             <div className={styles.connectionsSidebar}>
               <div className={styles.sidebarCard}>
                 <div className={styles.sidebarCardTitle}>
-                  People You May Know <a href="#">See All</a>
+                  People You May Know
+                  <Link to="/notifications" style={{ fontSize: 12, color: "#4a3aff", textDecoration: "none" }}>
+                    See All
+                  </Link>
                 </div>
+
+                {/* REAL-TIME PEOPLE SEARCH */}
                 <div className={styles.connSearch}>
                   <i className="fa-solid fa-magnifying-glass" />
-                  <input type="text" placeholder="Search people..." />
+                  <input
+                    type="text"
+                    placeholder="Search people..."
+                    value={sidebarQuery}
+                    onChange={(e) => setSidebarQuery(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
+
+                {/* PEOPLE LIST */}
+                <div className={styles.suggestionList}>
+                  {filteredSidebarUsers.length === 0 ? (
+                    <p className={styles.noResults}>
+                      {sidebarQuery ? `No users matching "${sidebarQuery}"` : "No suggestions right now"}
+                    </p>
+                  ) : (
+                    filteredSidebarUsers.slice(0, 6).map((u) => (
+                      <div key={u._id} className={styles.suggestionItem}>
+                        <Avatar
+                          name={u.username || u.name}
+                          pic={u.profilePic}
+                          size={38}
+                          fontSize={14}
+                        />
+                        <div className={styles.suggestionInfo}>
+                          <div className={styles.suggestionName}>
+                            {u.username || u.name}
+                          </div>
+                          {u.interests?.length > 0 && (
+                            <div className={styles.suggestionSub}>
+                              {u.interests.slice(0, 2).join(", ")}
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          className={styles.addFriendSmall}
+                          onClick={() => sendRequest(u._id)}
+                          disabled={sendingTo[u._id]}
+                        >
+                          {sendingTo[u._id] ? "…" : "+ Add"}
+                        </button>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
 

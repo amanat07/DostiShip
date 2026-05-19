@@ -82,7 +82,7 @@
   border: none;
 }
 
-/* HEADER SEARCH */
+/* ── HEADER SEARCH ── */
 .headerSearch {
   flex: 1;
   max-width: 320px;
@@ -90,13 +90,15 @@
   position: relative;
 }
 
-.headerSearch i {
+.headerSearch > i {
   position: absolute;
   left: 13px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
   font-size: 13px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .headerSearch input {
@@ -109,11 +111,139 @@
   background: var(--light-color);
   transition: var(--transition);
   font-family: "Poppins", sans-serif;
+  color: var(--text-color);
 }
 
 .headerSearch input:focus {
   border-color: var(--primary-color);
   background: white;
+  box-shadow: 0 0 0 3px rgba(74, 58, 255, 0.07);
+}
+
+/* ── SEARCH DROPDOWN ── */
+.searchDropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  z-index: 500;
+  overflow: hidden;
+  animation: fadeInUp 0.15s ease;
+  min-width: 360px;
+}
+
+.searchGroup + .searchGroup {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.searchGroupLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-light);
+  padding: 12px 16px 5px;
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.searchResultItem:hover {
+  background: var(--light-color);
+}
+
+.searchResultInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.searchResultName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.searchResultSub {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.searchResultBadge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.searchResultBadge.person {
+  background: rgba(74, 58, 255, 0.09);
+  color: var(--primary-color);
+}
+
+.searchResultBadge.post {
+  background: rgba(76, 175, 80, 0.1);
+  color: #2e7d32;
+}
+
+.searchEmpty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+.searchEmpty span {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.searchFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--light-color);
+}
+
+.searchResultCount {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.searchClear {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: var(--transition);
+  padding: 2px 0;
+}
+
+.searchClear:hover {
+  color: var(--primary-color);
 }
 
 /* HEADER ICONS */
@@ -206,7 +336,7 @@
   overflow-x: hidden;
 }
 
-/* SIDEBAR */
+/* LEFT SIDEBAR */
 .sidebar {
   width: var(--sidebar-width);
   background: white;
@@ -583,16 +713,21 @@
   border-color: var(--accent-color);
 }
 
-.deleteBtn {
-  background: none;
+.deleteBtn,
+.commentDeleteBtn {
   border: none;
+  background: none;
+  color: #ff4d4f;
   cursor: pointer;
-  color: var(--text-light);
   font-size: 14px;
   transition: var(--transition);
 }
 
-.deleteBtn:hover { color: var(--accent-color); }
+.deleteBtn:hover,
+.commentDeleteBtn:hover {
+  color: #c0392b;
+  transform: scale(1.1);
+}
 
 /* COMMENTS */
 .commentSection { margin-top: 12px; }
@@ -635,7 +770,7 @@
   color: var(--text-color);
 }
 
-/* RIGHT SIDEBAR */
+/* ── RIGHT SIDEBAR ── */
 .connectionsSidebar {
   display: flex;
   flex-direction: column;
@@ -662,41 +797,139 @@
 
 .sidebarCardTitle a {
   font-size: 11px;
-  color: var(--primary-color);
+  color: var(--text-light);
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transition: var(--transition);
 }
 
+.sidebarCardTitle a:hover {
+  color: var(--primary-color);
+}
+
+/* ── CONNECTIONS SEARCH (right sidebar) ── */
 .connSearch {
   position: relative;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .connSearch input {
   width: 100%;
-  padding: 8px 12px 8px 32px;
-  border: 1.5px solid #eee;
-  border-radius: 50px;
-  font-size: 12px;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-size: 12.5px;
+  background: var(--light-color);
+  color: var(--text-color);
   outline: none;
-  transition: var(--transition);
   font-family: "Poppins", sans-serif;
+  transition: var(--transition);
 }
 
-.connSearch input:focus { border-color: var(--primary-color); }
+.connSearch input:focus {
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(74, 58, 255, 0.06);
+}
 
 .connSearch i {
   position: absolute;
   left: 11px;
   top: 50%;
   transform: translateY(-50%);
+  font-size: 13px;
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+/* ── SUGGESTION LIST ── */
+.suggestionList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.noResults {
+  font-size: 12px;
+  color: var(--text-light);
+  text-align: center;
+  padding: 14px 0 6px;
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+  cursor: default;
+}
+
+.suggestionItem:hover {
+  background: rgba(74, 58, 255, 0.05);
+}
+
+.suggestionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestionName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestionSub {
   font-size: 11px;
   color: var(--text-light);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── ADD FRIEND BUTTON ── */
+.addFriendSmall {
+  flex-shrink: 0;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1.5px solid rgba(74, 58, 255, 0.3);
+  background: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.addFriendSmall:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(74, 58, 255, 0.25);
+}
+
+.addFriendSmall:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* ANIMATION */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* RESPONSIVE */
@@ -723,12 +956,4 @@
     gap: 10px;
     padding: 20px;
   }
-}
-.deleteBtn,
-.commentDeleteBtn{
-  border:none;
-  background:none;
-  color:#ff4d4f;
-  cursor:pointer;
-  font-size:14px;
 }
