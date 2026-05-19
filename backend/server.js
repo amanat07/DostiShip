@@ -33,12 +33,12 @@ io.on("connection", (socket) => {
   console.log("✅ User connected:", socket.id);
 
   socket.on("add-user", (userId) => {
-    onlineUsers.set(userId, socket.id);
+    onlineUsers.set( String(userId), socket.id );
     console.log("User added:", userId);
   });
 
   socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
+    const sendUserSocket =onlineUsers.get( String(data.to) );
 
     if (sendUserSocket) {
       io.to(sendUserSocket).emit(
@@ -129,7 +129,7 @@ app.get(
   async (req, res) => {
     try {
       const token = jwt.sign(
-        { id: req.user._id },
+       { userId: req.user._id },
         process.env.JWT_SECRET,
         { expiresIn: "7d" }
       );
