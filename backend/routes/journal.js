@@ -1,3 +1,33 @@
+const express = require("express");
+const router = express.Router();
+
+const Journal = require("../models/Journal");
+
+
+// GET USER JOURNALS
+router.get("/:userId", async (req, res) => {
+  try {
+
+    const journals = await Journal.find({
+      userId: req.params.userId,
+    }).sort({ createdAt: -1 });
+
+    res.json({
+      journals,
+      count: journals.length,
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: err.message,
+    });
+
+  }
+});
+
+
+// CREATE JOURNAL
 router.post("/", async (req, res) => {
   try {
 
@@ -29,3 +59,27 @@ router.post("/", async (req, res) => {
 
   }
 });
+
+
+// DELETE JOURNAL
+router.delete("/:id", async (req, res) => {
+  try {
+
+    await Journal.findByIdAndDelete(
+      req.params.id
+    );
+
+    res.json({
+      message: "Deleted",
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      error: err.message,
+    });
+
+  }
+});
+
+module.exports = router;

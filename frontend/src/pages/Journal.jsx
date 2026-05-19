@@ -136,7 +136,7 @@ export default function Journal() {
 
   // ── API ──
   async function loadEntries() {
-    const res  = await fetch(`${API}/api/journal/${user._id}`);
+    const res  = await fetch(`${API}/api/journal/${user._id || user.id}`);
     const data = await res.json();
     setEntries(data.journals || []);
   }
@@ -147,7 +147,7 @@ export default function Journal() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId:   user._id,
+        userId:   user._id || user.id,
         username: user.username || user.name,
         title:    title || "Untitled Entry",
         content,
@@ -354,7 +354,7 @@ export default function Journal() {
                 ) : (
                   entries.map((e) => (
                     <div
-                      key={e._id}
+                      key={e._id || e.id}
                       className={`${styles.entryCard} ${styles["mood_" + e.mood]}`}
                     >
                       <div className={styles.entryHeader}>
@@ -368,7 +368,7 @@ export default function Journal() {
                         <span className={styles.entryTime}>
                           <i className="fas fa-clock" /> {formatTime(e.createdAt)}
                         </span>
-                        <button className={styles.deleteBtn} onClick={() => deleteEntry(e._id)}>
+                        <button className={styles.deleteBtn} onClick={() => deleteEntry(e._id || e.id)}>
                           <i className="fas fa-trash" /> Delete
                         </button>
                       </div>
