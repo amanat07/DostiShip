@@ -724,3 +724,11 @@
     padding: 20px;
   }
 }
+.deleteBtn,
+.commentDeleteBtn{
+  border:none;
+  background:none;
+  color:#ff4d4f;
+  cursor:pointer;
+  font-size:14px;
+}

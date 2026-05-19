@@ -180,23 +180,62 @@ useEffect(() => {
       showNotification("Could not add comment", "error");
     }
   };
+// ── DELETE COMMENT ──
+const deleteComment = async (
+  postId,
+  commentId
+) => {
 
-  // ── DELETE POST ──
-  const deletePost = async (id) => {
-    if (!window.confirm("Delete this post?")) return;
-    try {
-      const res = await fetch(`${API}/api/posts/${id}`, {
+  try {
+
+    await fetch(
+      `http://localhost:5000/api/posts/comment/${postId}/${commentId}`,
+      {
         method: "DELETE",
-        headers: { Authorization: "Bearer " + token },
-      });
-      if (res.ok) {
-        setPosts((prev) => prev.filter((p) => p._id !== id));
-        showNotification("Post deleted", "success");
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
       }
-    } catch {
-      showNotification("Could not delete post", "error");
-    }
-  };
+    );
+
+    loadPosts();
+
+  } catch (err) {
+
+    console.error(err);
+
+  }
+};
+  // ── DELETE POST ──
+  // ── DELETE POST ──
+const deletePost = async (id) => {
+
+  try {
+
+    await fetch(
+      `http://localhost:5000/api/posts/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      }
+    );
+
+    setPosts((prev) =>
+      prev.filter(
+        (p) => p._id !== id
+      )
+    );
+
+  } catch (err) {
+
+    console.error(err);
+
+  }
+};
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -481,15 +520,40 @@ posts.map((post) => {
                             </button>
                           </div>
 
-                          {post.comments.map((c, i) => (
-                            <div key={i} className={styles.comment}>
-                              <Avatar name={c.user?.name} size={30} fontSize={11} />
-                              <div>
-                                <div className={styles.commentUser}>{c.user?.name || "User"}</div>
-                                <div className={styles.commentText}>{c.text}</div>
-                              </div>
-                            </div>
-                          ))}
+                          {post.comments.map((comment, i) => (
+  <div key={i} className={styles.comment}>
+    <Avatar
+      name={comment.user?.name}
+      size={30}
+      fontSize={11}
+    />
+
+    <div style={{ flex: 1 }}>
+      <div className={styles.commentUser}>
+        {comment.user?.name || "User"}
+      </div>
+
+      <div className={styles.commentText}>
+        {comment.text}
+      </div>
+    </div>
+
+    {comment.user?._id ===
+      (user._id || user.id) && (
+      <button
+        className={styles.commentDeleteBtn}
+        onClick={() =>
+          deleteComment(
+            post._id,
+            comment._id
+          )
+        }
+      >
+        <i className="fa-solid fa-trash" />
+      </button>
+    )}
+  </div>
+))}
                         </div>
                       )}
                     </div>
