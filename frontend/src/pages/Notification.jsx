@@ -391,9 +391,9 @@ export default function Notifications() {
 
               {profileOpen && (
                 <div className={styles.dropdownMenu}>
-                  <a href="./profile.html"><i className="fa-solid fa-user" /> My Profile</a>
-                  <a href="./interest.html"><i className="fa-solid fa-heart" /> My Interests</a>
-                  <a href="./main.html" onClick={logout}><i className="fa-solid fa-right-from-bracket" /> Logout</a>
+                  <a href="./profilepage"><i className="fa-solid fa-user" /> My Profile</a>
+                  <a href="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</a>
+                  <a href="/home" onClick={logout}><i className="fa-solid fa-right-from-bracket" /> Logout</a>
                 </div>
               )}
             </div>
@@ -415,12 +415,12 @@ export default function Notifications() {
             <div className={styles.sidebarSection}>
               <p className={styles.sidebarTitle}>Menu</p>
               <ul className={styles.sidebarMenu}>
-                <li><a href="./page.html"><i className="fa-solid fa-house" /> Home</a></li>
-                <li><a href="./notification.html" className={styles.active}><i className="fa-solid fa-bell" /> Notifications</a></li>
-                <li><a href="./map.html"><i className="fa-solid fa-map-location-dot" /> Friends Map</a></li>
-                <li><a href="./inbox.html"><i className="fa-solid fa-envelope" /> Inbox</a></li>
-                <li><a href="./journal.html"><i className="fa-solid fa-book-open" /> Journal</a></li>
-                <li><a href="./hangout.html"><i className="fa-solid fa-users" /> Hangout Rooms</a></li>
+                <li><Link to="/dashboard" className={styles.active}><i className="fa-solid fa-house" /> Home</Link></li>
+              <li><Link to="/notifications"><i className="fa-solid fa-bell" /> Notifications</Link></li>
+              <li><Link to="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</Link></li>
+              <li><Link to="/inbox"><i className="fa-solid fa-envelope" /> Inbox</Link></li>
+              <li><Link to="/journal"><i className="fa-solid fa-book-open" /> Journal</Link></li>
+              <li><Link to="/hangout"><i className="fa-solid fa-users" /> Hangout Rooms</Link></li>
               </ul>
             </div>
 

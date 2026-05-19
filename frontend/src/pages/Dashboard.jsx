@@ -304,7 +304,7 @@ export default function Dashboard() {
             <ul className={styles.sidebarMenu}>
               <li><Link to="/profile"><i className="fa-solid fa-user-circle" /> Profile</Link></li>
               <li><Link to="/discover-interests"><i className="fa-solid fa-heart" /> Interests</Link></li>
-              <li><a href="#" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
+              <li><a href="/" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
             </ul>
           </div>
         </aside>

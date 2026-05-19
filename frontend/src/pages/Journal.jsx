@@ -217,7 +217,7 @@ export default function Journal() {
             <div className={styles.dropdownMenu}>
               <a href="/profile"><i className="fas fa-user" /> My Profile</a>
               <a href="/interest"><i className="fas fa-heart" /> My Interests</a>
-              <a href="#" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</a>
+              <a href="/" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</a>
             </div>
           </div>
         </div>

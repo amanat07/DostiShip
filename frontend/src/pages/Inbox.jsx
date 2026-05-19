@@ -290,7 +290,7 @@ function InboxSidebar({ me, open, onClose, onLogout }) {
           <li><a href="/profile"><i className="fa-solid fa-user-circle" /> Profile</a></li>
           <li><a href="/interest"><i className="fa-solid fa-heart" /> Interests</a></li>
           <li>
-            <a href="#" onClick={(e) => { e.preventDefault(); onLogout(); }}>
+            <a href="/" onClick={(e) => { e.preventDefault(); onLogout(); }}>
               <i className="fa-solid fa-right-from-bracket" /> Logout
             </a>
           </li>
