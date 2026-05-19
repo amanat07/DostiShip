@@ -12,6 +12,25 @@ function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+useEffect(() => {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  if (
+    params.get("error") ===
+    "invalid_domain"
+  ) {
+
+    alert(
+      "Only @chitkara.edu.in email accounts are allowed to sign in with Google OAuth."
+    );
+
+  }
+
+}, []);
 
   // ── If already logged in, skip to the right page ──
   useEffect(() => {
