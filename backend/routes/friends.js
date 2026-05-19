@@ -167,6 +167,7 @@ router.get(
 
 
 // ACCEPT
+
 router.put(
   "/accept/:id",
   authMiddleware,
@@ -174,16 +175,49 @@ router.put(
 
     try {
 
-      await FriendRequest.findByIdAndUpdate(
-        req.params.id,
+      const request =
+        await FriendRequest.findById(
+          req.params.id
+        );
+
+      if (!request) {
+
+        return res.status(404).json({
+          error:
+            "Request not found",
+        });
+
+      }
+
+      // UPDATE STATUS
+      request.status =
+        "accepted";
+
+      await request.save();
+
+      // ADD BOTH USERS
+      await User.findByIdAndUpdate(
+        request.from,
         {
-          status: "accepted",
+          $addToSet: {
+            friends: request.to,
+          },
+        }
+      );
+
+      await User.findByIdAndUpdate(
+        request.to,
+        {
+          $addToSet: {
+            friends:
+              request.from,
+          },
         }
       );
 
       res.json({
         message:
-          "Accepted",
+          "Friend request accepted",
       });
 
     } catch (err) {
@@ -195,6 +229,8 @@ router.put(
     }
   }
 );
+
+
 
 
 // DECLINE

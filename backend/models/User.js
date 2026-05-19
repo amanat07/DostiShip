@@ -26,6 +26,7 @@ const UserSchema = new mongoose.Schema({
   profilePic: {   // ✅ ADD THIS ONLY
     type: String
   },
+  friends: [ { type: mongoose.Schema.Types.ObjectId, ref: "User", } ],
   interests: {
   type: [String],
   default: []

@@ -34,7 +34,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!user) return;
     loadInterests();
-    setFriends([]);;
+    loadFriends();
     loadJournal();
   }, [user]);
 
@@ -84,16 +84,54 @@ export default function ProfilePage() {
   };
 
   // ── FRIENDS ──
-  const loadFriends = async () => {
-    try {
-      const res = await fetch(`http://localhost:5000/api/matches/${user.id}`);
-      const data = await res.json();
-      if (!res.ok) { setFriends([]); return; }
-      setFriends(data.friends || []);
-    } catch {
+
+const loadFriends = async () => {
+
+  try {
+
+    const res =
+      await fetch(
+        "http://localhost:5000/api/auth/profile",
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+    const data =
+      await res.json();
+
+    if (!res.ok) {
+
       setFriends([]);
+      return;
+
     }
-  };
+
+    setFriends(
+      data.user?.friends || []
+    );
+    setUser(data.user);
+
+localStorage.setItem(
+  "user",
+  JSON.stringify(data.user)
+);
+
+  } catch {
+
+    setFriends([]);
+
+
+  }
+
+
+
+};
+
+
 
   // ── JOURNAL ──
   const loadJournal = async () => {
@@ -364,10 +402,17 @@ const handleEditSubmit = async (e) => {
           </div>
 
           <div className={styles.heroStats}>
-            <div className={styles.statCard}>
-              <span className={styles.statNum}>{friends.length}</span>
-              <span className={styles.statLabel}>Friends</span>
-            </div>
+           
+           
+<div className={styles.statCard}>
+  <h3>
+    {friends.length}
+  </h3>
+
+  <p>Friends</p>
+</div>
+
+
             <div className={styles.statCard}>
               <span className={styles.statNum}>{interests.length}</span>
               <span className={styles.statLabel}>Interests</span>
@@ -521,9 +566,7 @@ const handleEditSubmit = async (e) => {
               <div className={styles.friendsList}>
                 {friends.slice(0, 5).map((f, idx) => (
                   <div key={idx} className={styles.friendItem}>
-                    <div className={styles.friendAvatar}>
-                      {f.name?.charAt(0) || "?"}
-                    </div>
+                    <img src={ !f.profilePic ? "https://ui-avatars.com/api/?name=" + encodeURIComponent(f.name) : f.profilePic.startsWith("http") ? f.profilePic : `http://localhost:5000/${f.profilePic}` } alt="" className={styles.friendAvatar} />
                     <div className={styles.friendInfo}>
                       <div className={styles.friendName}>{f.name}</div>
                     </div>

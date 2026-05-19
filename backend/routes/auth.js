@@ -120,9 +120,17 @@ router.post("/login", async (req, res) => {
 // ================= GET PROFILE =================
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(
-      req.user.userId
-    ).select("-password");
+const user =
+  await User.findById(
+    req.user.userId
+  )
+  .populate(
+    "friends",
+    "name username profilePic"
+  )
+  .select("-password");
+
+
 
     if (!user) {
       return res.status(404).json({
