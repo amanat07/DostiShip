@@ -64,7 +64,7 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/login",
+    failureRedirect:"http://localhost:3000/login?error=invalid_domain",
   }),
   async (req, res) => {
     try {
