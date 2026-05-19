@@ -275,7 +275,7 @@ function InboxSidebar({ me, open, onClose, onLogout }) {
       <div className={styles.navSection}>
         <p className={styles.navLabel}>Menu</p>
         <ul className={styles.navMenu}>
-          <li><a href="/page"><i className="fa-solid fa-house" /> Home</a></li>
+          <li><a href="/dashboard"><i className="fa-solid fa-house" /> Home</a></li>
           <li><a href="/notifications"><i className="fa-solid fa-bell" /> Notifications</a></li>
           <li><a href="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</a></li>
           <li><a href="/inbox" className={styles.active}><i className="fa-solid fa-envelope" /> Inbox</a></li>

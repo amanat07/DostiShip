@@ -250,7 +250,7 @@ export default function Map() {
         {/* ✅ FIX: Section title "Menu" added */}
         <p className={styles.sidebarTitle}>Menu</p>
         <nav className={styles.sidebarMenu}>
-          <Link to="/page">
+          <Link to="/dashboard">
             <i className="fa-solid fa-house"></i> Home
           </Link>
           <Link to="/notifications">
