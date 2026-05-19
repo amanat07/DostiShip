@@ -485,7 +485,6 @@ useEffect(() => {
                 <ul className={styles.sidebarMenu}>
                   <li><Link to="/hangout"><i className="fa-solid fa-users" /> Hangout Rooms</Link></li>
                   <li><Link to="/journal"><i className="fa-solid fa-book-open" /> My Journal</Link></li>
-                  <li><Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link></li>
                   <li><Link to="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</Link></li>
                 </ul>
               </div>

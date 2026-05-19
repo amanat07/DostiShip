@@ -276,9 +276,7 @@ export default function Map() {
           <Link to="/profile">
             <i className="fa-solid fa-user-circle"></i> Profile
           </Link>
-          <Link to="/discover-interests">
-            <i className="fa-solid fa-heart"></i> Interests
-          </Link>
+          
           <a href="/" onClick={logout}>
             <i className="fa-solid fa-right-from-bracket"></i> Logout
           </a>

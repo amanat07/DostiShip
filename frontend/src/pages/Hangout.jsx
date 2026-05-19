@@ -154,7 +154,6 @@ function Hangout() {
             <p className="h-sidebar-title">Account</p>
             <ul className="h-sidebar-menu">
               <li><Link to="/profile"><i className="fa-solid fa-user-circle" /> Profile</Link></li>
-              <li><Link to="/discover-interests"><i className="fa-solid fa-heart" /> Interests</Link></li>
               <li><a href="/login" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
             </ul>
           </div>

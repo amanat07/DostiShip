@@ -423,7 +423,7 @@ export default function Notifications() {
               <p className={styles.sidebarTitle}>Account</p>
               <ul className={styles.sidebarMenu}>
                 <li><a href="./profile.html"><i className="fa-solid fa-user-circle" /> Profile</a></li>
-                <li><a href="./interest.html"><i className="fa-solid fa-heart" /> Interests</a></li>
+                
                 <li><a href="./main.html" onClick={logout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
               </ul>
             </div>

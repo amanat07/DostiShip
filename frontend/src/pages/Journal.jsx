@@ -256,7 +256,7 @@ export default function Journal() {
             <p className={styles.sidebarTitle}>Account</p>
             <ul className={styles.sidebarMenu}>
               <li><Link to="/profile"><i className="fas fa-user-circle" /> Profile</Link></li>
-              <li><Link to="/discover-interests"><i className="fas fa-heart" /> Interests</Link></li>
+             
               <li><Link to="/" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</Link></li>
             </ul>
           </div>

@@ -288,7 +288,6 @@ function InboxSidebar({ me, open, onClose, onLogout }) {
         <p className={styles.navLabel}>Account</p>
         <ul className={styles.navMenu}>
           <li><a href="/profile"><i className="fa-solid fa-user-circle" /> Profile</a></li>
-          <li><a href="/discover-interests"><i className="fa-solid fa-heart" /> Interests</a></li>
           <li>
             <a href="/" onClick={(e) => { e.preventDefault(); onLogout(); }}>
               <i className="fa-solid fa-right-from-bracket" /> Logout

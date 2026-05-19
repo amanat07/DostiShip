@@ -332,12 +332,7 @@ const handleEditSubmit = async (e) => {
         </a>
       </li>
 
-      <li>
-        <a onClick={() => navigate("/discover-interests")}>
-          <i className="fa-solid fa-heart"></i>
-          Interests
-        </a>
-      </li>
+      
 
       <li>
         <a onClick={handleLogout}>
