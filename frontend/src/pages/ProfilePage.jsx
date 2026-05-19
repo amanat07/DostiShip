@@ -72,7 +72,7 @@ export default function ProfilePage() {
   // ── INTERESTS ──
   const loadInterests = async () => {
     try {
-      const res = await fetch("/api/auth/interests", {
+      const res = await fetch("http://localhost:5000/api/auth/interests", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -86,7 +86,7 @@ export default function ProfilePage() {
   // ── FRIENDS ──
   const loadFriends = async () => {
     try {
-      const res = await fetch(`/api/matches/${user.id}`);
+      const res = await fetch(`http://localhost:5000/api/matches/${user.id}`);
       const data = await res.json();
       if (!res.ok) { setFriends([]); return; }
       setFriends(data.friends || []);
@@ -98,7 +98,7 @@ export default function ProfilePage() {
   // ── JOURNAL ──
   const loadJournal = async () => {
     try {
-      const res = await fetch(`/api/journal/${user.id}`);
+      const res = await fetch(`http://localhost:5000/api/journal/${user.id}`);
       const data = await res.json();
       setJournalCount(data.count || 0);
     } catch {
@@ -110,7 +110,7 @@ export default function ProfilePage() {
   const getProfileImage = () => {
     if (!user?.profilePic) return "https://via.placeholder.com/80";
     if (user.profilePic.startsWith("http")) return user.profilePic;
-    return `http://localhost:3000/${user.profilePic}`;
+    return `http://localhost:5000/${user.profilePic}`;
   };
 
   // ── EDIT FORM SUBMIT ──

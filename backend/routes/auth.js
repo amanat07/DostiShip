@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const upload = require("../middleware/upload");
 const authMiddleware = require("../middleware/authMiddleware");
 
@@ -11,12 +13,14 @@ router.post("/register", upload.single("profilePic"), async (req, res) => {
   try {
     const { name, username, email, password, gender } = req.body;
 
-    let existingUser = await User.findOne({
+    const existingUser = await User.findOne({
       $or: [{ email }, { username }]
     });
 
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({
+        error: "User already exists"
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,25 +37,28 @@ router.post("/register", upload.single("profilePic"), async (req, res) => {
     await user.save();
 
     const token = jwt.sign(
-  { userId: user._id },
-  process.env.JWT_SECRET,
-  { expiresIn: "1d" }
-);
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-res.status(201).json({
-  message: "User registered successfully",
-  token,
-  user: {
-    id: user._id,
-    name: user.name,
-    username: user.username,
-    email: user.email,
-    gender: user.gender,
-    profilePic: user.profilePic
-  }
-});
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        gender: user.gender,
+        profilePic: user.profilePic
+      }
+    });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
@@ -61,17 +68,27 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({
-      $or: [{ username }, { email: username }]
+      $or: [
+        { username },
+        { email: username }
+      ]
     });
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(400).json({
+        error: "User not found"
+      });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!isMatch) {
-      return res.status(400).json({ error: "Invalid password" });
+      return res.status(400).json({
+        error: "Invalid password"
+      });
     }
 
     const token = jwt.sign(
@@ -87,38 +104,50 @@ router.post("/login", async (req, res) => {
         name: user.name,
         username: user.username,
         email: user.email,
+        interests: user.interests,
         gender: user.gender,
         profilePic: user.profilePic
       }
     });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
-// ================= GET PROFILE (PROTECTED) =================
-// Using the authMiddleware to clean up the route logic
+// ================= GET PROFILE =================
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
-    // req.user.userId comes from the middleware
-    const user = await User.findById(req.user.userId).select("-password");
-    
+    const user = await User.findById(
+      req.user.userId
+    ).select("-password");
+
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        error: "User not found"
+      });
     }
 
     res.json({ user });
+
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({
+      error: "Server error"
+    });
   }
 });
+
 // ================= SAVE INTERESTS =================
 router.post("/interests", authMiddleware, async (req, res) => {
   try {
     const { interests } = req.body;
 
     if (!interests || !interests.length) {
-      return res.status(400).json({ error: "Please select at least one interest" });
+      return res.status(400).json({
+        error: "Please select at least one interest"
+      });
     }
 
     const user = await User.findByIdAndUpdate(
@@ -127,20 +156,40 @@ router.post("/interests", authMiddleware, async (req, res) => {
       { new: true }
     ).select("-password");
 
-    res.json({ message: "Interests saved", user });
+    res.json({
+      message: "Interests saved",
+      user
+    });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+// ================= GET INTERESTS =================
+router.get("/interests", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(
+      req.user.userId
+    ).select("interests");
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found"
+      });
+    }
+
+    res.json({
+      interests: user.interests
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
 module.exports = router;
-// ================= GET INTERESTS =================
-router.get("/interests", authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select("interests");
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json({ interests: user.interests });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});

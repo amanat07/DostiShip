@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/DiscoverInterests.css";
 
 export default function DiscoverInterests() {
@@ -27,6 +27,7 @@ export default function DiscoverInterests() {
 
     function showNotification(message, type = "success") {
       const n = document.getElementById("notification");
+      if (!n) return;
       n.textContent = message;
       n.className = "notification " + type;
       n.style.display = "block";
@@ -108,13 +109,13 @@ export default function DiscoverInterests() {
         removePriorityItem(item.dataset.interest)
       );
       item.addEventListener("dragstart", () => item.classList.add("dragging"));
-      item.addEventListener("dragend", () => item.classList.remove("dragging"));
-      item.addEventListener("dragover", (e) => e.preventDefault());
+      item.addEventListener("dragend",   () => item.classList.remove("dragging"));
+      item.addEventListener("dragover",  (e) => e.preventDefault());
       item.addEventListener("drop", function (e) {
         e.preventDefault();
         const dragging = document.querySelector(".dragging");
         if (dragging !== item) {
-          const all = [...priorityList.querySelectorAll(".priority-item")];
+          const all  = [...priorityList.querySelectorAll(".priority-item")];
           const dIdx = all.indexOf(dragging);
           const tIdx = all.indexOf(item);
           priorityList.insertBefore(dragging, dIdx < tIdx ? item.nextSibling : item);
@@ -168,36 +169,49 @@ export default function DiscoverInterests() {
     // ── SAVE INTERESTS ──
     document.getElementById("saveInterestsBtn").addEventListener("click", async function () {
       if (selectedInterests.size === 0) {
-        showNotification("Please select at least one interest!", "error"); return;
+        showNotification("Please select at least one interest!", "error");
+        return;
       }
-      const interests = [...priorityList.querySelectorAll(".priority-item")].map((item) => ({
-        interest: item.dataset.interest,
-        name: item.querySelector("h4").textContent,
-      }));
+
+      // Get ordered interest names from the priority list (respects drag order)
+      const interestNames = [...priorityList.querySelectorAll(".priority-item")].map(
+        (item) => item.querySelector("h4").textContent
+      );
 
       this.disabled = true;
       this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
       try {
-        const res = await fetch("/api/auth/interests", {
+        // ⚠️ Fixed: was "/api/auth/interests" (relative) → now absolute URL
+        const res = await fetch("http://localhost:5000/api/auth/interests", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
-          body: JSON.stringify({ interests: interests.map((i) => i.name) }),
+          body: JSON.stringify({ interests: interestNames }),
         });
+
         const data = await res.json();
+
         if (res.ok) {
+          // ⚠️ Critical fix: update localStorage user with the returned updated user
+          // Without this, localStorage.user.interests stays [] and login
+          // always redirects back to /discover-interests or /login
+          localStorage.setItem("user", JSON.stringify(data.user));
+
           showNotification("Interests saved! Taking you to your feed 🎉", "success");
-          setTimeout(() => navigate("/dashboard"), 2000);
+          setTimeout(() => navigate("/dashboard", { replace: true }), 1500);
         } else {
           showNotification(data.error || "Something went wrong!", "error");
           this.disabled = false;
           this.innerHTML = '<i class="fas fa-save"></i> Save & Continue';
         }
       } catch {
-        showNotification("Server error! Is the server running?", "error");
+        showNotification(
+          "Cannot connect to server. Make sure backend is running on port 5000.",
+          "error"
+        );
         this.disabled = false;
         this.innerHTML = '<i class="fas fa-save"></i> Save & Continue';
       }
@@ -369,7 +383,6 @@ export default function DiscoverInterests() {
         </div>
 
         <div className="action-buttons">
-          
           <button className="btn btn-primary" id="saveInterestsBtn">
             <i className="fas fa-save"></i> Save &amp; Continue
           </button>

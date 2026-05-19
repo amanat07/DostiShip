@@ -9,24 +9,33 @@ import appleImg from "../assets/apple.jpeg";
 function Login() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    username: "",
-    password: "",
-  });
-
+  const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // ── If already logged in, skip to the right page ──
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
-    }
-  }, []);
+    if (!token) return; // not logged in, stay on login page
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const hasInterests = Array.isArray(user.interests) && user.interests.length > 0;
+      // ⚠️ Old code did: navigate("/dashboard") always — WRONG
+      // Must check interests first
+      if (hasInterests) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/discover-interests", { replace: true });
+      }
+    } catch {
+      // Corrupt localStorage — clear and stay on login
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+  }, [navigate]);
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const showNotification = (message, type = "success") => {
     const notif = document.createElement("div");
@@ -47,7 +56,6 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { username, password } = form;
 
     if (!username || !password) {
@@ -58,36 +66,42 @@ function Login() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
+        // ── Save token and full user object (includes interests array) ──
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
         showNotification("Login successful! Redirecting...", "success");
 
+        // ── Route based on whether interests have been set ──
+        const hasInterests =
+          Array.isArray(data.user.interests) && data.user.interests.length > 0;
+
         setTimeout(() => {
-          if (!data.user.interests || data.user.interests.length === 0) {
-            navigate("/discover-interests");
+          if (hasInterests) {
+            navigate("/dashboard", { replace: true });
           } else {
-            navigate("/dashboard");
+            navigate("/discover-interests", { replace: true });
           }
-        }, 1500);
+        }, 800);
       } else {
         showNotification(data.message || "Invalid login credentials", "error");
         setLoading(false);
       }
     } catch (err) {
       console.error("Login Error:", err);
-      showNotification("Server error! Please try again later.", "error");
+      showNotification(
+        "Cannot connect to server. Make sure backend is running on port 5000.",
+        "error"
+      );
       setLoading(false);
     }
   };
@@ -126,7 +140,7 @@ function Login() {
               <i
                 className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"} ${styles["toggle-password"]}`}
                 onClick={() => setShowPassword((prev) => !prev)}
-              ></i>
+              />
             </div>
 
             <div className={styles["login-forgot-password"]}>
@@ -145,7 +159,7 @@ function Login() {
               <div
                 className={styles["login-social-btn"]}
                 onClick={() =>
-                  (window.location.href = "http://localhost:3000/auth/google")
+                  window.location.href = "http://localhost:5000/auth/google"
                 }
               >
                 <img src={googleImg} alt="Google" />
@@ -168,7 +182,7 @@ function Login() {
           style={{
             background: `url(${loginImage}) no-repeat center center / cover`,
           }}
-        ></div>
+        />
       </div>
     </div>
   );

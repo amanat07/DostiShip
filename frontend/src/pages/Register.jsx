@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "../styles/Register.module.css"; 
+import styles from "../styles/Register.module.css";
 import regImage from "../assets/regii.jpg";
-
 
 function Register() {
   const navigate = useNavigate();
@@ -19,10 +18,15 @@ function Register() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const handleChange = (e) => {
     if (e.target.type === "file") {
-      setForm({ ...form, profilePic: e.target.files[0] });
+      const file = e.target.files[0];
+      if (file) {
+        setForm({ ...form, profilePic: file });
+        setPreviewUrl(URL.createObjectURL(file)); // show preview before upload
+      }
     } else {
       setForm({ ...form, [e.target.name]: e.target.value });
     }
@@ -31,52 +35,37 @@ function Register() {
   const showNotification = (message, type = "success") => {
     const notif = document.createElement("div");
     notif.innerText = message;
-
-    notif.style.position = "fixed";
-    notif.style.top = "20px";
-    notif.style.right = "20px";
-    notif.style.padding = "12px 18px";
-    notif.style.borderRadius = "8px";
-    notif.style.color = "#fff";
-    notif.style.zIndex = "9999";
-    notif.style.fontSize = "14px";
-    notif.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
-    notif.style.backgroundColor =
-      type === "error" ? "#e74c3c" : "#2ecc71";
-
+    Object.assign(notif.style, {
+      position: "fixed", top: "20px", right: "20px",
+      padding: "12px 20px", borderRadius: "8px", color: "#fff",
+      zIndex: "9999", fontSize: "14px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+      backgroundColor: type === "error" ? "#e74c3c" : "#2ecc71",
+      maxWidth: "320px",
+    });
     document.body.appendChild(notif);
-    setTimeout(() => notif.remove(), 3000);
+    setTimeout(() => notif.remove(), 4000);
   };
 
   const togglePassword = (id) => {
     const input = document.getElementById(id);
-    input.type = input.type === "password" ? "text" : "password";
+    if (input) input.type = input.type === "password" ? "text" : "password";
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      confirmPassword,
-      gender,
-      profilePic,
-    } = form;
+    const { firstName, lastName, username, email, password, confirmPassword, gender, profilePic } = form;
 
-    if (
-      !firstName ||
-      !lastName ||
-      !username ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !gender
-    ) {
-      showNotification("Please fill all fields", "error");
+    // ── Client-side validation ──
+    if (!firstName || !lastName || !username || !email || !password || !confirmPassword || !gender) {
+      showNotification("Please fill in all fields", "error");
+      return;
+    }
+
+    // ── Chitkara email check on frontend ──
+    if (!email.toLowerCase().endsWith("@chitkara.edu.in")) {
+      showNotification("Only @chitkara.edu.in email addresses are allowed", "error");
       return;
     }
 
@@ -85,8 +74,13 @@ function Register() {
       return;
     }
 
+    if (password.length < 6) {
+      showNotification("Password must be at least 6 characters", "error");
+      return;
+    }
+
     if (!profilePic) {
-      showNotification("Please upload a profile image", "error");
+      showNotification("Please upload a profile photo", "error");
       return;
     }
 
@@ -94,36 +88,40 @@ function Register() {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append("name", firstName + " " + lastName);
-      formData.append("username", username);
-      formData.append("email", email);
+      formData.append("name", `${firstName} ${lastName}`);
+      formData.append("username", username.toLowerCase());
+      formData.append("email", email.toLowerCase());
       formData.append("password", password);
       formData.append("gender", gender);
-      formData.append("profilePic", profilePic);
+      formData.append("profilePic", profilePic); // uploaded to Cloudinary by backend
 
-      const res = await fetch("http://localhost:3000/api/auth/register", {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         body: formData,
+        // NOTE: Do NOT set Content-Type header — browser sets it with boundary for multipart
       });
 
       const data = await res.json();
 
       if (res.ok) {
+        // Store token and user (interests will be [] at this point)
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        showNotification("Registration successful!", "success");
+        showNotification("Registered successfully! Now pick your interests 🎉", "success");
 
-        setTimeout(() => {
-          navigate("/discover-interests");
-        }, 1500);
+        // Always redirect to discover-interests after registration
+        setTimeout(() => navigate("/discover-interests"), 1200);
       } else {
-        showNotification(data.error || "Something went wrong", "error");
+        showNotification(data.error || "Registration failed", "error");
         setLoading(false);
       }
     } catch (err) {
-      console.error(err);
-      showNotification("Server error!", "error");
+      console.error("Register fetch error:", err);
+      showNotification(
+        "Cannot connect to server. Make sure the backend is running on port 5000.",
+        "error"
+      );
       setLoading(false);
     }
   };
@@ -133,13 +131,9 @@ function Register() {
       {/* IMAGE SECTION */}
       <div
         className={styles.imageSection}
-        style={{
-          background: `url(${regImage}) no-repeat center/cover`,
-        }}
+        style={{ background: `url(${regImage}) no-repeat center/cover` }}
       >
-        <div className={styles.imageCaption}>
-          Join Our Community
-        </div>
+        <div className={styles.imageCaption}>Join Our Community</div>
       </div>
 
       {/* FORM SECTION */}
@@ -148,37 +142,23 @@ function Register() {
 
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <input
-              name="firstName"
-              placeholder="First Name"
-              onChange={handleChange}
-              required
-            />
+            <input name="firstName" placeholder="First Name" onChange={handleChange} required />
           </div>
 
           <div className={styles.formGroup}>
-            <input
-              name="lastName"
-              placeholder="Last Name"
-              onChange={handleChange}
-              required
-            />
+            <input name="lastName" placeholder="Last Name" onChange={handleChange} required />
           </div>
 
           <div className={styles.formGroup}>
-            <input
-              name="username"
-              placeholder="Username"
-              onChange={handleChange}
-              required
-            />
+            <input name="username" placeholder="Username" onChange={handleChange} required />
           </div>
 
+          {/* Email with hint */}
           <div className={styles.formGroup}>
             <input
               type="email"
               name="email"
-              placeholder="Email Address"
+              placeholder="Email (@chitkara.edu.in only)"
               onChange={handleChange}
               required
             />
@@ -198,14 +178,11 @@ function Register() {
               id="password"
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder="Password (min 6 characters)"
               onChange={handleChange}
               required
             />
-            <i
-              className="fas fa-eye"
-              onClick={() => togglePassword("password")}
-            ></i>
+            <i className="fas fa-eye" onClick={() => togglePassword("password")} />
           </div>
 
           <div className={styles.formGroup}>
@@ -217,21 +194,21 @@ function Register() {
               onChange={handleChange}
               required
             />
-            <i
-              className="fas fa-eye"
-              onClick={() => togglePassword("confirmPassword")}
-            ></i>
+            <i className="fas fa-eye" onClick={() => togglePassword("confirmPassword")} />
           </div>
 
-          <div className={styles.checkbox}>
-            <input type="checkbox" required />
-            <label>
-              I accept the <Link to="/terms">Terms</Link> &{" "}
-              <Link to="/privacy">Privacy Policy</Link>
-            </label>
-          </div>
-
+          {/* Profile picture with preview */}
           <div className={styles.formGroup}>
+            {previewUrl && (
+              <img
+                src={previewUrl}
+                alt="Profile preview"
+                style={{
+                  width: 80, height: 80, borderRadius: "50%",
+                  objectFit: "cover", marginBottom: 8, display: "block",
+                }}
+              />
+            )}
             <input
               type="file"
               name="profilePic"
@@ -241,17 +218,21 @@ function Register() {
             />
           </div>
 
-          <button
-            className={styles.registerBtn}
-            disabled={loading}
-          >
+          <div className={styles.checkbox}>
+            <input type="checkbox" required />
+            <label>
+              I accept the <Link to="/terms">Terms</Link> &{" "}
+              <Link to="/privacy-policy">Privacy Policy</Link>
+            </label>
+          </div>
+
+          <button className={styles.registerBtn} disabled={loading}>
             {loading ? "Registering..." : "Register Now"}
           </button>
         </form>
 
         <div className={styles.loginLink}>
-          Already have an account?{" "}
-          <Link to="/login">Login here</Link>
+          Already have an account? <Link to="/login">Login here</Link>
         </div>
       </div>
     </div>

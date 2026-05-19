@@ -2,18 +2,23 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Dashboard.module.css";
 
+const API = "http://localhost:5000";
+
+// ─────────────────────────────────────────────
+// Avatar component
+// ─────────────────────────────────────────────
 function Avatar({ name, pic, size = 40, fontSize = 15 }) {
   const initial = name ? name.charAt(0).toUpperCase() : "?";
   return (
-    <div
-      className={styles.avatar}
-      style={{ width: size, height: size, fontSize }}
-    >
+    <div className={styles.avatar} style={{ width: size, height: size, fontSize }}>
       {pic ? (
         <img
           src={pic}
           alt={name}
-          onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+          onError={(e) => {
+            e.target.style.display = "none";
+            e.target.nextSibling.style.display = "flex";
+          }}
         />
       ) : null}
       <span style={{ display: pic ? "none" : "flex" }}>{initial}</span>
@@ -29,22 +34,27 @@ function formatTime(dateStr) {
   return Math.floor(diff / 86400) + "d ago";
 }
 
+// ─────────────────────────────────────────────
+// Dashboard
+// ─────────────────────────────────────────────
 export default function Dashboard() {
   const navigate = useNavigate();
+
+  // ── token read once at top level — used everywhere below ──
   const token = localStorage.getItem("token");
 
-  const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [caption, setCaption] = useState("");
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser]                 = useState(null);
+  const [posts, setPosts]               = useState([]);
+  const [caption, setCaption]           = useState("");
+  const [image, setImage]               = useState(null);
+  const [preview, setPreview]           = useState(null);
+  const [sidebarOpen, setSidebarOpen]   = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notification, setNotification] = useState({ msg: "", type: "" });
   const [activeComments, setActiveComments] = useState({});
-  const [commentInputs, setCommentInputs] = useState({});
+  const [commentInputs, setCommentInputs]   = useState({});
 
-  const sidebarRef = useRef(null);
+  const sidebarRef  = useRef(null);
   const dropdownRef = useRef(null);
 
   const showNotification = useCallback((msg, type = "success") => {
@@ -52,25 +62,44 @@ export default function Dashboard() {
     setTimeout(() => setNotification({ msg: "", type: "" }), 3000);
   }, []);
 
-  // ── AUTH ──
+  // ── AUTH — single useEffect, no duplicate ──
   useEffect(() => {
-    if (!token) { navigate("/login"); return; }
+    if (!token) {
+      navigate("/login", { replace: true });
+      return;
+    }
 
-    fetch("/api/auth/profile", {
+    fetch(`${API}/api/auth/profile`, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json())
       .then((data) => {
-        if (data.user) setUser(data.user);
-        else { localStorage.removeItem("token"); navigate("/login"); }
+        if (data.user) {
+          setUser(data.user);
+          // Keep localStorage in sync with latest user data from DB
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          // Token rejected by server
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login", { replace: true });
+        }
       })
-      .catch(() => navigate("/login"));
+      .catch(() => {
+        // Network error — don't log out, just show stale data from localStorage
+        const cached = localStorage.getItem("user");
+        if (cached) {
+          setUser(JSON.parse(cached));
+        } else {
+          navigate("/login", { replace: true });
+        }
+      });
   }, [token, navigate]);
 
   // ── LOAD POSTS ──
   const loadPosts = useCallback(async () => {
     try {
-      const res = await fetch("/api/posts");
+      const res  = await fetch(`${API}/api/posts`);
       const data = await res.json();
       setPosts(Array.isArray(data) ? data : []);
     } catch {
@@ -83,12 +112,10 @@ export default function Dashboard() {
   // ── CLOSE SIDEBAR / DROPDOWN ON OUTSIDE CLICK ──
   useEffect(() => {
     function handleClick(e) {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target))
         setSidebarOpen(false);
-      }
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
         setDropdownOpen(false);
-      }
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -105,7 +132,7 @@ export default function Dashboard() {
     if (image) formData.append("image", image);
 
     try {
-      const res = await fetch("/api/posts", {
+      const res = await fetch(`${API}/api/posts`, {
         method: "POST",
         headers: { Authorization: "Bearer " + token },
         body: formData,
@@ -126,7 +153,7 @@ export default function Dashboard() {
   // ── LIKE ──
   const likePost = async (id) => {
     try {
-      const res = await fetch(`/api/posts/${id}/like`, {
+      const res  = await fetch(`${API}/api/posts/${id}/like`, {
         method: "PUT",
         headers: { Authorization: "Bearer " + token },
       });
@@ -135,9 +162,12 @@ export default function Dashboard() {
         setPosts((prev) =>
           prev.map((p) =>
             p._id === id
-              ? { ...p, likes: data.liked
-                  ? [...p.likes, user._id]
-                  : p.likes.filter((l) => l !== user._id) }
+              ? {
+                  ...p,
+                  likes: data.liked
+                    ? [...p.likes, user._id]
+                    : p.likes.filter((l) => l !== user._id),
+                }
               : p
           )
         );
@@ -152,7 +182,7 @@ export default function Dashboard() {
     const text = commentInputs[id]?.trim();
     if (!text) return;
     try {
-      const res = await fetch(`/api/posts/${id}/comment`, {
+      const res = await fetch(`${API}/api/posts/${id}/comment`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + token,
@@ -169,11 +199,11 @@ export default function Dashboard() {
     }
   };
 
-  // ── DELETE ──
+  // ── DELETE POST ──
   const deletePost = async (id) => {
     if (!window.confirm("Delete this post?")) return;
     try {
-      const res = await fetch(`/api/posts/${id}`, {
+      const res = await fetch(`${API}/api/posts/${id}`, {
         method: "DELETE",
         headers: { Authorization: "Bearer " + token },
       });
@@ -190,9 +220,10 @@ export default function Dashboard() {
     e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
+  // Show loading spinner while profile is being fetched
   if (!user) return <div className={styles.loading}>Loading...</div>;
 
   return (
@@ -210,7 +241,7 @@ export default function Dashboard() {
           <i className="fa-solid fa-bars" />
         </button>
 
-        <Link to="/page" className={styles.logo}>
+        <Link to="/dashboard" className={styles.logo}>
           Dosti<span>शिप</span>
         </Link>
 
@@ -232,8 +263,8 @@ export default function Dashboard() {
             {dropdownOpen && (
               <div className={styles.dropdownMenu}>
                 <Link to="/profile"><i className="fa-solid fa-user" /> My Profile</Link>
-                <Link to="/interest"><i className="fa-solid fa-heart" /> My Interests</Link>
-                <a href="/login" onClick={handleLogout}>
+                <Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link>
+                <a href="#" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket" /> Logout
                 </a>
               </div>
@@ -243,7 +274,7 @@ export default function Dashboard() {
       </header>
 
       <div className={styles.mainContent}>
-        {/* SIDEBAR */}
+        {/* LEFT SIDEBAR */}
         <aside
           ref={sidebarRef}
           className={`${styles.sidebar} ${sidebarOpen ? styles.active : ""}`}
@@ -259,8 +290,8 @@ export default function Dashboard() {
           <div className={styles.sidebarSection}>
             <p className={styles.sidebarTitle}>Menu</p>
             <ul className={styles.sidebarMenu}>
-              <li><Link to="/page" className={styles.active}><i className="fa-solid fa-house" /> Home</Link></li>
-              <li><Link to="/notification"><i className="fa-solid fa-bell" /> Notifications</Link></li>
+              <li><Link to="/dashboard" className={styles.active}><i className="fa-solid fa-house" /> Home</Link></li>
+              <li><Link to="/notifications"><i className="fa-solid fa-bell" /> Notifications</Link></li>
               <li><Link to="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</Link></li>
               <li><Link to="/inbox"><i className="fa-solid fa-envelope" /> Inbox</Link></li>
               <li><Link to="/journal"><i className="fa-solid fa-book-open" /> Journal</Link></li>
@@ -272,15 +303,15 @@ export default function Dashboard() {
             <p className={styles.sidebarTitle}>Account</p>
             <ul className={styles.sidebarMenu}>
               <li><Link to="/profile"><i className="fa-solid fa-user-circle" /> Profile</Link></li>
-              <li><Link to="/interest"><i className="fa-solid fa-heart" /> Interests</Link></li>
-              <li><a href="/login" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
+              <li><Link to="/discover-interests"><i className="fa-solid fa-heart" /> Interests</Link></li>
+              <li><a href="#" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket" /> Logout</a></li>
             </ul>
           </div>
         </aside>
 
-        {/* MAIN */}
+        {/* MAIN CONTENT */}
         <main className={styles.contentArea}>
-          {/* WELCOME */}
+          {/* WELCOME BANNER */}
           <div className={styles.welcomeBanner}>
             <div>
               <h2>Welcome back, {(user.name || "User").split(" ")[0]}! 👋</h2>
@@ -329,7 +360,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* FEED GRID */}
+          {/* FEED */}
           <div className={styles.feedGrid}>
             <div className={styles.activityFeed}>
               <div className={styles.feedHeader}>
@@ -345,14 +376,19 @@ export default function Dashboard() {
                 <p className={styles.emptyFeed}>No posts yet. Be the first to post!</p>
               ) : (
                 posts.map((post) => {
-                  const isLiked = post.likes.includes(user._id);
-                  const isOwner = post.user?._id === user._id;
+                  const isLiked      = post.likes.includes(user._id);
+                  const isOwner      = post.user?._id === user._id;
                   const commentsOpen = activeComments[post._id];
 
                   return (
                     <div key={post._id} className={styles.activityItem}>
                       <div className={styles.activityHeader}>
-                        <Avatar name={post.user?.name} pic={post.user?.profilePic} size={44} fontSize={16} />
+                        <Avatar
+                          name={post.user?.name}
+                          pic={post.user?.profilePic}
+                          size={44}
+                          fontSize={16}
+                        />
                         <div style={{ flex: 1 }}>
                           <div className={styles.activityUser}>{post.user?.name || "User"}</div>
                           <div className={styles.activityTime}>
@@ -360,13 +396,18 @@ export default function Dashboard() {
                           </div>
                         </div>
                         {isOwner && (
-                          <button className={styles.deleteBtn} onClick={() => deletePost(post._id)}>
+                          <button
+                            className={styles.deleteBtn}
+                            onClick={() => deletePost(post._id)}
+                          >
                             <i className="fa-solid fa-trash" />
                           </button>
                         )}
                       </div>
 
-                      {post.caption && <div className={styles.activityText}>{post.caption}</div>}
+                      {post.caption && (
+                        <div className={styles.activityText}>{post.caption}</div>
+                      )}
 
                       {post.image && (
                         <div className={styles.activityMedia}>
@@ -454,12 +495,15 @@ export default function Dashboard() {
                 <div className={styles.sidebarCardTitle}>Online Friends</div>
               </div>
 
-              <div className={styles.sidebarCard} style={{ background: "linear-gradient(135deg, #f0eeff, #fff0f0)" }}>
+              <div
+                className={styles.sidebarCard}
+                style={{ background: "linear-gradient(135deg, #f0eeff, #fff0f0)" }}
+              >
                 <div className={styles.sidebarCardTitle}>Quick Links</div>
                 <ul className={styles.sidebarMenu}>
                   <li><Link to="/hangout"><i className="fa-solid fa-users" /> Hangout Rooms</Link></li>
                   <li><Link to="/journal"><i className="fa-solid fa-book-open" /> My Journal</Link></li>
-                  <li><Link to="/interest"><i className="fa-solid fa-heart" /> My Interests</Link></li>
+                  <li><Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link></li>
                   <li><Link to="/map"><i className="fa-solid fa-map-location-dot" /> Friends Map</Link></li>
                 </ul>
               </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -19,11 +19,30 @@ import Register from "./pages/Register";
 import Services from "./pages/Services";
 import Settings from "./pages/Settings";
 
+// ── Must be logged in ──
+function PrivateRoute({ children }) {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
+}
+
+// ── Must be logged in AND interests not yet set ──
+// If interests already exist, skip straight to dashboard
+function InterestsRoute({ children }) {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" replace />;
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  if (user.interests && user.interests.length > 0) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return children;
+}
+
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public pages */}
+        {/* ── Public ── */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/aboutus" element={<AboutUs />} />
@@ -31,23 +50,28 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/auth-callback" element={<AuthCallback />} />
-
-        {/* Auth flow */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Post-login flow */}
-        <Route path="/discover-interests" element={<DiscoverInterests />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* ── Post-register: logged in + no interests ── */}
+        <Route
+          path="/discover-interests"
+          element={
+            <InterestsRoute>
+              <DiscoverInterests />
+            </InterestsRoute>
+          }
+        />
 
-        {/* App pages */}
-        <Route path="/hangout" element={<Hangout />} />
-        <Route path="/inbox" element={<Inbox />} />
-        <Route path="/journal" element={<Journal />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/notifications" element={<Notification />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<Settings />} />
+        {/* ── Protected app pages ── */}
+        <Route path="/dashboard"     element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/hangout"       element={<PrivateRoute><Hangout /></PrivateRoute>} />
+        <Route path="/inbox"         element={<PrivateRoute><Inbox /></PrivateRoute>} />
+        <Route path="/journal"       element={<PrivateRoute><Journal /></PrivateRoute>} />
+        <Route path="/map"           element={<PrivateRoute><Map /></PrivateRoute>} />
+        <Route path="/notifications" element={<PrivateRoute><Notification /></PrivateRoute>} />
+        <Route path="/profile"       element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        <Route path="/settings"      element={<PrivateRoute><Settings /></PrivateRoute>} />
       </Routes>
     </Router>
   );

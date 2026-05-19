@@ -1,81 +1,173 @@
 require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 const session = require("express-session");
 const passport = require("./middleware/passport");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Session (required for passport)
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}));
-
-// Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-// ✅ Google OAuth routes
-app.get("/auth/google",
-  passport.authenticate("google", { 
-    scope: ["profile", "email"],
-    prompt: "select_account"
+// ─────────────────────────────────────────────
+// CORS
+// ─────────────────────────────────────────────
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
   })
 );
 
-app.get("/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login.html" }),
-  async (req, res) => {
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: req.user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+// ─────────────────────────────────────────────
+// BODY PARSERS
+// ─────────────────────────────────────────────
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-    // Send token to frontend via redirect with query param
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3001";
-    res.redirect(`${frontendUrl}/oauth-success.html?token=${token}&user=${encodeURIComponent(JSON.stringify({
-      id: req.user._id,
-      name: req.user.name,
-      username: req.user.username,
-      email: req.user.email,
-      profilePic: req.user.profilePic
-    }))}`);
+// ─────────────────────────────────────────────
+// STATIC FILES
+// ─────────────────────────────────────────────
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// ─────────────────────────────────────────────
+// SESSION
+// ─────────────────────────────────────────────
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "secret_key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// ─────────────────────────────────────────────
+// PASSPORT
+// ─────────────────────────────────────────────
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ─────────────────────────────────────────────
+// GOOGLE AUTH
+// ─────────────────────────────────────────────
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+  }),
+  async (req, res) => {
+    try {
+      const token = jwt.sign(
+        { id: req.user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      const frontendUrl =
+        process.env.FRONTEND_URL || "http://localhost:3000";
+
+      const userData = {
+        _id: req.user._id,
+        name: req.user.name,
+        username: req.user.username,
+        email: req.user.email,
+        profilePic: req.user.profilePic,
+        interests: req.user.interests || [],
+        gender: req.user.gender,
+      };
+
+      res.redirect(
+        `${frontendUrl}/auth-callback?token=${token}&user=${encodeURIComponent(
+          JSON.stringify(userData)
+        )}`
+      );
+    } catch (err) {
+      console.error("Google auth error:", err);
+      res.status(500).json({
+        error: "Google authentication failed",
+      });
+    }
   }
 );
 
-// Routes
-const authRoutes = require("./routes/auth");
-const postRoutes = require("./routes/post");
+// ─────────────────────────────────────────────
+// API ROUTES
+// ─────────────────────────────────────────────
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/posts", require("./routes/post"));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/posts", postRoutes);
+// ─────────────────────────────────────────────
+// REACT BUILD (PRODUCTION)
+// ─────────────────────────────────────────────
+const frontendBuildPath = path.join(
+  __dirname,
+  "..",
+  "frontend",
+  "dist"
+);
 
-// Serve the React frontend after API and OAuth routes.
-const frontendBuildPath = path.join(__dirname, "..", "frontend", "build");
-app.use(express.static(frontendBuildPath));
-app.use((req, res, next) => {
-  if (req.method !== "GET" || req.path.startsWith("/api/")) return next();
-  res.sendFile(path.join(frontendBuildPath, "index.html"));
+if (fs.existsSync(frontendBuildPath)) {
+  app.use(express.static(frontendBuildPath));
+
+  app.use((req, res, next) => {
+    if (
+      req.method !== "GET" ||
+      req.path.startsWith("/api/") ||
+      req.path.startsWith("/auth/")
+    ) {
+      return next();
+    }
+
+    res.sendFile(
+      path.join(frontendBuildPath, "index.html")
+    );
+  });
+}
+
+// ─────────────────────────────────────────────
+// ERROR HANDLER
+// ─────────────────────────────────────────────
+app.use((err, req, res, next) => {
+  console.error("SERVER ERROR:");
+  console.error(err);
+
+  res.status(500).json({
+    error: err.message || "Internal Server Error",
+  });
 });
 
-// MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/dosti")
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log("DB Error:", err));
+// ─────────────────────────────────────────────
+// MONGODB
+// ─────────────────────────────────────────────
+mongoose
+  .connect(
+    process.env.MONGO_URI ||
+      "mongodb://127.0.0.1:27017/dostiship"
+  )
+  .then(() => {
+    console.log("✅ MongoDB Connected");
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Error:", err);
+  });
 
-const PORT = process.env.PORT || 3000;
+// ─────────────────────────────────────────────
+// SERVER
+// ─────────────────────────────────────────────
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(
+    `🚀 Server running → http://localhost:${PORT}`
+  );
 });
