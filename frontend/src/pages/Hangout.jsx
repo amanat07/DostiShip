@@ -117,7 +117,7 @@ function Hangout() {
             {dropdownOpen && (
               <div className="h-dropdown-menu">
                 <Link to="/profile"><i className="fa-solid fa-user" /> My Profile</Link>
-                <Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link>
+
                 <a href="/login" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket" /> Logout
                 </a>

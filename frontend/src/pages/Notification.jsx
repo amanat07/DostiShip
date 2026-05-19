@@ -387,7 +387,7 @@ export default function Notifications() {
               {profileOpen && (
                 <div className={styles.dropdownMenu}>
                   <a href="./profilepage"><i className="fa-solid fa-user" /> My Profile</a>
-                  <a href="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</a>
+            
                   <a href="/home" onClick={logout}><i className="fa-solid fa-right-from-bracket" /> Logout</a>
                 </div>
               )}

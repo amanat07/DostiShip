@@ -233,7 +233,7 @@ function InboxHeader({ me, onLogout, onHamburger }) {
           </button>
           <div className={styles.dropdownMenu}>
             <Link to="/profile"><i className="fa-solid fa-user" /> My Profile</Link>
-            <Link to="/discover-interests"><i className="fa-solid fa-heart" /> My Interests</Link>
+  
             <Link to="/" onClick={(e) => { e.preventDefault(); onLogout(); }}>
               <i className="fa-solid fa-right-from-bracket" /> Logout
             </Link>

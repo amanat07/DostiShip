@@ -217,7 +217,7 @@ export default function Journal() {
             </button>
             <div className={styles.dropdownMenu}>
               <Link to="/profile"><i className="fas fa-user" /> My Profile</Link>
-              <Link to="/discover-interests"><i className="fas fa-heart" /> My Interests</Link>
+      
               <Link to="/" onClick={logout}><i className="fas fa-sign-out-alt" /> Logout</Link>
             </div>
           </div>
