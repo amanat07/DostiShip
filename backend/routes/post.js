@@ -80,11 +80,11 @@ router.get("/", async (req, res) => {
     const posts = await Post.find()
       .populate(
         "user",
-        "username name profilePic"
+        "username name email profilePic"
       )
       .populate(
         "comments.user",
-        "username name profilePic"
+        "username name email profilePic"
       )
       .sort({ createdAt: -1 });
 
@@ -108,11 +108,11 @@ router.get("/:id", async (req, res) => {
     )
       .populate(
         "user",
-        "username name profilePic"
+        "username name email profilePic"
       )
       .populate(
         "comments.user",
-        "username name profilePic"
+        "username name email profilePic"
       );
 
     if (!post) {
@@ -152,9 +152,9 @@ router.delete(
 
       // ONLY OWNER CAN DELETE
       if (
-        post.user.toString() !==
-        req.user.userId.toString()
-      ) {
+  String(post.user) !==
+  String(req.user.userId)
+) {
         return res.status(403).json({
           error: "Unauthorized",
         });
@@ -269,7 +269,7 @@ router.post(
           req.params.id
         ).populate(
           "comments.user",
-          "username name profilePic"
+          "username name email profilePic"
         );
 
       const newComment =
@@ -324,9 +324,9 @@ router.delete(
 
       // ONLY COMMENT OWNER
       if (
-        comment.user.toString() !==
-        req.user.userId.toString()
-      ) {
+  String(comment.user) !==
+  String(req.user.userId)
+) {
         return res.status(403).json({
           error: "Unauthorized",
         });

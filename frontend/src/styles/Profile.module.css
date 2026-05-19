@@ -465,3 +465,40 @@ body{
   }
 }
 
+/* FIX TEXT OVERFLOW */
+.heroInfo{
+  min-width:0;
+  overflow:hidden;
+}
+
+.heroInfo h2,
+.heroInfo p,
+.usernameBadge,
+.sidebarUserName,
+.sidebarUserEmail,
+.infoValue,
+.friendName{
+  overflow-wrap:break-word;
+  word-break:break-word;
+}
+
+.profileHero{
+  overflow:hidden;
+}
+
+.heroTop{
+  flex-wrap:wrap;
+}
+
+.sidebarUserInfo{
+  min-width:0;
+}
+
+.infoRow{
+  gap:14px;
+}
+
+.infoValue{
+  text-align:right;
+  max-width:60%;
+}

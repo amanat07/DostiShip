@@ -402,9 +402,9 @@ posts.map((post) => {
       user._id || user.id
     );
 
-  const isOwner =
-    post.user?._id ===
-    (user._id || user.id);
+ const isOwner =
+  String(post.user?._id || post.user) ===
+String(user._id || user.id);
 
   const commentsOpen =
     activeComments[post._id];
@@ -417,14 +417,11 @@ posts.map((post) => {
       <div className={styles.activityHeader}>
         <Avatar
           name={
-            post.user?.username ||
-            post.username ||
-            post.user?.email
-              ?.replace(
-                "@chitkara.edu.in",
-                ""
-              ) ||
-            "User"
+            post.user?.name ||
+post.user?.username ||
+post.user?.email?.split("@")[0] ||
+user.name ||
+"User"
           }
           pic={post.user?.profilePic}
           size={44}
@@ -434,14 +431,11 @@ posts.map((post) => {
         <div style={{ flex: 1 }}>
           <div className={styles.activityUser}>
             {
-              post.user?.username ||
-              post.username ||
-              post.user?.email
-                ?.replace(
-                  "@chitkara.edu.in",
-                  ""
-                ) ||
-              "User"
+              post.user?.name ||
+post.user?.username ||
+post.user?.email?.split("@")[0] ||
+user.name ||
+"User"
             }
           </div>
 
@@ -538,8 +532,8 @@ posts.map((post) => {
       </div>
     </div>
 
-    {comment.user?._id ===
-      (user._id || user.id) && (
+    {String(comment.user?._id || comment.user) ===
+String(user._id || user.id) && (
       <button
         className={styles.commentDeleteBtn}
         onClick={() =>
