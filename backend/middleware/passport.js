@@ -42,9 +42,9 @@ async (accessToken, refreshToken, profile, done) => {
             name: profile.displayName,
 
             username:
-                email.split("@")[0] +
-                "_" +
-                Date.now(),
+email
+  .replace("@chitkara.edu.in", "")
+  .toLowerCase(),
 
             email,
 

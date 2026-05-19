@@ -356,26 +356,64 @@ useEffect(() => {
               {posts.length === 0 ? (
                 <p className={styles.emptyFeed}>No posts yet. Be the first to post!</p>
               ) : (
-                posts.map((post) => {
-                  const isLiked      = post.likes.includes(user.id);
-                  const isOwner      = post.user?._id === user.id;
-                  const commentsOpen = activeComments[post._id];
+                
+posts.map((post) => {
+  const isLiked =
+    post.likes.includes(
+      user._id || user.id
+    );
 
-                  return (
-                    <div key={post._id} className={styles.activityItem}>
-                      <div className={styles.activityHeader}>
-                        <Avatar
-                          name={post.user?.name}
-                          pic={post.user?.profilePic}
-                          size={44}
-                          fontSize={16}
-                        />
-                        <div style={{ flex: 1 }}>
-                          <div className={styles.activityUser}>{post.user?.name || "User"}</div>
-                          <div className={styles.activityTime}>
-                            <i className="fa-solid fa-clock" /> {formatTime(post.createdAt)}
-                          </div>
-                        </div>
+  const isOwner =
+    post.user?._id ===
+    (user._id || user.id);
+
+  const commentsOpen =
+    activeComments[post._id];
+
+  return (
+    <div
+      key={post._id}
+      className={styles.activityItem}
+    >
+      <div className={styles.activityHeader}>
+        <Avatar
+          name={
+            post.user?.username ||
+            post.username ||
+            post.user?.email
+              ?.replace(
+                "@chitkara.edu.in",
+                ""
+              ) ||
+            "User"
+          }
+          pic={post.user?.profilePic}
+          size={44}
+          fontSize={16}
+        />
+
+        <div style={{ flex: 1 }}>
+          <div className={styles.activityUser}>
+            {
+              post.user?.username ||
+              post.username ||
+              post.user?.email
+                ?.replace(
+                  "@chitkara.edu.in",
+                  ""
+                ) ||
+              "User"
+            }
+          </div>
+
+          <div className={styles.activityTime}>
+            <i className="fa-solid fa-clock" />
+            {" "}
+            {formatTime(post.createdAt)}
+          </div>
+        </div>
+
+
                         {isOwner && (
                           <button
                             className={styles.deleteBtn}

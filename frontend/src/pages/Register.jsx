@@ -229,6 +229,26 @@ function Register() {
           <button className={styles.registerBtn} disabled={loading}>
             {loading ? "Registering..." : "Register Now"}
           </button>
+<div className={styles.divider}>
+  <span>OR</span>
+</div>
+
+<button
+  type="button"
+  className={styles.googleBtn}
+  onClick={() => {
+    window.location.href =
+      "http://localhost:5000/auth/google";
+  }}
+>
+  <img
+    src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+    alt="Google"
+  />
+
+  Continue with Google
+</button>
+
         </form>
 
         <div className={styles.loginLink}>
