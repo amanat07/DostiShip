@@ -287,11 +287,10 @@ export default function Dashboard() {
   const displayedPosts = headerResults ? headerResults.posts : posts;
 
   const getPostUsername = (post) =>
-    post.user?.name ||
-    post.user?.username ||
-    post.user?.email?.split("@")[0] ||
-    user?.name ||
-    "User";
+  post.user?.name ||
+  post.user?.username ||
+  post.user?.email?.split("@")[0] ||
+  "User";
 
   if (!user) return <div className={styles.loading}>Loading...</div>;
 
