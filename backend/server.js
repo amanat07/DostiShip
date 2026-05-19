@@ -1,16 +1,72 @@
 require("dotenv").config();
 
+const http = require("http");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 const session = require("express-session");
-const passport = require("./middleware/passport");
 const jwt = require("jsonwebtoken");
+const { Server } = require("socket.io");
+
+const passport = require("./middleware/passport");
 const journalRoutes = require("./routes/journal");
 
 const app = express();
+const server = http.createServer(app);
+
+// ─────────────────────────────────────────────
+// SOCKET.IO
+// ─────────────────────────────────────────────
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
+global.onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+  console.log("✅ User connected:", socket.id);
+
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+    console.log("User added:", userId);
+  });
+
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+
+    if (sendUserSocket) {
+      io.to(sendUserSocket).emit(
+  "msg-receive",
+  {
+    from: data.from,
+    message: data.message,
+  }
+);
+    }
+  });
+  
+
+  socket.on("disconnect", () => {
+
+  for (const [key, value] of onlineUsers.entries()) {
+
+    if (value === socket.id) {
+      onlineUsers.delete(key);
+      break;
+    }
+
+  }
+
+  console.log("❌ User disconnected");
+
+});
+});
 
 // ─────────────────────────────────────────────
 // CORS
@@ -31,7 +87,10 @@ app.use(express.urlencoded({ extended: true }));
 // ─────────────────────────────────────────────
 // STATIC FILES
 // ─────────────────────────────────────────────
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 
 // ─────────────────────────────────────────────
 // SESSION
@@ -64,7 +123,8 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect:"http://localhost:3000/login?error=invalid_domain",
+    failureRedirect:
+      "http://localhost:3000/login?error=invalid_domain",
   }),
   async (req, res) => {
     try {
@@ -75,7 +135,8 @@ app.get(
       );
 
       const frontendUrl =
-        process.env.FRONTEND_URL || "http://localhost:3000";
+        process.env.FRONTEND_URL ||
+        "http://localhost:3000";
 
       const userData = {
         _id: req.user._id,
@@ -94,6 +155,7 @@ app.get(
       );
     } catch (err) {
       console.error("Google auth error:", err);
+
       res.status(500).json({
         error: "Google authentication failed",
       });
@@ -109,7 +171,7 @@ app.use("/api/posts", require("./routes/post"));
 app.use("/api/journal", journalRoutes);
 
 // ─────────────────────────────────────────────
-// REACT BUILD (PRODUCTION)
+// REACT BUILD
 // ─────────────────────────────────────────────
 const frontendBuildPath = path.join(
   __dirname,
@@ -144,7 +206,8 @@ app.use((err, req, res, next) => {
   console.error(err);
 
   res.status(500).json({
-    error: err.message || "Internal Server Error",
+    error:
+      err.message || "Internal Server Error",
   });
 });
 
@@ -164,11 +227,11 @@ mongoose
   });
 
 // ─────────────────────────────────────────────
-// SERVER
+// SERVER START
 // ─────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(
     `🚀 Server running → http://localhost:${PORT}`
   );

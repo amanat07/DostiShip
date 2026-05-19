@@ -1,61 +1,14 @@
+import io from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Inbox.module.css";
 
 // ─── Static Data (mirrors HTML exactly) ──────────────────────────────────────
 
-const CONTACTS = [
-  { id: "u1", name: "Priya Sharma",  color: "#4a3aff", status: "online",  seen: "Online now",      unread: 2 },
-  { id: "u2", name: "Rahul Patel",   color: "#e0405a", status: "away",    seen: "Last seen 8 min", unread: 0 },
-  { id: "u3", name: "Arshiya Verma", color: "#16a34a", status: "online",  seen: "Online now",      unread: 1 },
-  { id: "u4", name: "Vikram Joshi",  color: "#d97706", status: "offline", seen: "Last seen 2 hrs", unread: 0 },
-  { id: "u5", name: "Neha Gupta",    color: "#7c3aed", status: "online",  seen: "Online now",      unread: 0 },
-  { id: "u6", name: "Akhil Azad",    color: "#0891b2", status: "offline", seen: "Last seen 1 day", unread: 0 },
-];
 
-const INITIAL_HISTORY = {
-  u1: [
-    { t: "text",  d: "recv", txt: "Hey! Saw your profile on Dostiशिप 👀",                              ts: "10:28 AM" },
-    { t: "text",  d: "sent", txt: "Haha hi! Your interests matched mine 😄",                            ts: "10:29 AM", r: true },
-    { t: "text",  d: "recv", txt: "Gaming + lo-fi music — we are literally the same person 😭",         ts: "10:30 AM" },
-    { t: "text",  d: "sent", txt: "😂 omg yes!! Which games do you play?",                              ts: "10:31 AM", r: true, rxn: "😂" },
-    { t: "voice", d: "recv", dur: "0:18",                                                               ts: "10:33 AM" },
-    { t: "text",  d: "recv", txt: "Valorant mostly, sometimes Minecraft. You?",                         ts: "10:34 AM" },
-    { t: "text",  d: "sent", txt: "Same! We should play together sometime 🎮",                          ts: "10:35 AM", r: true },
-    { t: "text",  d: "recv", txt: "Definitely!! What rank are you?",                                    ts: "10:36 AM" },
-  ],
-  u2: [
-    { t: "text",   d: "recv", txt: "Bro did you check the new hangout rooms?🔥",                        ts: "Yesterday" },
-    { t: "text",   d: "sent", txt: "Not yet, what's there?",                                            ts: "Yesterday", r: true },
-    { t: "photos", d: "recv", n: 2,                                                                     ts: "Yesterday" },
-    { t: "text",   d: "recv", txt: "Someone made a study room, looks super chill",                      ts: "Yesterday" },
-    { t: "text",   d: "sent", txt: "Oh nice, might join tonight!",                                      ts: "Yesterday", r: true },
-  ],
-  u3: [
-    { t: "text", d: "recv", txt: "Your journal feature is so cute 🥺",                                  ts: "2:10 PM" },
-    { t: "text", d: "sent", txt: "Aww thank you! I use it every day honestly",                          ts: "2:12 PM", r: true },
-    { t: "text", d: "recv", txt: "We should do a collab journal entry some day lol",                    ts: "2:13 PM" },
-    { t: "text", d: "recv", txt: "Are you free this weekend?",                                          ts: "2:14 PM" },
-  ],
-  u4: [
-    { t: "sys",  txt: "You matched with Vikram based on Music & Travel interests" },
-    { t: "text", d: "recv", txt: "Hey! Fellow traveller here 🌍",                                       ts: "Mon" },
-  ],
-  u5: [
-    { t: "text", d: "sent", txt: "Loved your post about the Manali trip!",                              ts: "Sun", r: true },
-    { t: "text", d: "recv", txt: "OMG thank you so much!! It was surreal 🏔️",                          ts: "Sun" },
-    { t: "text", d: "recv", txt: "You should come next time — planning Spiti next month!",              ts: "Sun" },
-  ],
-  u6: [],
-};
+const INITIAL_HISTORY = {};
 
-const AUTO_REPLIES = [
-  "Haha that's so true 😄",
-  "Omg yes!! Same 🙌",
-  "Wait really?? Tell me more!",
-  "Let's connect on this 💯",
-  "Okay but this is why we matched 😂",
-];
+const socket = io("http://localhost:5000");
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -90,25 +43,124 @@ export default function Inbox() {
     if (!token || !raw) { navigate("/login"); return; }
     setMe(JSON.parse(raw));
   }, [navigate]);
+  useEffect(() => {
+
+  if (me?._id || me?.id) {
+
+    socket.emit(
+      "add-user",
+      me._id || me.id
+    );
+
+  }
+
+}, [me]);
 
   // shared state
-  const [contacts,  setContacts]  = useState(CONTACTS);
+  const [contacts, setContacts] = useState([]);
+  useEffect(() => {
+
+  async function loadUsers() {
+
+    try {
+
+      const res = await fetch(
+        "http://localhost:5000/api/auth/users"
+      );
+
+      const data = await res.json();
+
+      const filtered = data
+        .filter(
+          (u) =>
+            u._id !==
+            (me?._id || me?.id)
+        )
+        .map((u, i) => ({
+          id: u._id,
+          name:
+            u.name ||
+            u.username,
+          color: [
+            "#4a3aff",
+            "#e0405a",
+            "#16a34a",
+            "#d97706",
+            "#7c3aed",
+          ][i % 5],
+          status: "online",
+          seen: "Online now",
+          unread: 0,
+        }));
+
+      setContacts(filtered);
+
+      if (filtered.length > 0) {
+        setActiveId(filtered[0].id);
+      }
+
+    } catch (err) {
+
+      console.error(err);
+
+    }
+  }
+
+  if (me) {
+    loadUsers();
+  }
+
+}, [me]);
   const [history,   setHistory]   = useState(INITIAL_HISTORY);
-  const [activeId,  setActiveId]  = useState("u1");
+  const [activeId, setActiveId] =
+  useState("");
   const [filter,    setFilter]    = useState("all");
   const [query,     setQuery]     = useState("");
   const [toast,     setToast]     = useState({ msg: "", type: "", show: false });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toastTimer = useRef(null);
 
-  // open first chat on mount
-  useEffect(() => { openChat("u1"); }, []); // eslint-disable-line
 
   function showToast(msg, type = "") {
     clearTimeout(toastTimer.current);
     setToast({ msg, type, show: true });
     toastTimer.current = setTimeout(() => setToast(t => ({ ...t, show: false })), 3000);
   }
+  useEffect(() => {
+
+  socket.on(
+    "msg-receive",
+    (data) => {
+
+      setHistory((prev) => ({
+        ...prev,
+
+        [data.from]: [
+          ...(prev[data.from] || []),
+
+          {
+            t: "text",
+            d: "recv",
+            txt: data.message,
+            ts: new Date().toLocaleTimeString(
+              [],
+              {
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            ),
+          },
+        ],
+      }));
+
+    }
+  );
+
+  return () => {
+    socket.off("msg-receive");
+  };
+
+}, []);
 
   function openChat(id) {
     setActiveId(id);
@@ -116,23 +168,42 @@ export default function Inbox() {
   }
 
   function sendMessage(text) {
-    if (!text.trim() || !activeId) return;
-    const ts = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    const msg = { t: "text", d: "sent", txt: text.trim(), ts, r: false };
-    setHistory(prev => ({ ...prev, [activeId]: [...(prev[activeId] || []), msg] }));
 
-    const contact = contacts.find(c => c.id === activeId);
-    if (contact?.status !== "offline") {
-      setTimeout(() => {
-        const reply = AUTO_REPLIES[Math.floor(Math.random() * AUTO_REPLIES.length)];
-        const rts   = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        setHistory(prev => ({
-          ...prev,
-          [activeId]: [...(prev[activeId] || []), { t: "text", d: "recv", txt: reply, ts: rts }],
-        }));
-      }, 1600 + Math.random() * 800);
-    }
-  }
+  if (!text.trim() || !activeId)
+    return;
+
+  const ts =
+    new Date().toLocaleTimeString(
+      [],
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+      }
+    );
+
+  const msg = {
+    t: "text",
+    d: "sent",
+    txt: text.trim(),
+    ts,
+    r: false,
+  };
+
+  setHistory((prev) => ({
+    ...prev,
+    [activeId]: [
+      ...(prev[activeId] || []),
+      msg,
+    ],
+  }));
+
+  // SEND REALTIME MESSAGE
+  socket.emit("send-msg", {
+    to: activeId,
+    from: me._id || me.id,
+    message: text.trim(),
+  });
+}
 
   function logout() {
     localStorage.removeItem("token");
