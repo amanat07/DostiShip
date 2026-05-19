@@ -168,6 +168,10 @@ app.get(
 // ─────────────────────────────────────────────
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/posts", require("./routes/post"));
+app.use(
+  "/api/messages",
+  require("./routes/message")
+);
 app.use("/api/journal", journalRoutes);
 
 // ─────────────────────────────────────────────

@@ -137,6 +137,7 @@ export default function Inbox() {
 
         [data.from]: [
           ...(prev[data.from] || []),
+          
 
           {
             t: "text",
@@ -162,6 +163,68 @@ export default function Inbox() {
 
 }, []);
 
+
+useEffect(() => {
+
+  async function loadMessages() {
+
+    if (!activeId || !me)
+      return;
+
+    try {
+
+      const res = await fetch(
+        `http://localhost:5000/api/messages/${
+          me._id || me.id
+        }/${activeId}`
+      );
+
+      const data =
+        await res.json();
+
+      const formatted =
+        data.map((m) => ({
+          t: "text",
+
+          d:
+            String(m.from) ===
+            String(me._id || me.id)
+              ? "sent"
+              : "recv",
+
+          txt: m.message,
+
+          ts:
+            new Date(
+              m.createdAt
+            ).toLocaleTimeString(
+              [],
+              {
+                hour:
+                  "2-digit",
+
+                minute:
+                  "2-digit",
+              }
+            ),
+        }));
+
+      setHistory((prev) => ({
+        ...prev,
+        [activeId]:
+          formatted,
+      }));
+
+    } catch (err) {
+
+      console.error(err);
+
+    }
+  }
+
+  loadMessages();
+
+}, [activeId, me]);
   function openChat(id) {
     setActiveId(id);
     setContacts(prev => prev.map(c => c.id === id ? { ...c, unread: 0 } : c));
@@ -196,7 +259,27 @@ export default function Inbox() {
       msg,
     ],
   }));
+fetch(
+  "http://localhost:5000/api/messages",
+  {
+    method: "POST",
 
+    headers: {
+      "Content-Type":
+        "application/json",
+    },
+
+    body: JSON.stringify({
+      from:
+        me._id || me.id,
+
+      to: activeId,
+
+      message:
+        text.trim(),
+    }),
+  }
+);
   // SEND REALTIME MESSAGE
   socket.emit("send-msg", {
     to: activeId,
